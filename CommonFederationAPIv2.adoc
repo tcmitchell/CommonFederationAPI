@@ -55,17 +55,19 @@ This document describes the APIs of the Federation Registry as well as the MA an
 == API General Properties ==
 
 The APIs described here share some common properties, which should be assumed for the rest of this document:
- * The wire-protocol is XML/RPC. It is thus language independent on both client and server side of the API calls.
- * Most calls are protected, running over SSL and thus requiring the caller to use its certificate and private key. Certain calls are unprotected and can be accessed with no requirement for a validated client-side certificate . Such calls will noted in the API documentation below.
- * Each call takes an ‘options’ argument, a dictionary allowing for passing specific non-standard/optional arguments
- * Each protected method takes a ‘credentials’ argument, a list of type/credential tuples that help the Federation Registry or Authority invoke whatever AuthZ logic it may choose. As noted above, the Federation Registry or Authority may choose to use or disregard these credentials. Unprotected methods do not take a ‘credentials’ argument.
- * Each Federation Registry or Authority provides a get_version method, which describes the version number of the API provided, credential types supported, supplementary object fields and other data for interpreting API call returns.
- * A Federation Registry or Authority is free to implement additional methods beyond those specified in this document.
- * The URN is the fundamental identifier in all Federation API’s. URN’s are globally unique at any given time, though not necessarily unique over time. Disambiguation for entities with the same URN over time may be provided by an optional UUID argument for certain API methods. The format of URN's is documented at http://groups.geni.net/geni/wiki/GeniApiIdentifiers.
+
+* The wire-protocol is XML/RPC. It is thus language independent on both client and server side of the API calls.
+* Most calls are protected, running over SSL and thus requiring the caller to use its certificate and private key. Certain calls are unprotected and can be accessed with no requirement for a validated client-side certificate . Such calls will noted in the API documentation below.
+* Each call takes an ‘options’ argument, a dictionary allowing for passing specific non-standard/optional arguments
+* Each protected method takes a ‘credentials’ argument, a list of type/credential tuples that help the Federation Registry or Authority invoke whatever AuthZ logic it may choose. As noted above, the Federation Registry or Authority may choose to use or disregard these credentials. Unprotected methods do not take a ‘credentials’ argument.
+* Each Federation Registry or Authority provides a get_version method, which describes the version number of the API provided, credential types supported, supplementary object fields and other data for interpreting API call returns.
+* A Federation Registry or Authority is free to implement additional methods beyond those specified in this document.
+* The URN is the fundamental identifier in all Federation API’s. URN’s are globally unique at any given time, though not necessarily unique over time. Disambiguation for entities with the same URN over time may be provided by an optional UUID argument for certain API methods. The format of URN's is documented at http://groups.geni.net/geni/wiki/GeniApiIdentifiers.
 
 These API’s are provided in pseudo-code (i.e. language independent) format, with inputs and outputs (optional and required) described by comments, e.g.
 
-{{{
+.An example
+--------------------------------------------------
 #!python
 # Perform method fed_func
 #
@@ -80,7 +82,7 @@ These API’s are provided in pseudo-code (i.e. language independent) format, wi
 #  E.g. a list of dictionaries with these fields mandatory (…) 
 #                                         and these fields optional (…)
 def fed_func (arg1, arg2, credentials, options)
-}}}
+--------------------------------------------------
 
 
 == API 'get_version' methods ==
@@ -355,35 +357,30 @@ If a lookup method call requests information in the 'match' criteria about objec
 
 A Member Authority (MA) manages information about member objects. The MA method lookup(type="MEMBER") could take an options argument such as
 
+--------------------------------------------------
 {
-
-      "match”: {“MEMBER_LASTNAME”: “BROWN”},
-      
-      "filter”: [“MEMBER_EMAIL”, “MEMBER_FIRSTNAME”]
+    "match": {"MEMBER_LASTNAME": "BROWN"},
+    "filter": ["MEMBER_EMAIL", "MEMBER_FIRSTNAME"]
+}
+--------------------------------------------------
 
 Such a call would find any member with last name Brown and return a dictionary keyed by the member URN containing a dictionary with their email, and first name.
 
-''' { '''
-
+--------------------------------------------------
+{
       “urn:publicid:IDN+mych+user+abrown” :
-      
             {“MEMBER_EMAIL”: abrown@williams.edu,
-            
-            “MEMBER_FIRSTNAME”: “Arlene”},
-      
+             “MEMBER_FIRSTNAME”: “Arlene”},
+
       “urn:publicid:IDN+mych+user+mbrown” :
-
             {“MEMBER_EMAIL”: mbrown@umass.edu,
-
-            “MEMBER_FIRSTNAME”: “Michael”},
+             “MEMBER_FIRSTNAME”: “Michael”},
 
       “urn:publicid:IDN+mych+user+sbrown” :
-
             {“MEMBER_EMAIL”: sbrown@stanford.edu,
-
-            “MEMBER_FIRSTNAME”: “Sam”}
-
+             “MEMBER_FIRSTNAME”: “Sam”}
 }
+--------------------------------------------------
 
 A Slice Authority (SA) manages information about slice objects. The SA method update(type="SLICE") could take the following options argument to change the slice description and extend the slice expiration:
 
