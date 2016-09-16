@@ -651,7 +651,7 @@ Additionally, the Slice service provides the following methods:
 #   options: Potentially contains ‘speaking_for’ key indicating a speaks-for 
 #      invocation (with certificate of the accountable member 
 #      in the credentials argument)
-
+#
 # Return:
 #   List of credential in “CREDENTIALS” format, i.e. a list of credentials with 
 # type information suitable for passing to aggregates speaking AM API V3.
