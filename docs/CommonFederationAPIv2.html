@@ -1,0 +1,1794 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<!--[if IE]><meta http-equiv="X-UA-Compatible" content="IE=edge"><![endif]-->
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="generator" content="Asciidoctor 1.5.4">
+<title>Federation Service API’s</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300,300italic,400,400italic,600,600italic%7CNoto+Serif:400,400italic,700,700italic%7CDroid+Sans+Mono:400,700">
+<style>
+/* Asciidoctor default stylesheet | MIT License | http://asciidoctor.org */
+/* Remove comment around @import statement below when using as a custom stylesheet */
+/*@import "https://fonts.googleapis.com/css?family=Open+Sans:300,300italic,400,400italic,600,600italic%7CNoto+Serif:400,400italic,700,700italic%7CDroid+Sans+Mono:400,700";*/
+article,aside,details,figcaption,figure,footer,header,hgroup,main,nav,section,summary{display:block}
+audio,canvas,video{display:inline-block}
+audio:not([controls]){display:none;height:0}
+[hidden],template{display:none}
+script{display:none!important}
+html{font-family:sans-serif;-ms-text-size-adjust:100%;-webkit-text-size-adjust:100%}
+body{margin:0}
+a{background:transparent}
+a:focus{outline:thin dotted}
+a:active,a:hover{outline:0}
+h1{font-size:2em;margin:.67em 0}
+abbr[title]{border-bottom:1px dotted}
+b,strong{font-weight:bold}
+dfn{font-style:italic}
+hr{-moz-box-sizing:content-box;box-sizing:content-box;height:0}
+mark{background:#ff0;color:#000}
+code,kbd,pre,samp{font-family:monospace;font-size:1em}
+pre{white-space:pre-wrap}
+q{quotes:"\201C" "\201D" "\2018" "\2019"}
+small{font-size:80%}
+sub,sup{font-size:75%;line-height:0;position:relative;vertical-align:baseline}
+sup{top:-.5em}
+sub{bottom:-.25em}
+img{border:0}
+svg:not(:root){overflow:hidden}
+figure{margin:0}
+fieldset{border:1px solid silver;margin:0 2px;padding:.35em .625em .75em}
+legend{border:0;padding:0}
+button,input,select,textarea{font-family:inherit;font-size:100%;margin:0}
+button,input{line-height:normal}
+button,select{text-transform:none}
+button,html input[type="button"],input[type="reset"],input[type="submit"]{-webkit-appearance:button;cursor:pointer}
+button[disabled],html input[disabled]{cursor:default}
+input[type="checkbox"],input[type="radio"]{box-sizing:border-box;padding:0}
+input[type="search"]{-webkit-appearance:textfield;-moz-box-sizing:content-box;-webkit-box-sizing:content-box;box-sizing:content-box}
+input[type="search"]::-webkit-search-cancel-button,input[type="search"]::-webkit-search-decoration{-webkit-appearance:none}
+button::-moz-focus-inner,input::-moz-focus-inner{border:0;padding:0}
+textarea{overflow:auto;vertical-align:top}
+table{border-collapse:collapse;border-spacing:0}
+*,*:before,*:after{-moz-box-sizing:border-box;-webkit-box-sizing:border-box;box-sizing:border-box}
+html,body{font-size:100%}
+body{background:#fff;color:rgba(0,0,0,.8);padding:0;margin:0;font-family:"Noto Serif","DejaVu Serif",serif;font-weight:400;font-style:normal;line-height:1;position:relative;cursor:auto}
+a:hover{cursor:pointer}
+img,object,embed{max-width:100%;height:auto}
+object,embed{height:100%}
+img{-ms-interpolation-mode:bicubic}
+.left{float:left!important}
+.right{float:right!important}
+.text-left{text-align:left!important}
+.text-right{text-align:right!important}
+.text-center{text-align:center!important}
+.text-justify{text-align:justify!important}
+.hide{display:none}
+body{-webkit-font-smoothing:antialiased}
+img,object,svg{display:inline-block;vertical-align:middle}
+textarea{height:auto;min-height:50px}
+select{width:100%}
+.center{margin-left:auto;margin-right:auto}
+.spread{width:100%}
+p.lead,.paragraph.lead>p,#preamble>.sectionbody>.paragraph:first-of-type p{font-size:1.21875em;line-height:1.6}
+.subheader,.admonitionblock td.content>.title,.audioblock>.title,.exampleblock>.title,.imageblock>.title,.listingblock>.title,.literalblock>.title,.stemblock>.title,.openblock>.title,.paragraph>.title,.quoteblock>.title,table.tableblock>.title,.verseblock>.title,.videoblock>.title,.dlist>.title,.olist>.title,.ulist>.title,.qlist>.title,.hdlist>.title{line-height:1.45;color:#7a2518;font-weight:400;margin-top:0;margin-bottom:.25em}
+div,dl,dt,dd,ul,ol,li,h1,h2,h3,#toctitle,.sidebarblock>.content>.title,h4,h5,h6,pre,form,p,blockquote,th,td{margin:0;padding:0;direction:ltr}
+a{color:#2156a5;text-decoration:underline;line-height:inherit}
+a:hover,a:focus{color:#1d4b8f}
+a img{border:none}
+p{font-family:inherit;font-weight:400;font-size:1em;line-height:1.6;margin-bottom:1.25em;text-rendering:optimizeLegibility}
+p aside{font-size:.875em;line-height:1.35;font-style:italic}
+h1,h2,h3,#toctitle,.sidebarblock>.content>.title,h4,h5,h6{font-family:"Open Sans","DejaVu Sans",sans-serif;font-weight:300;font-style:normal;color:#ba3925;text-rendering:optimizeLegibility;margin-top:1em;margin-bottom:.5em;line-height:1.0125em}
+h1 small,h2 small,h3 small,#toctitle small,.sidebarblock>.content>.title small,h4 small,h5 small,h6 small{font-size:60%;color:#e99b8f;line-height:0}
+h1{font-size:2.125em}
+h2{font-size:1.6875em}
+h3,#toctitle,.sidebarblock>.content>.title{font-size:1.375em}
+h4,h5{font-size:1.125em}
+h6{font-size:1em}
+hr{border:solid #ddddd8;border-width:1px 0 0;clear:both;margin:1.25em 0 1.1875em;height:0}
+em,i{font-style:italic;line-height:inherit}
+strong,b{font-weight:bold;line-height:inherit}
+small{font-size:60%;line-height:inherit}
+code{font-family:"Droid Sans Mono","DejaVu Sans Mono",monospace;font-weight:400;color:rgba(0,0,0,.9)}
+ul,ol,dl{font-size:1em;line-height:1.6;margin-bottom:1.25em;list-style-position:outside;font-family:inherit}
+ul,ol,ul.no-bullet,ol.no-bullet{margin-left:1.5em}
+ul li ul,ul li ol{margin-left:1.25em;margin-bottom:0;font-size:1em}
+ul.square li ul,ul.circle li ul,ul.disc li ul{list-style:inherit}
+ul.square{list-style-type:square}
+ul.circle{list-style-type:circle}
+ul.disc{list-style-type:disc}
+ul.no-bullet{list-style:none}
+ol li ul,ol li ol{margin-left:1.25em;margin-bottom:0}
+dl dt{margin-bottom:.3125em;font-weight:bold}
+dl dd{margin-bottom:1.25em}
+abbr,acronym{text-transform:uppercase;font-size:90%;color:rgba(0,0,0,.8);border-bottom:1px dotted #ddd;cursor:help}
+abbr{text-transform:none}
+blockquote{margin:0 0 1.25em;padding:.5625em 1.25em 0 1.1875em;border-left:1px solid #ddd}
+blockquote cite{display:block;font-size:.9375em;color:rgba(0,0,0,.6)}
+blockquote cite:before{content:"\2014 \0020"}
+blockquote cite a,blockquote cite a:visited{color:rgba(0,0,0,.6)}
+blockquote,blockquote p{line-height:1.6;color:rgba(0,0,0,.85)}
+@media only screen and (min-width:768px){h1,h2,h3,#toctitle,.sidebarblock>.content>.title,h4,h5,h6{line-height:1.2}
+h1{font-size:2.75em}
+h2{font-size:2.3125em}
+h3,#toctitle,.sidebarblock>.content>.title{font-size:1.6875em}
+h4{font-size:1.4375em}}
+table{background:#fff;margin-bottom:1.25em;border:solid 1px #dedede}
+table thead,table tfoot{background:#f7f8f7;font-weight:bold}
+table thead tr th,table thead tr td,table tfoot tr th,table tfoot tr td{padding:.5em .625em .625em;font-size:inherit;color:rgba(0,0,0,.8);text-align:left}
+table tr th,table tr td{padding:.5625em .625em;font-size:inherit;color:rgba(0,0,0,.8)}
+table tr.even,table tr.alt,table tr:nth-of-type(even){background:#f8f8f7}
+table thead tr th,table tfoot tr th,table tbody tr td,table tr td,table tfoot tr td{display:table-cell;line-height:1.6}
+body{tab-size:4}
+h1,h2,h3,#toctitle,.sidebarblock>.content>.title,h4,h5,h6{line-height:1.2;word-spacing:-.05em}
+h1 strong,h2 strong,h3 strong,#toctitle strong,.sidebarblock>.content>.title strong,h4 strong,h5 strong,h6 strong{font-weight:400}
+.clearfix:before,.clearfix:after,.float-group:before,.float-group:after{content:" ";display:table}
+.clearfix:after,.float-group:after{clear:both}
+*:not(pre)>code{font-size:.9375em;font-style:normal!important;letter-spacing:0;padding:.1em .5ex;word-spacing:-.15em;background-color:#f7f7f8;-webkit-border-radius:4px;border-radius:4px;line-height:1.45;text-rendering:optimizeSpeed}
+pre,pre>code{line-height:1.45;color:rgba(0,0,0,.9);font-family:"Droid Sans Mono","DejaVu Sans Mono",monospace;font-weight:400;text-rendering:optimizeSpeed}
+.keyseq{color:rgba(51,51,51,.8)}
+kbd{font-family:"Droid Sans Mono","DejaVu Sans Mono",monospace;display:inline-block;color:rgba(0,0,0,.8);font-size:.65em;line-height:1.45;background-color:#f7f7f7;border:1px solid #ccc;-webkit-border-radius:3px;border-radius:3px;-webkit-box-shadow:0 1px 0 rgba(0,0,0,.2),0 0 0 .1em white inset;box-shadow:0 1px 0 rgba(0,0,0,.2),0 0 0 .1em #fff inset;margin:0 .15em;padding:.2em .5em;vertical-align:middle;position:relative;top:-.1em;white-space:nowrap}
+.keyseq kbd:first-child{margin-left:0}
+.keyseq kbd:last-child{margin-right:0}
+.menuseq,.menu{color:rgba(0,0,0,.8)}
+b.button:before,b.button:after{position:relative;top:-1px;font-weight:400}
+b.button:before{content:"[";padding:0 3px 0 2px}
+b.button:after{content:"]";padding:0 2px 0 3px}
+p a>code:hover{color:rgba(0,0,0,.9)}
+#header,#content,#footnotes,#footer{width:100%;margin-left:auto;margin-right:auto;margin-top:0;margin-bottom:0;max-width:62.5em;*zoom:1;position:relative;padding-left:.9375em;padding-right:.9375em}
+#header:before,#header:after,#content:before,#content:after,#footnotes:before,#footnotes:after,#footer:before,#footer:after{content:" ";display:table}
+#header:after,#content:after,#footnotes:after,#footer:after{clear:both}
+#content{margin-top:1.25em}
+#content:before{content:none}
+#header>h1:first-child{color:rgba(0,0,0,.85);margin-top:2.25rem;margin-bottom:0}
+#header>h1:first-child+#toc{margin-top:8px;border-top:1px solid #ddddd8}
+#header>h1:only-child,body.toc2 #header>h1:nth-last-child(2){border-bottom:1px solid #ddddd8;padding-bottom:8px}
+#header .details{border-bottom:1px solid #ddddd8;line-height:1.45;padding-top:.25em;padding-bottom:.25em;padding-left:.25em;color:rgba(0,0,0,.6);display:-ms-flexbox;display:-webkit-flex;display:flex;-ms-flex-flow:row wrap;-webkit-flex-flow:row wrap;flex-flow:row wrap}
+#header .details span:first-child{margin-left:-.125em}
+#header .details span.email a{color:rgba(0,0,0,.85)}
+#header .details br{display:none}
+#header .details br+span:before{content:"\00a0\2013\00a0"}
+#header .details br+span.author:before{content:"\00a0\22c5\00a0";color:rgba(0,0,0,.85)}
+#header .details br+span#revremark:before{content:"\00a0|\00a0"}
+#header #revnumber{text-transform:capitalize}
+#header #revnumber:after{content:"\00a0"}
+#content>h1:first-child:not([class]){color:rgba(0,0,0,.85);border-bottom:1px solid #ddddd8;padding-bottom:8px;margin-top:0;padding-top:1rem;margin-bottom:1.25rem}
+#toc{border-bottom:1px solid #efefed;padding-bottom:.5em}
+#toc>ul{margin-left:.125em}
+#toc ul.sectlevel0>li>a{font-style:italic}
+#toc ul.sectlevel0 ul.sectlevel1{margin:.5em 0}
+#toc ul{font-family:"Open Sans","DejaVu Sans",sans-serif;list-style-type:none}
+#toc li{line-height:1.3334;margin-top:.3334em}
+#toc a{text-decoration:none}
+#toc a:active{text-decoration:underline}
+#toctitle{color:#7a2518;font-size:1.2em}
+@media only screen and (min-width:768px){#toctitle{font-size:1.375em}
+body.toc2{padding-left:15em;padding-right:0}
+#toc.toc2{margin-top:0!important;background-color:#f8f8f7;position:fixed;width:15em;left:0;top:0;border-right:1px solid #efefed;border-top-width:0!important;border-bottom-width:0!important;z-index:1000;padding:1.25em 1em;height:100%;overflow:auto}
+#toc.toc2 #toctitle{margin-top:0;margin-bottom:.8rem;font-size:1.2em}
+#toc.toc2>ul{font-size:.9em;margin-bottom:0}
+#toc.toc2 ul ul{margin-left:0;padding-left:1em}
+#toc.toc2 ul.sectlevel0 ul.sectlevel1{padding-left:0;margin-top:.5em;margin-bottom:.5em}
+body.toc2.toc-right{padding-left:0;padding-right:15em}
+body.toc2.toc-right #toc.toc2{border-right-width:0;border-left:1px solid #efefed;left:auto;right:0}}
+@media only screen and (min-width:1280px){body.toc2{padding-left:20em;padding-right:0}
+#toc.toc2{width:20em}
+#toc.toc2 #toctitle{font-size:1.375em}
+#toc.toc2>ul{font-size:.95em}
+#toc.toc2 ul ul{padding-left:1.25em}
+body.toc2.toc-right{padding-left:0;padding-right:20em}}
+#content #toc{border-style:solid;border-width:1px;border-color:#e0e0dc;margin-bottom:1.25em;padding:1.25em;background:#f8f8f7;-webkit-border-radius:4px;border-radius:4px}
+#content #toc>:first-child{margin-top:0}
+#content #toc>:last-child{margin-bottom:0}
+#footer{max-width:100%;background-color:rgba(0,0,0,.8);padding:1.25em}
+#footer-text{color:rgba(255,255,255,.8);line-height:1.44}
+.sect1{padding-bottom:.625em}
+@media only screen and (min-width:768px){.sect1{padding-bottom:1.25em}}
+.sect1+.sect1{border-top:1px solid #efefed}
+#content h1>a.anchor,h2>a.anchor,h3>a.anchor,#toctitle>a.anchor,.sidebarblock>.content>.title>a.anchor,h4>a.anchor,h5>a.anchor,h6>a.anchor{position:absolute;z-index:1001;width:1.5ex;margin-left:-1.5ex;display:block;text-decoration:none!important;visibility:hidden;text-align:center;font-weight:400}
+#content h1>a.anchor:before,h2>a.anchor:before,h3>a.anchor:before,#toctitle>a.anchor:before,.sidebarblock>.content>.title>a.anchor:before,h4>a.anchor:before,h5>a.anchor:before,h6>a.anchor:before{content:"\00A7";font-size:.85em;display:block;padding-top:.1em}
+#content h1:hover>a.anchor,#content h1>a.anchor:hover,h2:hover>a.anchor,h2>a.anchor:hover,h3:hover>a.anchor,#toctitle:hover>a.anchor,.sidebarblock>.content>.title:hover>a.anchor,h3>a.anchor:hover,#toctitle>a.anchor:hover,.sidebarblock>.content>.title>a.anchor:hover,h4:hover>a.anchor,h4>a.anchor:hover,h5:hover>a.anchor,h5>a.anchor:hover,h6:hover>a.anchor,h6>a.anchor:hover{visibility:visible}
+#content h1>a.link,h2>a.link,h3>a.link,#toctitle>a.link,.sidebarblock>.content>.title>a.link,h4>a.link,h5>a.link,h6>a.link{color:#ba3925;text-decoration:none}
+#content h1>a.link:hover,h2>a.link:hover,h3>a.link:hover,#toctitle>a.link:hover,.sidebarblock>.content>.title>a.link:hover,h4>a.link:hover,h5>a.link:hover,h6>a.link:hover{color:#a53221}
+.audioblock,.imageblock,.literalblock,.listingblock,.stemblock,.videoblock{margin-bottom:1.25em}
+.admonitionblock td.content>.title,.audioblock>.title,.exampleblock>.title,.imageblock>.title,.listingblock>.title,.literalblock>.title,.stemblock>.title,.openblock>.title,.paragraph>.title,.quoteblock>.title,table.tableblock>.title,.verseblock>.title,.videoblock>.title,.dlist>.title,.olist>.title,.ulist>.title,.qlist>.title,.hdlist>.title{text-rendering:optimizeLegibility;text-align:left;font-family:"Noto Serif","DejaVu Serif",serif;font-size:1rem;font-style:italic}
+table.tableblock>caption.title{white-space:nowrap;overflow:visible;max-width:0}
+.paragraph.lead>p,#preamble>.sectionbody>.paragraph:first-of-type p{color:rgba(0,0,0,.85)}
+table.tableblock #preamble>.sectionbody>.paragraph:first-of-type p{font-size:inherit}
+.admonitionblock>table{border-collapse:separate;border:0;background:none;width:100%}
+.admonitionblock>table td.icon{text-align:center;width:80px}
+.admonitionblock>table td.icon img{max-width:none}
+.admonitionblock>table td.icon .title{font-weight:bold;font-family:"Open Sans","DejaVu Sans",sans-serif;text-transform:uppercase}
+.admonitionblock>table td.content{padding-left:1.125em;padding-right:1.25em;border-left:1px solid #ddddd8;color:rgba(0,0,0,.6)}
+.admonitionblock>table td.content>:last-child>:last-child{margin-bottom:0}
+.exampleblock>.content{border-style:solid;border-width:1px;border-color:#e6e6e6;margin-bottom:1.25em;padding:1.25em;background:#fff;-webkit-border-radius:4px;border-radius:4px}
+.exampleblock>.content>:first-child{margin-top:0}
+.exampleblock>.content>:last-child{margin-bottom:0}
+.sidebarblock{border-style:solid;border-width:1px;border-color:#e0e0dc;margin-bottom:1.25em;padding:1.25em;background:#f8f8f7;-webkit-border-radius:4px;border-radius:4px}
+.sidebarblock>:first-child{margin-top:0}
+.sidebarblock>:last-child{margin-bottom:0}
+.sidebarblock>.content>.title{color:#7a2518;margin-top:0;text-align:center}
+.exampleblock>.content>:last-child>:last-child,.exampleblock>.content .olist>ol>li:last-child>:last-child,.exampleblock>.content .ulist>ul>li:last-child>:last-child,.exampleblock>.content .qlist>ol>li:last-child>:last-child,.sidebarblock>.content>:last-child>:last-child,.sidebarblock>.content .olist>ol>li:last-child>:last-child,.sidebarblock>.content .ulist>ul>li:last-child>:last-child,.sidebarblock>.content .qlist>ol>li:last-child>:last-child{margin-bottom:0}
+.literalblock pre,.listingblock pre:not(.highlight),.listingblock pre[class="highlight"],.listingblock pre[class^="highlight "],.listingblock pre.CodeRay,.listingblock pre.prettyprint{background:#f7f7f8}
+.sidebarblock .literalblock pre,.sidebarblock .listingblock pre:not(.highlight),.sidebarblock .listingblock pre[class="highlight"],.sidebarblock .listingblock pre[class^="highlight "],.sidebarblock .listingblock pre.CodeRay,.sidebarblock .listingblock pre.prettyprint{background:#f2f1f1}
+.literalblock pre,.literalblock pre[class],.listingblock pre,.listingblock pre[class]{-webkit-border-radius:4px;border-radius:4px;word-wrap:break-word;padding:1em;font-size:.8125em}
+.literalblock pre.nowrap,.literalblock pre[class].nowrap,.listingblock pre.nowrap,.listingblock pre[class].nowrap{overflow-x:auto;white-space:pre;word-wrap:normal}
+@media only screen and (min-width:768px){.literalblock pre,.literalblock pre[class],.listingblock pre,.listingblock pre[class]{font-size:.90625em}}
+@media only screen and (min-width:1280px){.literalblock pre,.literalblock pre[class],.listingblock pre,.listingblock pre[class]{font-size:1em}}
+.literalblock.output pre{color:#f7f7f8;background-color:rgba(0,0,0,.9)}
+.listingblock pre.highlightjs{padding:0}
+.listingblock pre.highlightjs>code{padding:1em;-webkit-border-radius:4px;border-radius:4px}
+.listingblock pre.prettyprint{border-width:0}
+.listingblock>.content{position:relative}
+.listingblock code[data-lang]:before{display:none;content:attr(data-lang);position:absolute;font-size:.75em;top:.425rem;right:.5rem;line-height:1;text-transform:uppercase;color:#999}
+.listingblock:hover code[data-lang]:before{display:block}
+.listingblock.terminal pre .command:before{content:attr(data-prompt);padding-right:.5em;color:#999}
+.listingblock.terminal pre .command:not([data-prompt]):before{content:"$"}
+table.pyhltable{border-collapse:separate;border:0;margin-bottom:0;background:none}
+table.pyhltable td{vertical-align:top;padding-top:0;padding-bottom:0;line-height:1.45}
+table.pyhltable td.code{padding-left:.75em;padding-right:0}
+pre.pygments .lineno,table.pyhltable td:not(.code){color:#999;padding-left:0;padding-right:.5em;border-right:1px solid #ddddd8}
+pre.pygments .lineno{display:inline-block;margin-right:.25em}
+table.pyhltable .linenodiv{background:none!important;padding-right:0!important}
+.quoteblock{margin:0 1em 1.25em 1.5em;display:table}
+.quoteblock>.title{margin-left:-1.5em;margin-bottom:.75em}
+.quoteblock blockquote,.quoteblock blockquote p{color:rgba(0,0,0,.85);font-size:1.15rem;line-height:1.75;word-spacing:.1em;letter-spacing:0;font-style:italic;text-align:justify}
+.quoteblock blockquote{margin:0;padding:0;border:0}
+.quoteblock blockquote:before{content:"\201c";float:left;font-size:2.75em;font-weight:bold;line-height:.6em;margin-left:-.6em;color:#7a2518;text-shadow:0 1px 2px rgba(0,0,0,.1)}
+.quoteblock blockquote>.paragraph:last-child p{margin-bottom:0}
+.quoteblock .attribution{margin-top:.5em;margin-right:.5ex;text-align:right}
+.quoteblock .quoteblock{margin-left:0;margin-right:0;padding:.5em 0;border-left:3px solid rgba(0,0,0,.6)}
+.quoteblock .quoteblock blockquote{padding:0 0 0 .75em}
+.quoteblock .quoteblock blockquote:before{display:none}
+.verseblock{margin:0 1em 1.25em 1em}
+.verseblock pre{font-family:"Open Sans","DejaVu Sans",sans;font-size:1.15rem;color:rgba(0,0,0,.85);font-weight:300;text-rendering:optimizeLegibility}
+.verseblock pre strong{font-weight:400}
+.verseblock .attribution{margin-top:1.25rem;margin-left:.5ex}
+.quoteblock .attribution,.verseblock .attribution{font-size:.9375em;line-height:1.45;font-style:italic}
+.quoteblock .attribution br,.verseblock .attribution br{display:none}
+.quoteblock .attribution cite,.verseblock .attribution cite{display:block;letter-spacing:-.025em;color:rgba(0,0,0,.6)}
+.quoteblock.abstract{margin:0 0 1.25em 0;display:block}
+.quoteblock.abstract blockquote,.quoteblock.abstract blockquote p{text-align:left;word-spacing:0}
+.quoteblock.abstract blockquote:before,.quoteblock.abstract blockquote p:first-of-type:before{display:none}
+table.tableblock{max-width:100%;border-collapse:separate}
+table.tableblock td>.paragraph:last-child p>p:last-child,table.tableblock th>p:last-child,table.tableblock td>p:last-child{margin-bottom:0}
+table.tableblock,th.tableblock,td.tableblock{border:0 solid #dedede}
+table.grid-all th.tableblock,table.grid-all td.tableblock{border-width:0 1px 1px 0}
+table.grid-all tfoot>tr>th.tableblock,table.grid-all tfoot>tr>td.tableblock{border-width:1px 1px 0 0}
+table.grid-cols th.tableblock,table.grid-cols td.tableblock{border-width:0 1px 0 0}
+table.grid-all *>tr>.tableblock:last-child,table.grid-cols *>tr>.tableblock:last-child{border-right-width:0}
+table.grid-rows th.tableblock,table.grid-rows td.tableblock{border-width:0 0 1px 0}
+table.grid-all tbody>tr:last-child>th.tableblock,table.grid-all tbody>tr:last-child>td.tableblock,table.grid-all thead:last-child>tr>th.tableblock,table.grid-rows tbody>tr:last-child>th.tableblock,table.grid-rows tbody>tr:last-child>td.tableblock,table.grid-rows thead:last-child>tr>th.tableblock{border-bottom-width:0}
+table.grid-rows tfoot>tr>th.tableblock,table.grid-rows tfoot>tr>td.tableblock{border-width:1px 0 0 0}
+table.frame-all{border-width:1px}
+table.frame-sides{border-width:0 1px}
+table.frame-topbot{border-width:1px 0}
+th.halign-left,td.halign-left{text-align:left}
+th.halign-right,td.halign-right{text-align:right}
+th.halign-center,td.halign-center{text-align:center}
+th.valign-top,td.valign-top{vertical-align:top}
+th.valign-bottom,td.valign-bottom{vertical-align:bottom}
+th.valign-middle,td.valign-middle{vertical-align:middle}
+table thead th,table tfoot th{font-weight:bold}
+tbody tr th{display:table-cell;line-height:1.6;background:#f7f8f7}
+tbody tr th,tbody tr th p,tfoot tr th,tfoot tr th p{color:rgba(0,0,0,.8);font-weight:bold}
+p.tableblock>code:only-child{background:none;padding:0}
+p.tableblock{font-size:1em}
+td>div.verse{white-space:pre}
+ol{margin-left:1.75em}
+ul li ol{margin-left:1.5em}
+dl dd{margin-left:1.125em}
+dl dd:last-child,dl dd:last-child>:last-child{margin-bottom:0}
+ol>li p,ul>li p,ul dd,ol dd,.olist .olist,.ulist .ulist,.ulist .olist,.olist .ulist{margin-bottom:.625em}
+ul.unstyled,ol.unnumbered,ul.checklist,ul.none{list-style-type:none}
+ul.unstyled,ol.unnumbered,ul.checklist{margin-left:.625em}
+ul.checklist li>p:first-child>.fa-square-o:first-child,ul.checklist li>p:first-child>.fa-check-square-o:first-child{width:1em;font-size:.85em}
+ul.checklist li>p:first-child>input[type="checkbox"]:first-child{width:1em;position:relative;top:1px}
+ul.inline{margin:0 auto .625em auto;margin-left:-1.375em;margin-right:0;padding:0;list-style:none;overflow:hidden}
+ul.inline>li{list-style:none;float:left;margin-left:1.375em;display:block}
+ul.inline>li>*{display:block}
+.unstyled dl dt{font-weight:400;font-style:normal}
+ol.arabic{list-style-type:decimal}
+ol.decimal{list-style-type:decimal-leading-zero}
+ol.loweralpha{list-style-type:lower-alpha}
+ol.upperalpha{list-style-type:upper-alpha}
+ol.lowerroman{list-style-type:lower-roman}
+ol.upperroman{list-style-type:upper-roman}
+ol.lowergreek{list-style-type:lower-greek}
+.hdlist>table,.colist>table{border:0;background:none}
+.hdlist>table>tbody>tr,.colist>table>tbody>tr{background:none}
+td.hdlist1,td.hdlist2{vertical-align:top;padding:0 .625em}
+td.hdlist1{font-weight:bold;padding-bottom:1.25em}
+.literalblock+.colist,.listingblock+.colist{margin-top:-.5em}
+.colist>table tr>td:first-of-type{padding:0 .75em;line-height:1}
+.colist>table tr>td:last-of-type{padding:.25em 0}
+.thumb,.th{line-height:0;display:inline-block;border:solid 4px #fff;-webkit-box-shadow:0 0 0 1px #ddd;box-shadow:0 0 0 1px #ddd}
+.imageblock.left,.imageblock[style*="float: left"]{margin:.25em .625em 1.25em 0}
+.imageblock.right,.imageblock[style*="float: right"]{margin:.25em 0 1.25em .625em}
+.imageblock>.title{margin-bottom:0}
+.imageblock.thumb,.imageblock.th{border-width:6px}
+.imageblock.thumb>.title,.imageblock.th>.title{padding:0 .125em}
+.image.left,.image.right{margin-top:.25em;margin-bottom:.25em;display:inline-block;line-height:0}
+.image.left{margin-right:.625em}
+.image.right{margin-left:.625em}
+a.image{text-decoration:none;display:inline-block}
+a.image object{pointer-events:none}
+sup.footnote,sup.footnoteref{font-size:.875em;position:static;vertical-align:super}
+sup.footnote a,sup.footnoteref a{text-decoration:none}
+sup.footnote a:active,sup.footnoteref a:active{text-decoration:underline}
+#footnotes{padding-top:.75em;padding-bottom:.75em;margin-bottom:.625em}
+#footnotes hr{width:20%;min-width:6.25em;margin:-.25em 0 .75em 0;border-width:1px 0 0 0}
+#footnotes .footnote{padding:0 .375em 0 .225em;line-height:1.3334;font-size:.875em;margin-left:1.2em;text-indent:-1.05em;margin-bottom:.2em}
+#footnotes .footnote a:first-of-type{font-weight:bold;text-decoration:none}
+#footnotes .footnote:last-of-type{margin-bottom:0}
+#content #footnotes{margin-top:-.625em;margin-bottom:0;padding:.75em 0}
+.gist .file-data>table{border:0;background:#fff;width:100%;margin-bottom:0}
+.gist .file-data>table td.line-data{width:99%}
+div.unbreakable{page-break-inside:avoid}
+.big{font-size:larger}
+.small{font-size:smaller}
+.underline{text-decoration:underline}
+.overline{text-decoration:overline}
+.line-through{text-decoration:line-through}
+.aqua{color:#00bfbf}
+.aqua-background{background-color:#00fafa}
+.black{color:#000}
+.black-background{background-color:#000}
+.blue{color:#0000bf}
+.blue-background{background-color:#0000fa}
+.fuchsia{color:#bf00bf}
+.fuchsia-background{background-color:#fa00fa}
+.gray{color:#606060}
+.gray-background{background-color:#7d7d7d}
+.green{color:#006000}
+.green-background{background-color:#007d00}
+.lime{color:#00bf00}
+.lime-background{background-color:#00fa00}
+.maroon{color:#600000}
+.maroon-background{background-color:#7d0000}
+.navy{color:#000060}
+.navy-background{background-color:#00007d}
+.olive{color:#606000}
+.olive-background{background-color:#7d7d00}
+.purple{color:#600060}
+.purple-background{background-color:#7d007d}
+.red{color:#bf0000}
+.red-background{background-color:#fa0000}
+.silver{color:#909090}
+.silver-background{background-color:#bcbcbc}
+.teal{color:#006060}
+.teal-background{background-color:#007d7d}
+.white{color:#bfbfbf}
+.white-background{background-color:#fafafa}
+.yellow{color:#bfbf00}
+.yellow-background{background-color:#fafa00}
+span.icon>.fa{cursor:default}
+.admonitionblock td.icon [class^="fa icon-"]{font-size:2.5em;text-shadow:1px 1px 2px rgba(0,0,0,.5);cursor:default}
+.admonitionblock td.icon .icon-note:before{content:"\f05a";color:#19407c}
+.admonitionblock td.icon .icon-tip:before{content:"\f0eb";text-shadow:1px 1px 2px rgba(155,155,0,.8);color:#111}
+.admonitionblock td.icon .icon-warning:before{content:"\f071";color:#bf6900}
+.admonitionblock td.icon .icon-caution:before{content:"\f06d";color:#bf3400}
+.admonitionblock td.icon .icon-important:before{content:"\f06a";color:#bf0000}
+.conum[data-value]{display:inline-block;color:#fff!important;background-color:rgba(0,0,0,.8);-webkit-border-radius:100px;border-radius:100px;text-align:center;font-size:.75em;width:1.67em;height:1.67em;line-height:1.67em;font-family:"Open Sans","DejaVu Sans",sans-serif;font-style:normal;font-weight:bold}
+.conum[data-value] *{color:#fff!important}
+.conum[data-value]+b{display:none}
+.conum[data-value]:after{content:attr(data-value)}
+pre .conum[data-value]{position:relative;top:-.125em}
+b.conum *{color:inherit!important}
+.conum:not([data-value]):empty{display:none}
+dt,th.tableblock,td.content,div.footnote{text-rendering:optimizeLegibility}
+h1,h2,p,td.content,span.alt{letter-spacing:-.01em}
+p strong,td.content strong,div.footnote strong{letter-spacing:-.005em}
+p,blockquote,dt,td.content,span.alt{font-size:1.0625rem}
+p{margin-bottom:1.25rem}
+.sidebarblock p,.sidebarblock dt,.sidebarblock td.content,p.tableblock{font-size:1em}
+.exampleblock>.content{background-color:#fffef7;border-color:#e0e0dc;-webkit-box-shadow:0 1px 4px #e0e0dc;box-shadow:0 1px 4px #e0e0dc}
+.print-only{display:none!important}
+@media print{@page{margin:1.25cm .75cm}
+*{-webkit-box-shadow:none!important;box-shadow:none!important;text-shadow:none!important}
+a{color:inherit!important;text-decoration:underline!important}
+a.bare,a[href^="#"],a[href^="mailto:"]{text-decoration:none!important}
+a[href^="http:"]:not(.bare):after,a[href^="https:"]:not(.bare):after{content:"(" attr(href) ")";display:inline-block;font-size:.875em;padding-left:.25em}
+abbr[title]:after{content:" (" attr(title) ")"}
+pre,blockquote,tr,img,object,svg{page-break-inside:avoid}
+thead{display:table-header-group}
+svg{max-width:100%}
+p,blockquote,dt,td.content{font-size:1em;orphans:3;widows:3}
+h2,h3,#toctitle,.sidebarblock>.content>.title{page-break-after:avoid}
+#toc,.sidebarblock,.exampleblock>.content{background:none!important}
+#toc{border-bottom:1px solid #ddddd8!important;padding-bottom:0!important}
+.sect1{padding-bottom:0!important}
+.sect1+.sect1{border:0!important}
+#header>h1:first-child{margin-top:1.25rem}
+body.book #header{text-align:center}
+body.book #header>h1:first-child{border:0!important;margin:2.5em 0 1em 0}
+body.book #header .details{border:0!important;display:block;padding:0!important}
+body.book #header .details span:first-child{margin-left:0!important}
+body.book #header .details br{display:block}
+body.book #header .details br+span:before{content:none!important}
+body.book #toc{border:0!important;text-align:left!important;padding:0!important;margin:0!important}
+body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-break-before:always}
+.listingblock code[data-lang]:before{display:block}
+#footer{background:none!important;padding:0 .9375em}
+#footer-text{color:rgba(0,0,0,.6)!important;font-size:.9em}
+.hide-on-print{display:none!important}
+.print-only{display:block!important}
+.hide-for-print{display:none!important}
+.show-for-print{display:inherit!important}}
+</style>
+</head>
+<body class="article">
+<div id="header">
+</div>
+<div id="content">
+<div class="sect1">
+<h2 id="_federation_service_api_s">Federation Service API’s</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Marshall Brinn, GENI Program Office, USA<a id="BR"></a>
+Jonathon Duerig, University of Utah, USA<a id="BR"></a>
+Aaron Helsinger, GENI Program Office, USA<a id="BR"></a>
+Tom Mitchell, GENI Program Office, USA<a id="BR"></a>
+Rob Ricci, University of Utah, USA<a id="BR"></a>
+Tom Rothe, EICT, Germany<a id="BR"></a>
+Leigh Stoller, University of Utah, USA<a id="BR"></a>
+Wim Van de Meerssche, iMinds/Ghent University, Belgium<a id="BR"></a>
+Brecht Vermeulen, iMinds/Ghent University, Belgium<a id="BR"></a>
+Gary Wong, University of Utah, USA<a id="BR"></a></p>
+</div>
+<div class="paragraph">
+<p>API Version 2</p>
+</div>
+<div class="paragraph">
+<p>Revised: November 13, 2013</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_introduction">Introduction</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>This document proposes a set of standard API’s that any GENI-compatible Federation should or may provide. The document describes what is required and what is optional in the calls and responses to these APIs.</p>
+</div>
+<div class="paragraph">
+<p>The GENI Software Architecture rests on the interaction between different entities:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>' Aggregates ' : Collections of resources managed and presented in accordance with the AM API</p>
+</li>
+<li>
+<p>' Members ' : Experimenters or other human consumers of aggregate resources</p>
+</li>
+<li>
+<p>' Authorities ' : Services that manage assertions about members and their permissions with respect to aggregate resources.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>There are two fundamental authority types in GENI:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>' Member Authority ' [MA]: Manages and asserts attributes about particular members</p>
+</li>
+<li>
+<p>' Slice Authority ' [SA]: Manages slice objects and generates credentials for members with respect to slices.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>A ' Federation ' is a collection of Authorities and Aggregates that establish mutual trust and common policies to facilitate the sharing of resources among members. A Federation Registry is a software service representing a given Federation, providing lists of Slice Authorities, Member Authorities and aggregates associated with that federation, and providing a set of PKI certificates that any aggregate belonging to a given federation accepts as trust roots. The relationship of Federations to Federation Registries is 1:1.</p>
+</div>
+<div class="paragraph">
+<p>The Authorities of any given Federation are free to implement their own Authorization (AuthZ) scheme. The API’s allow for passing credentials to the calls, but an Authority may choose to allow or disallow calls using logic and policies that are internal to that Federation. There is no universal (cross-Federation) requirement for any particular policy regarding Authority AuthZ.</p>
+</div>
+<div class="paragraph">
+<p>Authorities are fundamentally independent of one another. The objects defined at one Authority are not necessarily entitled to any services provided by another Authority. Each aggregate may choose to trust or not trust any particular Authority. Likewise, any Authority may chose to trust or not trust any other Authority.  A Federation Registry may choose to advertise or not advertise any particular aggregate, regardless of whether that aggregate trusts the Authorities advertised by that Federation Registry. Similarly, a given Slice Authority or Member Authority may be advertised by a single Federation Registries or by multiple Federation Registries. Federation Registry API calls are unprotected. There is no notion of trust between Federation Registries or between Federation Registries and Authorities or Aggregates.</p>
+</div>
+<div class="paragraph">
+<p>This document describes the APIs of the Federation Registry as well as the MA and SA. It is expected that a well-behaved GENI-compatible tool will allow for interacting with any Federation Registry and Authority that implement the standard API’s described in this document.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_api_general_properties">API General Properties</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>The APIs described here share some common properties, which should be assumed for the rest of this document:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>The wire-protocol is XML/RPC. It is thus language independent on both client and server side of the API calls.</p>
+</li>
+<li>
+<p>Most calls are protected, running over SSL and thus requiring the caller to use its certificate and private key. Certain calls are unprotected and can be accessed with no requirement for a validated client-side certificate . Such calls will noted in the API documentation below.</p>
+</li>
+<li>
+<p>Each call takes an ‘options’ argument, a dictionary allowing for passing specific non-standard/optional arguments</p>
+</li>
+<li>
+<p>Each protected method takes a ‘credentials’ argument, a list of type/credential tuples that help the Federation Registry or Authority invoke whatever AuthZ logic it may choose. As noted above, the Federation Registry or Authority may choose to use or disregard these credentials. Unprotected methods do not take a ‘credentials’ argument.</p>
+</li>
+<li>
+<p>Each Federation Registry or Authority provides a get_version method, which describes the version number of the API provided, credential types supported, supplementary object fields and other data for interpreting API call returns.</p>
+</li>
+<li>
+<p>A Federation Registry or Authority is free to implement additional methods beyond those specified in this document.</p>
+</li>
+<li>
+<p>The URN is the fundamental identifier in all Federation API’s. URN’s are globally unique at any given time, though not necessarily unique over time. Disambiguation for entities with the same URN over time may be provided by an optional UUID argument for certain API methods. The format of URN&#8217;s is documented at <a href="http://groups.geni.net/geni/wiki/GeniApiIdentifiers" class="bare">http://groups.geni.net/geni/wiki/GeniApiIdentifiers</a>.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>These API’s are provided in pseudo-code (i.e. language independent) format, with inputs and outputs (optional and required) described by comments, e.g.</p>
+</div>
+<div class="listingblock">
+<div class="title">An example</div>
+<div class="content">
+<pre>#!python
+# Perform method fed_func
+#
+# Arguments:
+#  argl : ...
+#  credentials : list of {type : credential} tuples representing credentials
+#     provided by caller to support AuthZ on method call.
+#      [NB: This argument will be omitted in descriptions below. ]
+#  options : … [ Recognized options: ….]
+#
+# Return:
+#  E.g. a list of dictionaries with these fields mandatory (…)
+#                                         and these fields optional (…)
+def fed_func (arg1, arg2, credentials, options)</pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_api_get_version_methods">API 'get_version' methods</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Different Federation Authorities will provide different sets of methods bundled into services. Further, they will manage different kinds of objects and support different details for these objects.</p>
+</div>
+<div class="paragraph">
+<p>Each Federation Registry or Authority API provides a ‘get_version’ method, which provides information to the caller (or a tool composing calls for a tool user) about versions and options supported by that API. The call takes no argument and is unguarded (anyone can call it). The return from the get_version call will be a dictionary including the following entries (by key):
+ * VERSION: A string with the version number of the Federation API (e.g. “2”, the version for this document). Note: this is the version of the API not the version of the implementation. This field is mandatory for all services.
+ * URN : The URN of the service being contacted. This field is mandatory for SA and MA services, optional for Federation Registry service.
+ * IMPLEMENTATION: A dictionary of information of the implantation of the service: {"code_version" : code_version, "code_url" : code_url, "code_release_date" : code_release_date, "site_update_date" : site_update_date"}. Of these, code_version is of type STRING, code_url is of type URL,  code_release_date and site_update_date are of format DATETIME. The format of the code_version string is implementation specific. This field is optional for services; in addition, all the sub-fields for the IMPLEMENTATION field are optional.
+ * SERVICES: The list of names of services the given URL supports. This field is optional (with default being the default service for that authority, i.e. SERVICE for Federation Registry, SLICE for Slice Authority, MEMBER for MemberAuthority).
+ * CREDENTIAL_TYPES: A list of recognized credential types (e.g. [geni_sfa, geni_abac]) and list of supported credential versions on protected API methods.  Format is analogous to that in the AM API: a list of {"type": cred_type, "version" : cred_version} dictionaries of all supported credential types and versions. ''[Required for Authorities only]''
+ * ROLES : A list of recognized roles for slice/project membership (required only for those Slice Authorities supporting membership). The same set of roles refers to both slice and project membership at a given SA.
+ * SERVICE_TYPES. A list of service types provided by the Federation Registry ''[Required for Federation Registry only]''
+ * API_VERSIONS A dictionary of different peer implementation of different version of the same service. Modeled on the Aggregate Manager API, the format of this field is {version1 : url1, version2 : url2, …}. This field is required for all services. Note that the 'self' version (the version of the service being queried) is required to be included in this dictionary and should be consistent with the "VERSION" field above. The URL&#8217;s in this field
+ * FIELDS: A dictionary of object field names (i.e. in additional to the required fields) and associated attributes including:
+     * “OBJECT” provides the object type to which the field belongs. The field is optional for fields of the default authority object (i.e. SLICE for Slice Authority, MEMBER for Member Authority, SERVICE for Federation Registry) but mandatory for all other fields.
+     * “TYPE” may be one of “URN”, “UID”, “STRING”, “DATETIME”, “EMAIL”, “KEY”,“BOOLEAN”, “CREDENTIAL”, “CERTIFICATE”. [NB. This set of types subject to change. See Appendix for more information on these data types.] This field is mandatory for any field listed.
+     * “CREATE” attributes may be specified as “REQUIRED”, “ALLOWED” or “NOT ALLOWED” (default = “NOT ALLOWED”). These indicate whether the given supplementary field is required, allowed or prohibited in create calls. This attribute is optional for listed fields.
+     * "MATCH" attributes may be specified as booleans TRUE or FALSE (default = TRUE). These indicate whether a given field may be specified in an match option of a lookup call. This attribute is optional for listed fields.
+     * “UPDATE” attributes may be specified as booleans TRUE or FALSE (default = FALSE). These indicate whether the given field may be specified in an update call. This attribute is optional for listed fields.
+     * “PROTECT” attributes may be labeled as “PUBLIC”, “PRIVATE” or “IDENTIFYING”. These are for the Member Authority only to differentiate between public, identifying and private data fields on members. The default, if not provided, is "PUBLIC", and thus this attribute is optional.</p>
+</div>
+<div class="paragraph">
+<p>The FIELDS element of the get_version should contain all supplementary (non-mandatory) field objects supported by a given service. Additionally, it may contain mandatory field objects for which the default semantics (for "CREATE", "MATCH", "UPDATE", "PROTECT") should be overridden. Specifically, any values specified override the default values and any values unspecified are defined to be the defaults for that object/field in this document. The FIELDS element is thus optional for all services.</p>
+</div>
+<div class="paragraph">
+<p>The set of ROLES may vary across Slice Authorities based on local policy. However, the following roles should be defined at any Slice Authority:</p>
+</div>
+<div class="paragraph">
+<p>|| '''Role''' || '''Contex'''' || '''Description''' ||
+|| LEAD || PROJECT || May change project membership and create slices within a given project ||
+|| || SLICE || May change slice membership  and perform operations on a given slice||
+|| MEMBER || PROJECT || May create slices within given project ||
+|| || SLICE || May perform operations on given slice ||</p>
+</div>
+<div class="paragraph">
+<p>Supplementary field names should be placed in a distinct namespace by a prefix unique to that federation, and starting with an underscore (e.g. <em>GENI</em>,  <em>OFELIA</em> , <em>FED4FIRE</em> or <em>PROTOGENI</em> etc.).</p>
+</div>
+<div class="paragraph">
+<p>The API_VERSIONS field of the get_version should contain a dictionary specifying different URL&#8217;s implementing different versions of the same service. The URL&#8217;s provided should be absolute, containing publicly accessible addresses. This information may be used by the Federation Registry to provide SERVICE_PEERS information described below. An example API_VERSIONS field from a get_version call:
+{{{
+    "API_VERSIONS": {
+         "1" : "https://example.com/xmlrpc/sa/1",
+         "2" : "https://example.com/xmlrpc/sa/2"
+      }
+}}}</p>
+</div>
+<div class="paragraph">
+<p>The return from the get_version call will be used to construct and validate options to Federation Registry and Authority API calls, as described in subsequent sections.</p>
+</div>
+<div class="paragraph">
+<p>The get_version method at any service has the following signature:
+{{{
+#!python
+# Return information about version and options
+#   (e.g. filter, query, credential types) accepted by this service
+#
+# Arguments: None
+#
+# Return:
+#     get_version structure information as described above
+def get_version()
+}}}</p>
+</div>
+<div class="paragraph">
+<p>The following page provides some example returns from different get_version calls.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_example_get_version_returns">Example get_version returns:</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>The following is an example of a return from a get_version for an SA. The responses are all dictionaries via XMLRPC into the native implementation. They are shown here in JSON-like syntax:</p>
+</div>
+<div class="paragraph">
+<p>{</p>
+</div>
+<div class="paragraph">
+<p>“VERSION”: “2”,</p>
+</div>
+<div class="paragraph">
+<p>"URN" : urn:publicid:IDN+example.com+authority+sa",</p>
+</div>
+<div class="paragraph">
+<p>“SERVICES”: [“SLICE”, “PROJECT”, “SLICE_MEMBER”, “PROJECT_MEMBER”],</p>
+</div>
+<div class="paragraph">
+<p>"OBJECTS": [ "PROJECT" ],</p>
+</div>
+<div class="paragraph">
+<p>“CREDENTIAL_TYPES”: [{"type" : "geni_sfa", version" : 2}, {"type" : "geni_sfa", "version" : "3"}, {"type" : "geni_abac", "version" : "1"}]</p>
+</div>
+<div class="paragraph">
+<p>“ROLES” : [“LEAD”, “ADMIN”, “MEMBER”, “AUDITOR”, “OPERATOR” ],</p>
+</div>
+<div class="paragraph">
+<p>“FIELDS”: {</p>
+</div>
+<div class="literalblock">
+<div class="content">
+<pre>"_GENI_PROJECT_UID": {"TYPE" : "UID", "UPDATE" : FALSE},</pre>
+</div>
+</div>
+<div class="literalblock">
+<div class="content">
+<pre>“_GENI_SLICE_EMAIL”: {“TYPE”: “EMAIL”, “CREATE”: “REQUIRED”, “UPDATE”: TRUE},</pre>
+</div>
+</div>
+<div class="literalblock">
+<div class="content">
+<pre>“_GENI_PROJECT_EMAIL”: {“TYPE”: “EMAIL”, “CREATE”: “REQUIRED”, “UPDATE”: TRUE, “OBJECT”: “PROJECT”}</pre>
+</div>
+</div>
+<div class="literalblock">
+<div class="content">
+<pre>}</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>}</p>
+</div>
+<div class="paragraph">
+<p>The following is an example of a return from a get_version for an MA, provided in JSON-like syntax:</p>
+</div>
+<div class="paragraph">
+<p>{</p>
+</div>
+<div class="literalblock">
+<div class="content">
+<pre>“VERSION”: “2”,</pre>
+</div>
+</div>
+<div class="literalblock">
+<div class="content">
+<pre>"URN" : urn:publicid:IDN+example.com+authority+ma",</pre>
+</div>
+</div>
+<div class="literalblock">
+<div class="content">
+<pre>“CREDENTIAL_TYPES”:  [{"type" : "geni_sfa", version" : 2}, {"type" : "geni_sfa", "version" : "3"}, {"type" : "geni_abac", "version" : "1"}]</pre>
+</div>
+</div>
+<div class="literalblock">
+<div class="content">
+<pre>"SERVICES": ["MEMBER", "KEY"],</pre>
+</div>
+</div>
+<div class="literalblock">
+<div class="content">
+<pre>"OBJECTS": [ "KEY" ],</pre>
+</div>
+</div>
+<div class="literalblock">
+<div class="content">
+<pre>“FIELDS”: {</pre>
+</div>
+</div>
+<div class="literalblock">
+<div class="content">
+<pre>“MEMBER_DISPLAYNAME”: {“TYPE”: “STRING”, “CREATE”: “ALLOWED”, “UPDATE”,</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>TRUE, “PROTECT”: “IDENTIFYING”},</p>
+</div>
+<div class="literalblock">
+<div class="content">
+<pre>“MEMBER_AFFILIATION”: {“TYPE”: “STRING”, “CREATE”: “ALLOWED”, “UPDATE”:</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>TRUE, “PROTECT”: “IDENTIFTYING”},</p>
+</div>
+<div class="literalblock">
+<div class="content">
+<pre>“MEMBER_SSL_PUBLIC_KEY”: {“TYPE”: “SSL_KEY”},</pre>
+</div>
+</div>
+<div class="literalblock">
+<div class="content">
+<pre>“MEMBER_SSL_PRIVATE_KEY”: {“TYPE”: “SSL_KEY”, “PROTECT”: “PRIVATE”},</pre>
+</div>
+</div>
+<div class="literalblock">
+<div class="content">
+<pre>“MEMBER_SSH_PUBLIC_KEY”: {“TYPE”: “SSH_KEY”},</pre>
+</div>
+</div>
+<div class="literalblock">
+<div class="content">
+<pre>“MEMBER_SSH_PRIVATE_KEY”: {“TYPE”: “SSH_KEY”, “PROTECT”: “PRIVATE”},</pre>
+</div>
+</div>
+<div class="literalblock">
+<div class="content">
+<pre>  “MEMBER_ENABLED”: {“TYPE”: “BOOLEAN”, “UPDATE”: TRUE}
+}</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>}</p>
+</div>
+<div class="paragraph">
+<p>The following is an example of a return from a get_version from a Federation Registry, provided in JSON-like syntax:</p>
+</div>
+<div class="paragraph">
+<p>{
+      “VERSION”: “2”,</p>
+</div>
+<div class="literalblock">
+<div class="content">
+<pre>"URN" : urn:publicid:IDN+example.com+authority+fr",</pre>
+</div>
+</div>
+<div class="literalblock">
+<div class="content">
+<pre>"SERVICE_TYPES" : ["SLICE_AUTHORITY", "MEMBER_AUTHORITY", "AGGREGATE_MANAGER"],</pre>
+</div>
+</div>
+<div class="literalblock">
+<div class="content">
+<pre>“FIELDS”: {</pre>
+</div>
+</div>
+<div class="literalblock">
+<div class="content">
+<pre>“SERVICE_PROVIDER”: {“TYPE”: “STRING”}}</pre>
+</div>
+</div>
+<div class="literalblock">
+<div class="content">
+<pre>}</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>}</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_api_error_handing">API Error Handing</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>All method calls return a tuple [code, value, output]. What is described as ‘Return’ in the API’s described below is the ‘value’ of this tuple in case of a successful execution. ‘Code’ is the error code returned and ‘output’ is the returned text (e.g. descriptive error message).</p>
+</div>
+<div class="paragraph">
+<p>Each Federation Registry and Authority is free to define and return its own specific error codes. However we suggest the following essential set of error codes to report on generic conditions:</p>
+</div>
+<div class="paragraph">
+<p>|| ''' CODE_NAME ''' || ''' CODE_VALUE ''' || ''' DESCRIPTION ''' ||
+|| NONE || 0 || No error encountered – the return value is a successful result. An empty list form a query should be interpreted as ‘nothing found matching criteria’. ||
+|| AUTHENTICATION_ERROR || 1 || The invoking tool or member did not provide appropriate credentials indicating that they are known to the Federation or that they possessed the private key of the entity they claimed to be ||
+|| AUTHORIZATION_ERROR || 2 || The invoking tool or member does not have the authority to invoke the given call with the given arguments ||
+|| ARGUMENT_ERROR || 3 || The arguments provided to the call were mal-formed or mutually inconsistent. ||
+|| DATABASE_ERROR || 4 || An error from the underlying database was returned. (More info should be provided in the ‘output’ return value] ||
+|| DUPLICATE_ERROR || 5 || An error indicating attempt to create an object that already exists ||
+|| NOT_IMPLEMENTED_ERROR || 100 || The given method is not implemented on the server. ||
+|| SERVER_ERROR || 101 || An error in the client/server connection ||</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_standard_api_method">Standard API Method</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Each Federation Registry and Authority manages the state of or access to objects. There are some standard methods that apply to standard operations on objects of specific types. All services support the following API&#8217;s for the object types that are required or provided in get_version.</p>
+</div>
+<div class="paragraph">
+<p>{{{
+#!python
+# Creates a new instance of the given object with a ‘fields’ option
+# specifying particular field values that are to be associated with the object.
+# These may only include those fields specified as ‘ALLOWED or ‘REQUIRED’
+# in the ‘Creation’ column of the object descriptions below
+# or in the “CREATE’ key in the supplemental fields in the
+# get_version specification for that object.
+# If successful, the call returns a dictionary of the fields
+# associated with the newly created object.
+#
+#
+# Arguments:
+#
+#    type : type of object to be created
+#   options:
+#       'fields', a dictionary field/value pairs for object to be created
+#
+# Return:
+#   Dictionary of object-type specific field/value pairs for created object
+#
+#
+def create(type, credentials, options)
+}}}</p>
+</div>
+<div class="paragraph">
+<p>{{{
+#!python
+# Updates an object instance specified by URN with a ‘fields’ option
+#  specifying the particular fields to update.
+# Only a single object can be updated from a single update call.
+# The fields may include those specified as ‘Yes’ in the ‘Update’ column
+# of the object descriptions below, or ’TRUE’ in the ‘UPDATE’ key in the
+# supplemental fields provided by the get_version call.
+# Note: There may be more than one entity of a given URN at an authority,
+# but only one ‘live’ one (any other is archived and cannot be updated).
+#
+# Arguments:
+#   type: type of object to be updated
+#   urn: URN of object to update
+#     (Note: this may be a non-URN-formatted unique identifier e.g. in the case of keys)
+#   options: Contains ‘fields’ key referring dictionary of
+#        name/value pairs to update
+#
+# Return: None
+#
+def update(type, urn, credentials, options)
+}}}</p>
+</div>
+<div class="paragraph">
+<p>{{{
+#!python
+# Deletes an object instance specified by URN
+# Only a single object can be deleted from a single delete call.
+# Note: not all objects can be deleted. In general, it is a matter
+#     of authority policy.
+#
+# Arguments:
+#   type: type of object to be deleted
+#   urn: URN of object to delete
+#     (Note: this may be a non-URN-formatted unique identifier e.g. in the case of keys)
+#
+# Return: None
+#
+def delete(type, urn, credentials, options)
+}}}</p>
+</div>
+<div class="paragraph">
+<p>{{{
+#!python
+# Lookup requested details for objects matching ‘match’ options.
+# This call takes a set of ‘match’ criteria provided in the ‘options’ field,
+# and returns a dictionary of dictionaries of object attributes
+# keyed by object URN matching these criteria.
+# If a ‘filter’ option is provided, only those attributes listed in the ‘filter’
+# options are returned.
+# The requirements on match criteria supported by a given service
+# are service-specific; however it is recommended that policies
+# restrict lookup calls to requests that are bounded
+# to particular sets of explicitly listed objects (and not open-ended queries).
+#
+# See additional details on the lookup method in the document section below.
+#
+#
+# Arguments:
+#    type: type of objects for which details are being requested
+#    options: What details to provide (filter options)
+#            for which objects (match options)
+#
+# Return: List of dictionaries (indexed by object URN) with field/value pairs
+#   for each returned object
+#
+def lookup (type, credentials, options)
+}}}</p>
+</div>
+<div class="paragraph">
+<p>Some additional details on the lookup call:</p>
+</div>
+<div class="paragraph">
+<p>The options argument to the lookup call is a dictionary. It contains an entry with key ‘match’ that contains a dictionary of name/value pairs. The names are of fields listed in the get_version for that object. The values are values for those fields to be matched. The semantics of the match is to be an “AND” (all fields must match).</p>
+</div>
+<div class="paragraph">
+<p>The value in the dictionary of a ‘match’ option can be a list of scalars, indicating an “OR”. For example, a list of URNs provided to the SLICE_URN key would match any slice with any of the listed URNs.</p>
+</div>
+<div class="paragraph">
+<p>The options argument may include an additional dictionary keyed “filter” which is a list of fields associated with that object type (again, as specified in the get_version entry for that object). No “filter” provided means all fields are to be returned; a 'filter' provided with an empty list returns an empty set of fields (i.e. a dictionary of URN&#8217;s pointing to empty dictionaries).</p>
+</div>
+<div class="paragraph">
+<p>The return of the call will be a dictionary of dictionaries, one per matching object indexed by URN, of fields matching the filter criteria. If the query found no matches, an empty dictionary is returned (i.e. no error is reported, assuming no other error was encountered in processing).</p>
+</div>
+<div class="paragraph">
+<p>If a lookup method call requests information in the 'match' criteria about objects whose disclosure is prohibited to the requester by policy, the call should result in an authorization error. If the 'filter' criteria requests fields whose disclosure is prohibited to the requestor by policy, the method must not return the specific data fields. Rather, it should return a dictionary with no entry for the prohibited fields. E.g. {"urn_1" : {"PUBLIC_KEY" : public_key_1, "PRIVATE_KEY" : private_key_1}, "urn_2" : {"PUBLIC_KEY" : public_key_2}}</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_api_method_examples">API Method Examples:</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>A Member Authority (MA) manages information about member objects. The MA method lookup(type="MEMBER") could take an options argument such as</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre>{
+    "match": {"MEMBER_LASTNAME": "BROWN"},
+    "filter": ["MEMBER_EMAIL", "MEMBER_FIRSTNAME"]
+}</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Such a call would find any member with last name Brown and return a dictionary keyed by the member URN containing a dictionary with their email, and first name.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre>{
+      “urn:publicid:IDN+mych+user+abrown” :
+            {“MEMBER_EMAIL”: abrown@williams.edu,
+             “MEMBER_FIRSTNAME”: “Arlene”},
+
+      “urn:publicid:IDN+mych+user+mbrown” :
+            {“MEMBER_EMAIL”: mbrown@umass.edu,
+             “MEMBER_FIRSTNAME”: “Michael”},
+
+      “urn:publicid:IDN+mych+user+sbrown” :
+            {“MEMBER_EMAIL”: sbrown@stanford.edu,
+             “MEMBER_FIRSTNAME”: “Sam”}
+}</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>A Slice Authority (SA) manages information about slice objects. The SA method update(type="SLICE") could take the following options argument to change the slice description and extend the slice expiration:</p>
+</div>
+<div class="paragraph">
+<p>{</p>
+</div>
+<div class="literalblock">
+<div class="content">
+<pre>“fields” : { “SLICE_DESCRIPTION”: “Updated Description”,</pre>
+</div>
+</div>
+<div class="literalblock">
+<div class="content">
+<pre>“SLICE_EXPIRATION”: “2013-07-29T13:15:30Z” }</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>}</p>
+</div>
+<div class="paragraph">
+<p>An example of lookup(type="SLICE)" at an SA that wanted to retrieve the slice names for a list of slice URNs could specify options:</p>
+</div>
+<div class="paragraph">
+<p>{
+ “match”: {</p>
+</div>
+<div class="literalblock">
+<div class="content">
+<pre>“SLICE_URN”: [</pre>
+</div>
+</div>
+<div class="literalblock">
+<div class="content">
+<pre>“urn:publicid+IDN+this_sa:myproject+slice+slice1”,</pre>
+</div>
+</div>
+<div class="literalblock">
+<div class="content">
+<pre>“urn:publicid+IDN+this_sa:myproject+slice+slice2”,</pre>
+</div>
+</div>
+<div class="literalblock">
+<div class="content">
+<pre>“urn:publicid+IDN+this_sa:myproject+slice+slice3”</pre>
+</div>
+</div>
+<div class="literalblock">
+<div class="content">
+<pre>]},</pre>
+</div>
+</div>
+<div class="literalblock">
+<div class="content">
+<pre>“filter”: [“SLICE_NAME”]</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>}</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_api_method_examples_cont">API Method Examples (cont.):</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>An example of create(type="SLICE") call would specify required options e.g.:</p>
+</div>
+<div class="paragraph">
+<p>{</p>
+</div>
+<div class="literalblock">
+<div class="content">
+<pre>‘fields’ : {</pre>
+</div>
+</div>
+<div class="literalblock">
+<div class="content">
+<pre>“SLICE_NAME”: “TEST_SLICE”,</pre>
+</div>
+</div>
+<div class="literalblock">
+<div class="content">
+<pre>“SLICE_DESCRIPTION”: “My Test Slice”,</pre>
+</div>
+</div>
+<div class="literalblock">
+<div class="content">
+<pre>“SLICE_EMAIL”: myemail@geni.net,</pre>
+</div>
+</div>
+<div class="literalblock">
+<div class="content">
+<pre>“SLICE_PROJECT_URN”: “urn:publicid+IDN+this_sa+project+myproject”</pre>
+</div>
+</div>
+<div class="literalblock">
+<div class="content">
+<pre>}</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>}</p>
+</div>
+<div class="paragraph">
+<p>and receive a return dictionary looking like:</p>
+</div>
+<div class="paragraph">
+<p>{</p>
+</div>
+<div class="literalblock">
+<div class="content">
+<pre>“SLICE_URN”: “urn:publicid+IDN+this.sa+slice+TESTSLICE”,</pre>
+</div>
+</div>
+<div class="literalblock">
+<div class="content">
+<pre>“SLICE_UID”: “…”,</pre>
+</div>
+</div>
+<div class="literalblock">
+<div class="content">
+<pre>“SLICE_NAME”: “TESTSLICE”,</pre>
+</div>
+</div>
+<div class="literalblock">
+<div class="content">
+<pre>“SLICE_CREDENTIAL”: “.....”,</pre>
+</div>
+</div>
+<div class="literalblock">
+<div class="content">
+<pre>“SLICE_DESCRIPTION”: “My Test Slice”,</pre>
+</div>
+</div>
+<div class="literalblock">
+<div class="content">
+<pre>“SLICE_PROJECT_URN”: “urn:publicid+IDN+this_sa+project+myproject”,</pre>
+</div>
+</div>
+<div class="literalblock">
+<div class="content">
+<pre>“SLICE_EXPIRATION”: “2013-08-29T13:15:30Z”,</pre>
+</div>
+</div>
+<div class="literalblock">
+<div class="content">
+<pre>“SLICE_EXPIRED”: “FALSE”,</pre>
+</div>
+</div>
+<div class="literalblock">
+<div class="content">
+<pre>“SLICE_CREATION”: “2013-07-29T13:15:30Z”,</pre>
+</div>
+</div>
+<div class="literalblock">
+<div class="content">
+<pre>“SLICE_EMAIL”: myemail@geni.net</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>}</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_api_authentication">API Authentication</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>This document suggests that the Authentication required for the Federation APIs is implicit in the SSL protocol: the invoker of the call must have its cert and private key to have a valid SSL connection. Moreover, the cert must be signed by a member of the trust chain recognized by the Federation.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_support_for_speaks_for_api_invocations">Support for Speaks-for API Invocations</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Best practices dictate that individuals should speak as themselves: that is, the entity on the other side of an SSL connection is the one referred to by the certificate on the connection. Obviously, people typically use tools or software interfaces to create these connections. When a tool is acting directly on a user’s desktop using the user’s key and cert with the user’s explicit permission, it may be acceptable to consider the tool as speaking as the user. But for many tools, the tool is acting on behalf of the user in invoking Federation or AM API calls. In this case, it is important for the tool to not speak as the user but to speak for the user, and to have the service to whom the tool is speaking handle the authorization and accountability of this request accordingly.</p>
+</div>
+<div class="paragraph">
+<p>Accordingly, a Federation Registry and associated Authorities should support speaks-for API transactions. These API transactions use the same signatures as the calls described in this document, with these enhancements:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>A 'speaking_for' option containing the URN of the user being spoken for</p>
+</li>
+<li>
+<p>A speaks-for credential in the list of credentials: a statement signed by the user indicating that the tool has the right to speak for the user, possibly limited to a particular scope (e.g. slice, project, API call, time window).</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>The service call is then required to determine if the call is being made in a speaks-for context or not (that is, the ‘speaking_for’ option provided). If so, the call must determine if the tool is allowed to speak for the user by checking for the presence of a valid speaks-for credential and the spoken-for user’s cert. If so, the call should validate if the user is authorized to take the proposed API action. If so, the action is taken and accounted to the user, with identity of the speaking_for tool logged. If the call is ‘speaks-for’ but any of these additional criteria are not met, the call should fail with an authorization error. If the call is not a ‘speaks-for’, then the normal authorization is performed based on the identity (certificate) provided with the SSL connection.</p>
+</div>
+<div class="paragraph">
+<p>Aggregates are also encouraged to support speaks-for authentication and authorization, but this is an aggregate-internal policy and implementation decision, and outside the scope of this document.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_federation_registry_api">Federation Registry API</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>The Federation Registry provides a list of Slice Authorities, Member Authorities and Aggregates associated with a given Federation. The URL for accessing these methods (i.e. the URL of the Federation Registry) is to be provided out-of-band (i.e. there is no global service for gaining access to Federation Registry addressees).</p>
+</div>
+<div class="paragraph">
+<p>All Federation Registry calls are unprotected; they have no requirement for passing a client-side cert or validating any client-cert cert that is passed.</p>
+</div>
+<div class="paragraph">
+<p>The Federation Registry implements the SERVICE service and supports the SERVICE object.</p>
+</div>
+<div class="paragraph">
+<p>Services have a particular type that indicates the kind of service it represents. The full list of supported services should be provided by a TYPES key in the Federation Registry get_version call, for example:</p>
+</div>
+<div class="paragraph">
+<p>{{{
+    {
+       …
+       "SERVICE_TYPES" : ["SLICE_AUTHORITY", "MEMBER_AUTHORITY",
+                      "AGGREGATE_MANAGER", &#8230;&#8203;]
+       …
+    }
+}}}</p>
+</div>
+<div class="paragraph">
+<p>This table contains a set of ''example'' services types (of which only SLICE_AUTHORITY, MEMBER_AUTHORITY and AGGREGATE_MANAGER are required for any given federation):</p>
+</div>
+<div class="paragraph">
+<p>|| ''' Service ''' || ''' Description ''' ||
+|| SLICE_AUTHORITY || An instance of the Slice Authority Federation service described in this document ||
+|| MEMBER_AUTHORITY || An instance of the Member Authority Federation service described in this document ||
+|| AGGREGATE_MANAGER || An instance of an Aggregate Manager satisfying the Aggregate Manager API ||
+|| STITCHING_COMPUTATION_SERVICE || A topology service for supporting cross-aggregate stitching ||
+|| CREDENTIAL_STORE || A service holding credentials for the federation, typically for supporting federation authentication services ||
+|| LOGGING_SERVICE || A service to support federation-level event logging ||</p>
+</div>
+<div class="paragraph">
+<p>The following table describes the standard fields for services (aggregates and authorities) provided by Federation Registry API calls. (The 'Required' column indicates whether the field must be present for a valid service, 'match' indicates whether the field can be used in a lookup match criterion):</p>
+</div>
+<div class="paragraph">
+<p>|| ''' Name ''' || ''' Type ''' || ''' Description ''' || ''' Required ''' || ''' Match ''' ||
+|| SERVICE_URN || URN || URN of given service || Yes || Yes ||
+|| SERVICE_URL ||URL || URL by which to contact the service || Yes || Yes ||
+|| SERVICE_TYPE || STRING || Name of service type (from Federation Registry get_version.TYPES) || Yes || Yes ||
+|| SERVICE_CERT || Certificate || Public certificate of service || No || No ||
+|| SERVICE_NAME || String || Short name of service || Yes || No ||
+|| SERVICE_DESCRIPTION || String || Descriptive name of service || No || No ||
+|| SERVICE_PEERS || List of Dictionaries || URLs and version info for other running version of same service (see below) || No || No ||</p>
+</div>
+<div class="paragraph">
+<p>The SERVICE_PEERS field is similar to that in the AM API: a list of {version", 'url'} dictionaries for other supported peer services of different versions.
+It is provided to allow a user/tool to determine which URL to contact without needing to poll the get_version call across a set of services.
+The current service URL (provided in the SERVICE_URL field) should always be included in the SERVICE_PEERS.
+The information provided by SERVICE peers should be consistent with that provided by the API_VERSIONS field from the get_version call to these specific services.
+An example would be as follows:
+{{{
+[
+{'version' : '1', 'url' : 'https://example.com/xmlrpc/v1'},
+{'version' : '2', 'url' : 'https://example.com/xmlrpc/v2'},
+]</p>
+</div>
+<div class="paragraph">
+<p>}}}</p>
+</div>
+<div class="paragraph">
+<p>The Federation Registry API supports these standard API methods for type="SERVICE":</p>
+</div>
+<div class="paragraph">
+<p>|| ''' Method ''' || ''' Description ''' ||
+|| lookup || lookup services matching given match criteria. ||</p>
+</div>
+<div class="paragraph">
+<p>Note that even though the Federation Registry API does not require authentication and thus no client certificates, the API uses the common API signatures for all 'lookup' methods and thus takes a list of credentials. This list, however, should be empty and ignored by the implementation.</p>
+</div>
+<div class="paragraph">
+<p>Additionally, the Federation Registry API supports the following methods:</p>
+</div>
+<div class="paragraph">
+<p>{{{
+#!python
+# Return list of trust roots (certificates) associated with this Federation.
+#
+# Often this is a concatenatation of the trust roots of the included authorities.
+# Note: Some of this information can be retrieved by
+#   lookup(fields={"SERVICE_CERT"})
+# However certificates of federation-level certs, certificate authorities or other
+# non-service certificate signers can only be retrieved through this call.
+#
+# Arguments:
+#   None
+#
+# Return:
+#   List of certificates representing trust roots of this Federation.
+def get_trust_roots()
+}}}</p>
+</div>
+<div class="paragraph">
+<p>{{{
+#!python
+# Lookup the authorities for a given URNs
+#
+# There should be at most one (potentially none) per URN.
+#
+# This requires extracting the authority from the URN and then looking up the authority in the Federation Registry&#8217;s set of services.
+#
+# Arguments:
+#   urns: URNs of entities for which the authority is requested
+#
+# Return:
+#   List of dictionaries {urn : url} mapping URLs of Authorities to given URN&#8217;s
+def lookup_authorities_for_urns(urns)
+}}}</p>
+</div>
+<div class="paragraph">
+<p>The ''lookup_authorities_for_urns'' method maps object URN&#8217;s to authority URN&#8217;s. Note that the transformation from the URN&#8217;s of objects (e.g. slice, project, member) to the URN&#8217;s of their authority is a simple one, for example:</p>
+</div>
+<div class="paragraph">
+<p>|| '''Type''' || '''Object URN''' || '''Authority URN''' ||
+|| Slice || urn:publicid:IDN+sa_name+slice+slice_name || urn:publicid:IDN+sa_name+authority+sa ||
+|| Member || urn:publicid:IDN+ma_name+user+user_name || urn:publicid:IDN+ma_name+authority+ma ||</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_slice_authority_api">Slice Authority API</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>The Slice Authority API provides services to manage slices and their associated permissions. To support its AuthZ policies, a particular SA may choose to manage objects and relationships such as projects and slice/project membership. The SA API is thus divided into a set of services, each of which consists of a set of methods. Of these, only the SLICE service is required, the others are optional. If an SA implements a given service, it should implement the entire service as specified. All available SA service methods are available from the same SA URL. The get_version method should indicate, in the ‘SERVICES’ tag, which services the given SA supports.</p>
+</div>
+<div class="paragraph">
+<p>All SA calls are protected; passing and validating a client-side cert is required.</p>
+</div>
+<div class="paragraph">
+<p>The following is a list of potential SA services.</p>
+</div>
+<div class="paragraph">
+<p>|| ''' Service ''' || ''' Description ''' || ''' Required ''' || ''' Object ''' ||
+|| SLICE || Managing generation, renewal of slice credentials and slice lookup services || YES || SLICE ||
+|| SLICE_MEMBER ||Defining and managing roles of members with respect to slices || NO || ||
+|| SLIVER_INFO || Providing information about what Aggregates have reported having slivers for a given slice. Non-authoritative/advisory || NO || SLIVER_INFO ||
+|| PROJECT || Defining projects (groupings of slices) and project lookup services || NO || PROJECT ||
+|| PROJECT_MEMBER || Defining and managing roles of members with respect to projects || NO || ||</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_slice_service_methods">Slice Service Methods</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>The Slice Authority manages the creation of slices, which are containers for allocating resources. It provides credentials (called slice credentials) which aggregates may use to make authorization decisions about allocating resources to a particular user to a particular slice. These slice credentials are one of the fields that may be provided from the create_slice call or requested in the lookup_slices call.</p>
+</div>
+<div class="paragraph">
+<p>The credentials passed to SA Slice Service methods are SA-specific. But a common case is for a tool to want to pass additional information about a user, obtained from the MA, to the SA to allow the SA to make informed authorization decisions. These credentials may be in the form of an SFA-style User Credential or ABAC credential. Common useful information from the MA to the SA about users would be slice-independent (the SA should know all slice-specific information about users) information about roles and attributes of that user. Two conventional roles are:
+ * PI: The user has a PI lead and is typically considered appropriate for creating projects or slices (if there are no projects)
+ * ADMIN: The user has special 'admin' privileges and can perform operations not otherwise authorized.</p>
+</div>
+<div class="paragraph">
+<p>Note that renewal of slice expiration is handled in the update_slice call (with “SLICE_EXPIRATION” specified as the options key. The semantics of slice expiration is that slice expiration may only be extended, never reduced. Further restrictions (relative to project expiration or relative to slice creation, e.g.) are SA-specific.</p>
+</div>
+<div class="paragraph">
+<p>The following table contains required fields for slice objects and whether they are allowed in lookup ‘match’ criteria, required at creation or allowed at update:</p>
+</div>
+<div class="paragraph">
+<p>|| ''' Name ''' || ''' Type ''' || ''' Description ''' || ''' Match ''' || ''' Creation ''' || ''' Update ''' ||
+|| SLICE_URN || URN || URN of given slice || Yes || No || No ||
+|| SLICE_UID ||UID || UID (unique within authority) of slice || Yes || No || No ||
+|| SLICE_CREATION || DATETIME || Creation time of slice || No || No || No ||
+|| SLICE_EXPIRATION || DATETIME || Expiration time of slice || No || Allowed || Yes ||
+|| SLICE_EXPIRED || BOOLEAN || Whether slice has expired || Yes || No || No ||
+|| SLICE_NAME || STRING || Short name of Slice|| No || Required || No ||
+|| SLICE_DESCRIPTION || STRING || Description of Slice || No || Allowed || Yes ||
+|| SLICE_PROJECT_URN || URN || URN of project to which slice is associated (if SA supports project) || Yes || Required (if SA supports project) || No ||</p>
+</div>
+<div class="paragraph">
+<p>To clarify the semantics of the SLICE_PROJECT_URN field: it is a required field for those SAs that support the PROJECT service (and in this context may be matched and is required at creation time, but not updatable). In SAs that do not support projects, the field is not meaningful and should not be supported.</p>
+</div>
+<div class="paragraph">
+<p>NB: SLICE_NAME must adhere to the restrictions for slice names in the Aggregate Manager (AM) API, namely that it must be &#8656; 19 characters, only alphanumeric plus hyphen, no leading hyphen.</p>
+</div>
+<div class="paragraph">
+<p>The Slice Service supports these standard API methods for type="SLICE":</p>
+</div>
+<div class="paragraph">
+<p>|| ''' Method ''' || ''' Description ''' ||
+|| create || Creates a  new slice with provided details  ||
+|| update || Updates given slice ||
+|| <sub>~delete</sub>~ || Note: No SA should support slice deletion since there is no authoritative way to know that there aren&#8217;t live slivers associated with that slice.  ||
+|| lookup || lookup slices matching given match criteria subject to authorization restrictions. ||</p>
+</div>
+<div class="paragraph">
+<p>Additionally, the Slice service provides the following methods:</p>
+</div>
+<div class="paragraph">
+<p>{{{
+#!python
+# Provide list of credentials for the caller relative to the given slice.
+# If the invocation is in a speaks-for context, the credentials will be for the
+# ‘spoken-for’ member, not the invoking tool.
+#
+# For example, this call may return a standard SFA Slice Credential and some
+# ABAC credentials indicating the role of the member with respect to the slice.
+#
+# Note: When creating an SFA-style Slice Credential, the following roles
+# typically allow users to operate at known GENI-compatible
+# aggregates: "*" (asterisk)  or the list of "refresh", "embed",
+#    "bind", "control" "info".
+#
+# Arguments:
+#   slice_urn: URN of slice for which to get member’s credentials
+#   options: Potentially contains ‘speaking_for’ key indicating a speaks-for
+#      invocation (with certificate of the accountable member
+#      in the credentials argument)
+#
+# Return:
+#   List of credential in “CREDENTIALS” format, i.e. a list of credentials with
+# type information suitable for passing to aggregates speaking AM API V3.
+def get_credentials(slice_urn, credentials, options)
+}}}</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_slice_member_service_methods">Slice Member Service Methods</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Slices may have a set of members associated with them in particular roles. Certain SA may have policies that require certain types of membership requirements (exactly one lead, never empty, no more than a certain number of members, etc.). To that end, we provide a single omnibus method for updating slice membership in a single transaction, allowing any authorization or assurance logic to be supported at a single point in SA implementations.</p>
+</div>
+<div class="paragraph">
+<p>The set of recognized role types (e.g. <code>LEAD</code>, <code>ADMIN</code>, <code>MEMBER</code>, <code>OPERATOR</code>, <code>AUDITOR</code>) are to be listed in the get_version for a given Slice Authority.</p>
+</div>
+<div class="paragraph">
+<p>The following methods are written generically (with type arguments) to support the Slice Member Service as well as the [#ProjectMemberServiceMethods Project Member Service (below)].</p>
+</div>
+<div class="paragraph">
+<p>{{{
+#!python
+# Modify object membership, adding, removing and changing roles of members
+#    with respect to given object
+#
+# Arguments:
+#   type: type of object for whom to lookup membership (
+#       in the case of Slice Member Service, "SLICE",
+#       in the case of Project Member Service, "PROJECT")
+#   urn: URN of slice/project for which to modify membership
+#   Options:
+#       members_to_add: List of member_urn/role tuples for members to add to
+#              slice/project of form
+#                 {‘SLICE_MEMBER’ : member_urn, ‘SLICE_ROLE’ : role}
+#                    (or 'PROJECT_MEMBER/PROJECT_ROLE
+#                    for Project Member Service)
+#       members_to_remove: List of member_urn of members to
+#                remove from slice/project
+#       members_to_change: List of member_urn/role tuples for
+#                 members whose role
+#                should change as specified for given slice/project of form
+#                {‘SLICE_MEMBER’ : member_urn, ‘SLICE_ROLE’ : role}
+#                (or 'PROJECT_MEMBER/PROJECT_ROLE for Project Member Service)
+#
+# Return:
+#   None
+def modify_membership(type, urn, credentials, options)
+}}}</p>
+</div>
+<div class="paragraph">
+<p>{{{
+#!python
+# Lookup members of given object and their roles within that object
+#
+# Arguments:
+#   type: type of object for whom to lookup membership
+#          (in the case of Slice Member Service, "SLICE",
+#           in the case of Project Member Service, "PROJECT")
+#   urn: URN of object for which to provide current members and roles
+#
+# Return:
+#    List of dictionaries of member_urn/role pairs
+#       [{‘SLICE_MEMBER’: member_urn,
+#        ‘SLICE_ROLE’: role }&#8230;&#8203;]
+#         (or PROJECT_MEMBER/PROJECT_ROLE
+#          for Project Member Service)
+#          where ‘role’ is a string of the role name.
+def lookup_members(type, urn, credentials, options)
+}}}</p>
+</div>
+<div class="paragraph">
+<p>{{{
+#!python
+# Lookup objects of given type for which the given member belongs
+#
+# Arguments:
+#   type: type of object for whom to lookup membership
+#          (in the case of Slice Member Service, "SLICE",
+#           in the case of Project Member Service, "PROJECT")
+#   member_urn: The member for whom to find slices to which it belongs
+#
+# Return:
+#    List of dictionary of urn/role pairs
+#        [(‘SLICE_URN’ : slice_urn, ‘SLICE_ROLE’ : role} &#8230;&#8203;]
+#        (or PROJECT_MEMBER/PROJECT_ROLE
+#           for Project Member Service)
+#        for each object to which a member belongs,
+#        where role is a string of the role name
+def lookup_for_member(type, member_urn, credentials, options)
+}}}</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_sliver_info_service_methods">Sliver Info Service Methods</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Sliver information is authoritatively held in aggregates: aggregates know which slivers are in which slices at that aggregate. As a convenience to tools, aggregates are encouraged to register with the SA which slices they have information about. In this way, tools can reference only certain aggregates and not all known aggregates to get a useful (if not authoritative) set of sliver details for a slice.</p>
+</div>
+<div class="paragraph">
+<p>It is expected that the sliver_info create, update and delete calls will be restricted to aggregates (in which case no speaks-for credential is required). That said, SAs may implement authorization policies of their choosing on these calls.</p>
+</div>
+<div class="paragraph">
+<p>The following table contains the required fields for sliver info objects and whether they are allowed in lookup 'match' criteria, required at creation or allowed at update:</p>
+</div>
+<div class="paragraph">
+<p>|| '''Name''' || '''Type''' || '''Description''' || '''Match''' || '''Creation''' || '''Update''' ||
+|| SLIVER_INFO_SLICE_URN || URN || URN of slice for registered sliver || Yes || Required || No ||
+|| SLIVER_INFO_URN || URN || URN of registered sliver || Yes || Required || No ||
+|| SLIVER_INFO_AGGREGATE_URN || URN || URN of aggregate of registered sliver || Yes || Required || No ||
+|| SLIVER_INFO_CREATOR_URN || URN || URN of member/tool that created the registered sliver || Yes || Required || No ||
+|| SLIVER_INFO_EXPIRATION || DATETIME || Time of sliver expiration || No || Required || Yes ||
+|| SLIVER_INFO_CREATION || DATETIME || Time of sliver creation || No || Allowed || No ||</p>
+</div>
+<div class="paragraph">
+<p>Note that the SLIVER_INFO_URN is the unique key for this data table (there may be multiple slices per aggregate or multiple aggregates per slice, but the sliver is absolutely unique over all slices and aggregates.</p>
+</div>
+<div class="paragraph">
+<p>The Sliver Info Service supports these standard API methods for type="SLIVER_INFO":</p>
+</div>
+<div class="paragraph">
+<p>|| ''' Method ''' || ''' Description ''' ||
+|| create || Registers  new sliver info with provided details  ||
+|| update || Updates given sliver info ||
+|| delete || Deletes given sliver info ||
+|| lookup || lookup sliver info matching given match criteria subject to authorization restrictions. ||</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_project_service_methods">Project Service Methods</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Projects are groupings of slices and members for a particular administrative purpose. Some SA&#8217;s will chose to create and manage projects and apply policies about the invocation of SA methods (e.g. the creation of slice credentials based on roles or memberships in projects). A slice can belong to no more than one project; a project may have many slice members.</p>
+</div>
+<div class="paragraph">
+<p>The following table contains required fields for project objects and whether they are allowed in lookup ‘match’ criteria, required at creation or allowed at update:</p>
+</div>
+<div class="paragraph">
+<p>|| ''' Name ''' || ''' Type ''' || ''' Description ''' || ''' Match ''' || ''' Creation ''' || ''' Update ''' ||
+|| PROJECT_URN || URN || URN of given project || Yes || No || No ||
+|| PROJECT_UID ||UID || UID (unique within authority) of project || Yes || No || No ||
+|| PROJECT_CREATION || DATETIME || Creation time of project || No || No || No ||
+|| PROJECT_EXPIRATION || DATETIME || Expiration time of project || No || Required || Yes ||
+|| PROJECT_EXPIRED || BOOLEAN || Whether project has expired || Yes || No || No ||
+|| PROJECT_NAME || STRING || Short name of Project || Yes || Required || No ||
+|| PROJECT_DESCRIPTION || STRING || Description of Project || No || Allowed || Yes ||</p>
+</div>
+<div class="paragraph">
+<p>The Project Service supports these standard API methods for type="PROJECT":</p>
+</div>
+<div class="paragraph">
+<p>|| ''' Method ''' || ''' Description ''' ||
+|| create || Creates a new project with provided details  ||
+|| update || Updates given project ||
+|| delete || Deletes given project. Note: should fail if there are any active slices associated with project. ||
+|| lookup || lookup projects matching given match criteria subject to authorization restrictions. ||</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_project_member_service_methods">Project Member Service Methods</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Projects may have members associated with them in particular roles and thus supports the same methods for member management as described above for the [#SliceMemberServiceMethods Slice Member Service]. The differences are that the type provided is &#8220;PROJECT&#8221;, the urn provided is a project URN and the membership information returned is tagged with &#8220;PROJECT_URN&#8221; and &#8216;PROJECT_ROLE&#8217; as appropriate.</p>
+</div>
+<div class="paragraph">
+<p>For method signatures, see the listing under the [#SliceMemberServiceMethods Slice Member Service].</p>
+</div>
+<div class="paragraph">
+<p>|| ''' Method ''' || ''' Description ''' ||
+|| modify_membership || Adds/removes/changes roles of members with respect to given project   ||
+|| lookup_members || Returns list of {PROJECT_MEMBER, PROJECT_ROLE} dictionaries| for members projects matching given criteria ||
+|| lookup_for_member || Returns list of {PROJECT_URN, PROJECT_ROLE} dictionaries for projects to which a given member belongs ||</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_member_authority_api">Member Authority API</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>The Member Authority API provides services to manage information about federation members including public and potentially private or identifying information.</p>
+</div>
+<div class="paragraph">
+<p>As noted above, this document does not specify required policies for Federations. A given MA is free to implement its own policies. That said, the management of member private information is a subject for particular attention and care.</p>
+</div>
+<div class="paragraph">
+<p>All MA calls are protected; passing and validating a client-side cert is required.</p>
+</div>
+<div class="literalblock">
+<div class="content">
+<pre>While each MA is free to implement its own authorization policy, reasonable security policy should allow calls to succeed only if the following criteria are met:</pre>
+</div>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>The user/tool cert is signed by someone in the Federation&#8217;s trust chain</p>
+</li>
+<li>
+<p>If the cert is held by a tool, then the call must contain a user cert and a ‘speaks-for’ credential and the tool is trusted by the Federation to perform speaks-for.</p>
+</li>
+<li>
+<p>The requestor is asking for their own identifying info or has privileges with respect to the people about whom they are asking for that identifying info.</p>
+</li>
+<li>
+<p>Access to private info (SSL or SSH keys) should be restricted only to the user’s own keys for ordinary users.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>Like the Slice Authority, the Member Authority provides a set of services each consisting of a set of methods. Some services are required for any MA implementation, others are optional, as indicated by this table:</p>
+</div>
+<div class="paragraph">
+<p>|| '''Service''' || '''Description''' || '''Required''' || '''Object'''
+|| MEMBER || Services to  lookup and update information about members || YES || MEMBER ||
+|| KEY || Services to support storing, deleting and retrieving keys (e.g. SSH)  for members || NO || KEY ||</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_member_service_methods">Member Service Methods</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>The information managed by the MA API is divided into three categories, for purposes of applying different AuthZ policies at these different levels:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Public: Public information about a member (e.g. public SSH or SSH keys, speaks-for credentials, certificates)</p>
+</li>
+<li>
+<p>Private: Private information (e.g. private SSL or SSH keys) that should be given only to the member or a tool speaking for the member with a valid speaks-for credential</p>
+</li>
+<li>
+<p>Identifying: Information that could identify the given member (e.g. name, email, affiliation)</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>The following table contains required fields for member objects and whether they are allowed in lookup ‘match’ criteria and their protection (public, private, identifying):</p>
+</div>
+<div class="paragraph">
+<p>|| ''' Name ''' || ''' Type ''' || ''' Description ''' || ''' Match ''' || ''' Protection ''' ||
+|| MEMBER_URN || URN || URN of given member || Yes || Public ||
+|| MEMBER_UID ||UID || UID (unique within authority) of member || Yes || Public ||
+|| MEMBER_FIRSTNAME || STRING || First name of member || Yes || Identifying ||
+|| MEMBER_LASTNAME || STRING || Last name of member || Yes || Identifying ||
+|| MEMBER_USERNAME || STRING || Username of user || Yes || Public ||
+|| MEMBER_EMAIL || STRING || Email of user || Yes || Identifying ||</p>
+</div>
+<div class="paragraph">
+<p>The MEMBER Service supports these standard API methods for type="MEMBER":</p>
+</div>
+<div class="paragraph">
+<p>|| ''' Method ''' || ''' Description ''' ||
+|| update ||  update info associated with given member by URN ||
+|| lookup || lookup info associated with members matching match criteria. ||</p>
+</div>
+<div class="paragraph">
+<p>Note: the ''lookup' call provides public information for all members matching the 'match' criteria. It will also provide identifying (e.g. email or name) or private (e.g. SSL private key) information for members for whom the caller is authorized.
+When a field requested is unauthorized, the key will not be provide in the returned dictionary for that member.
+When the field requested has a key but a blank/null value, the access is authorized but the value for that field is, in fact, blank.
+A blank (null, not empty list) fields option indicates that the caller wants to see all fields to which the caller  is authorized. If a list of fields is specified in the fields option, only those authorized fields from among the specified set is provided for each matched member.</p>
+</div>
+<div class="paragraph">
+<p>The following are additional methods provided by the MEMBER service:</p>
+</div>
+<div class="paragraph">
+<p>{{{
+#!python
+# Provide list of credentials (signed statements) for given member
+# This is member-specific information suitable for passing as credentials in
+#  an AM API call for aggregate authorization.
+# Arguments:
+#    member_urn: URN of member for which to retrieve credentials
+#    options: Potentially contains ‘speaking_for’ key indicating a speaks-for
+#        invocation (with certificate of the accountable member in the credentials argument)
+#
+# Return:
+#     List of credential in “CREDENTIALS” format, i.e. a list of credentials with
+#        type information suitable for passing to aggregates speaking AM API V3.
+def get_credentials(member_urn, credentials, options)
+}}}</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_key_service_methods">Key Service Methods</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>The Key Service provides methods to allow for storing, deleting and retrieving SSH or similar keys for members. It is not intended for retrieving SSL public/private keys or certs.</p>
+</div>
+<div class="paragraph">
+<p>The following table contains the required fields for key objects and whether they are allowed in lookup 'match' criteria, required at creation or allowed at update:</p>
+</div>
+<div class="paragraph">
+<p>|| '''Name''' || '''Type''' || '''Description''' || '''Match''' || '''Creation''' || '''Update''' ||
+|| KEY_MEMBER || URN || URN of member associated with key pair || Yes || Required || No ||
+|| KEY_ID || STRING || Unique identifier for member/key pair: typically a fingerprint or hash of public key joined with member information || Yes || No || No ||
+|| KEY_TYPE || STRING || Type of key (e.g. PEM, openssh, rsa-ssh) || Yes || Required || No ||
+|| KEY_PUBLIC || KEY || Public key value || Yes || Required || No ||
+|| KEY_PRIVATE || KEY || Private key value || Yes || Allowed || No ||
+|| KEY_DESCRIPTION || STRING || Human readable description of key pair || Yes || Allowed || Yes ||</p>
+</div>
+<div class="paragraph">
+<p>The Key Service supports these standard API methods for type="KEY":</p>
+</div>
+<div class="paragraph">
+<p>|| ''' Method ''' || ''' Description ''' ||
+|| create || Creates a new record for a key associated with a member. The 'KEY_ID' returned from this call is the unique identifier for this key for this member and can be used as the 'urn' variable in the other key management API calls below. ||
+|| update || urn is the key_id ||
+|| delete || urn is the key_id ||
+|| lookup || lookup keys matching given match criteria subject to authorization restrictions. ||</p>
+</div>
+<div class="paragraph">
+<p>Note that access to key information is subject to authorization policy. The public keys are likely to be readily available but access to the private keys will be tightly restricted (often only to the user or authorized proxy). Requests to lookup key information for prohibited filter criteria results in omitting these fields. For example, if one asks for KEY_PUBLIC and KEY_PRIVATE for a list of member_urn&#8217;s, the result may return both KEY_PUBLIC and KEY_PRIVATE for certain (permitted) users, and only KEY_PUBLIC for other (restricted) users.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_appendix_federation_object_models">Appendix: Federation Object Models</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>As described, each Federation service method takes a set of options that provide further details on the request. Many of these options reflect the fields of the underlying object models. For example, the Slice Authority manages slice objects and allows for options for querying for and by slice object fields.</p>
+</div>
+<div class="paragraph">
+<p>Different Federation Authorities will implement different subsets of the possible set of Federation services. Those that do implement a given service should implement the API’s described above. The fields of the objects maintained through these API’s are flexible: some fields are required but different Authorities may have their own additional data, to be returned by the get_version method.</p>
+</div>
+<div class="paragraph">
+<p>The following diagram reflects the different objects maintained within the full range of Authority services, their interactions and mandatory fields.</p>
+</div>
+<div class="paragraph">
+<p>[[Image(FedObjectModel.png, 50%,nolink)]]</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_appendix_b_api_data_types">Appendix B: API Data Types</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>The following table describes the data types referenced in the document above, in terms of format and meaning.</p>
+</div>
+<div class="paragraph">
+<p>|| ''' Type ''' || ''' Description ''' || ''' Format ''' ||
+|| URN || Standard GENI identifier, guaranteed to be unique across all GENI services and authorities at a given time, but may be reused by obsolete/expired objects (e.g. slices) || '''Example:''' urn:publicid:IDN+mych+user+abrown ''' Details: ''' urn:publicid:IDN+AUTHORITY+TYPE+NAME where AUTHORITY is the unique fully qualified identifier of the authority creating the URN (e.g. ch.geni.net), TYPE is the type of entity (e.g. slice, user, tool, project) and name is the unique name of the entity (e.g. slice_name, user_name, tool_name, project_name). See  <a href="http://groups.geni.net/geni/wiki/GeniApiIdentifiers" class="bare">http://groups.geni.net/geni/wiki/GeniApiIdentifiers</a>  for data type definitions. ||
+|| UID || Unique identifier within the scope of a single authority, not guaranteed to be unique across authorities || '''Example:''' 8e405a75-3ff7-4288-bfa5-111552fa53ce '''Details:''' Varies by implementation but the python UUID4 standard is a good example.  See RFC4122 standard <a href="http://www.ietf.org/rfc/rfc4122.txt" class="bare">http://www.ietf.org/rfc/rfc4122.txt</a> ||
+|| STRING || Generic UTF-8 string ||  ||
+|| INTEGER || Generic integer argument || ||
+|| DATETIME || String representing a date/time in RFC3339 format  (<a href="http://tools.ietf.org/html/rfc3339" class="bare">http://tools.ietf.org/html/rfc3339</a>).  || '''Examples:''' 2013-06-15T02:39:08+03:00,  2013-06-15T02:39:08-05:00, 2014-02-23T11:00:05Z '''Details''': DATETIME values in the Federation API will be strings in RFC3339-compliant format. We ''recommend'' that implementers use parsers that fully comply with this standard. However, due to the flexibility in the spec and different interpretations chosen by different common parsers, we ''require'' that such DATETIME values: 1) contain an uppercase T between the time and date portions, 2) contain a timezone suffix, either an uppercase Z (for UTC) or +/-HH:MM, and 3) do not contain fractional seconds.||
+|| EMAIL || Well-formed email address compliant with RFC2822 <a href="http://tools.ietf.org/html/rfc2822#section-3.4.1" class="bare">http://tools.ietf.org/html/rfc2822#section-3.4.1</a> || '''Example:''' <a href="mailto:jbrown@geni.net">jbrown@geni.net</a> ||
+|| KEY || SSH or SSL public or private key (contents, not filename) || Key-specific format ||
+|| BOOLEAN || XMLRPC encoded boolean || '''Example:''' True ||
+|| CREDENTIALS || List of dictionaries, one per credential, tagged with credential type and version (as indicated in the GENI AM API specification) || '''Details:''' Credentials = [ { geni_type: &lt;string, case insensitive&gt;, geni_version: &lt;string containing an integer&gt;, geni_value : &lt;credential as string&gt;, &lt;others&gt; } ]. See <a href="http://groups.geni.net/geni/wiki/GAPI_AM_API_V3/CommonConcepts#credentials" class="bare">http://groups.geni.net/geni/wiki/GAPI_AM_API_V3/CommonConcepts#credentials</a> or <a href="http://groups.geni.net/geni/wiki/GeniApiCertificates" class="bare">http://groups.geni.net/geni/wiki/GeniApiCertificates</a> for credential format and semantic specification.  ||
+|| CERTIFICATE || X509 v3 certificate (contents, not filename) || Standard X509 v3 PEM certificate format. A chain of such certificates may be concatenated.  See  <a href="http://en.wikipedia.org/wiki/X.509" class="bare">http://en.wikipedia.org/wiki/X.509</a> and <a href="http://groups.geni.net/geni/wiki/GeniApiCertificates" class="bare">http://groups.geni.net/geni/wiki/GeniApiCertificates</a> for more details ||</p>
+</div>
+<div class="paragraph">
+<p>As noted above, this list is subject to change as the API develops over time.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_appendix_c_api_v1_and_v2_mappings">Appendix C: API V1 and V2 Mappings</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Federation API V2 makes significant changes to the previous (V1) Federation API. Specifically, it generalizes many of the API calls thy introducing  a 'type' argument. This table summarizes the changes to V1 calls and their equivalent in V2.</p>
+</div>
+<div class="paragraph">
+<p>|| ''' Authority ''' || ''' V1 method ''' || ''' V2 alternative '' ||
+|| Federation Registry || || ||
+||   || lookup_aggregates || lookup(type="SERVICE") match: {"SERVICE_TYPE":"SLICE_AUTHORITY"}||
+||  || lookup_slice_authorities || lookup(type="SERVCE") match:{"SERVICE_TYPE":"SLICE_AUTHORITY"} ||
+||  || lookup_member_authorities || lookup(type="SERVICE") match:"{"SERVICE_TYPE":"MEMBER_AUTHORITY"} ||
+|| Slice Authority || || ||
+|| || create_slice || create(type="SLICE") ||
+|| || lookup_slices || lookup(type="SLICE") ||
+|| || update_slice || update(type="SLICE") ||
+|| || modify_slice_membership || modify_membership(type="SLICE") ||
+|| || lookup_slice_members || lookup_members(type="SLICE") ||
+|| || lookup_slices_for_member || lookup_for_member(type="SLICE")  ||
+|| || create_sliver_info || create(type="SLIVER_INFO") ||
+|| || delete_sliver_info || delete(type="SLIVER_INFO") ||
+|| || update_sliver_info || update(type="SLIVER_INFO") ||
+|| || lookup_sliver_info || lookup(type="SLIVER_INFO") ||
+|| || create_project || create(type="PROJECT") ||
+|| || lookup_projects || lookup(type="PROJECT") ||
+|| || update_project || update(type="PROJECT") ||
+|| || modify_project_membership || modify_membership(type="PROJECT") ||
+|| || lookup_project_members || lookup_members(type="PROJECT") ||
+|| || lookup_projects_for_member || lookup_for_member(type="PROJECT") ||
+|| Member Authority || || ||
+|| || lookup_public_member_info || lookup(type="MEMBER") with fields option containing list of public fields only ||
+|| || lookup_identifying_member_info || lookup(type="MEMBER") with fields option containing list of identifying fields only ||
+|| || lookup_private_member_info || lookup(type="MEMBER") with fields option containing list of private fields only ||
+|| || update_member_info || update(type="MEMBER") ||
+|| || create_key || create(type="KEY") ||
+|| || delete_key || delete(type="KEY") ||
+|| || update_key || update(type="KEY") ||
+|| || lookup_keys || lookup(type="KEY") ||</p>
+</div>
+</div>
+</div>
+</div>
+<div id="footer">
+<div id="footer-text">
+Last updated 2016-09-16 10:27:11 MDT
+</div>
+</div>
+</body>
+</html>
