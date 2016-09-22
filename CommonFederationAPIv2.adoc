@@ -220,21 +220,24 @@ The following is an example of a return from a get_version from a Federation Reg
 }
 --------------------------------------------------
 
-== API Error Handing ==
+== API Error Handling ==
 
 All method calls return a tuple [code, value, output]. What is described as ‘Return’ in the API’s described below is the ‘value’ of this tuple in case of a successful execution. ‘Code’ is the error code returned and ‘output’ is the returned text (e.g. descriptive error message).
 
 Each Federation Registry and Authority is free to define and return its own specific error codes. However we suggest the following essential set of error codes to report on generic conditions:
 
-|| ''' CODE_NAME ''' || ''' CODE_VALUE ''' || ''' DESCRIPTION ''' ||
-|| NONE || 0 || No error encountered – the return value is a successful result. An empty list form a query should be interpreted as ‘nothing found matching criteria’. ||
-|| AUTHENTICATION_ERROR || 1 || The invoking tool or member did not provide appropriate credentials indicating that they are known to the Federation or that they possessed the private key of the entity they claimed to be ||
-|| AUTHORIZATION_ERROR || 2 || The invoking tool or member does not have the authority to invoke the given call with the given arguments ||
-|| ARGUMENT_ERROR || 3 || The arguments provided to the call were mal-formed or mutually inconsistent. ||
-|| DATABASE_ERROR || 4 || An error from the underlying database was returned. (More info should be provided in the ‘output’ return value] ||
-|| DUPLICATE_ERROR || 5 || An error indicating attempt to create an object that already exists ||
-|| NOT_IMPLEMENTED_ERROR || 100 || The given method is not implemented on the server. ||
-|| SERVER_ERROR || 101 || An error in the client/server connection ||
+[options="header"]
+|==========
+| CODE_NAME | CODE_VALUE | DESCRIPTION
+| NONE | 0 | No error encountered – the return value is a successful result. An empty list from a query should be interpreted as 'nothing found matching criteria'.
+| AUTHENTICATION_ERROR | 1 | The invoking tool or member did not provide appropriate credentials indicating that they are known to the Federation or that they possessed the private key of the entity they claimed to be
+| AUTHORIZATION_ERROR | 2 | The invoking tool or member does not have the authority to invoke the given call with the given arguments
+| ARGUMENT_ERROR | 3 | The arguments provided to the call were mal-formed or mutually inconsistent.
+| DATABASE_ERROR | 4 | An error from the underlying database was returned. (More info should be provided in the ‘output’ return value]
+| DUPLICATE_ERROR | 5 | An error indicating attempt to create an object that already exists
+| NOT_IMPLEMENTED_ERROR | 100 | The given method is not implemented on the server.
+| SERVER_ERROR | 101 | An error in the client/server connection
+|==========
 
 == Standard API Method ==
 
