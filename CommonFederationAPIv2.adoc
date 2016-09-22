@@ -243,7 +243,8 @@ Each Federation Registry and Authority is free to define and return its own spec
 
 Each Federation Registry and Authority manages the state of or access to objects. There are some standard methods that apply to standard operations on objects of specific types. All services support the following API's for the object types that are required or provided in get_version.
 
-{{{
+[source: python]
+--------------------------------------------------
 #!python
 # Creates a new instance of the given object with a ‘fields’ option
 # specifying particular field values that are to be associated with the object.
@@ -266,9 +267,10 @@ Each Federation Registry and Authority manages the state of or access to objects
 #
 #
 def create(type, credentials, options)
-}}}
+--------------------------------------------------
 
-{{{
+[source: python]
+--------------------------------------------------
 #!python
 # Updates an object instance specified by URN with a ‘fields’ option
 #  specifying the particular fields to update.
@@ -289,9 +291,10 @@ def create(type, credentials, options)
 # Return: None
 #
 def update(type, urn, credentials, options)
-}}}
+--------------------------------------------------
 
-{{{
+[source: python]
+--------------------------------------------------
 #!python
 # Deletes an object instance specified by URN
 # Only a single object can be deleted from a single delete call.
@@ -306,9 +309,10 @@ def update(type, urn, credentials, options)
 # Return: None
 #
 def delete(type, urn, credentials, options)
-}}}
+--------------------------------------------------
 
-{{{
+[source: python]
+--------------------------------------------------
 #!python
 # Lookup requested details for objects matching ‘match’ options.
 # This call takes a set of ‘match’ criteria provided in the ‘options’ field,
@@ -333,19 +337,40 @@ def delete(type, urn, credentials, options)
 #   for each returned object
 #
 def lookup (type, credentials, options)
-}}}
+--------------------------------------------------
 
 Some additional details on the lookup call:
 
-The options argument to the lookup call is a dictionary. It contains an entry with key ‘match’ that contains a dictionary of name/value pairs. The names are of fields listed in the get_version for that object. The values are values for those fields to be matched. The semantics of the match is to be an "AND" (all fields must match).
+The options argument to the lookup call is a dictionary. It contains an entry
+with key ‘match’ that contains a dictionary of name/value pairs. The names are
+of fields listed in the get_version for that object. The values are values for
+those fields to be matched. The semantics of the match is to be an "AND" (all
+fields must match).
 
-The value in the dictionary of a ‘match’ option can be a list of scalars, indicating an "OR". For example, a list of URNs provided to the SLICE_URN key would match any slice with any of the listed URNs.
+The value in the dictionary of a ‘match’ option can be a list of scalars,
+indicating an "OR". For example, a list of URNs provided to the SLICE_URN
+key would match any slice with any of the listed URNs.
 
-The options argument may include an additional dictionary keyed "filter" which is a list of fields associated with that object type (again, as specified in the get_version entry for that object). No "filter" provided means all fields are to be returned; a 'filter' provided with an empty list returns an empty set of fields (i.e. a dictionary of URN's pointing to empty dictionaries).
+The options argument may include an additional dictionary keyed "filter"
+which is a list of fields associated with that object type (again, as
+specified in the get_version entry for that object). No "filter" provided
+means all fields are to be returned; a 'filter' provided with an empty list
+returns an empty set of fields (i.e. a dictionary of URN's pointing to empty
+dictionaries).
 
-The return of the call will be a dictionary of dictionaries, one per matching object indexed by URN, of fields matching the filter criteria. If the query found no matches, an empty dictionary is returned (i.e. no error is reported, assuming no other error was encountered in processing).
+The return of the call will be a dictionary of dictionaries, one per
+matching object indexed by URN, of fields matching the filter criteria.
+If the query found no matches, an empty dictionary is returned (i.e. no
+error is reported, assuming no other error was encountered in processing).
 
-If a lookup method call requests information in the 'match' criteria about objects whose disclosure is prohibited to the requester by policy, the call should result in an authorization error. If the 'filter' criteria requests fields whose disclosure is prohibited to the requestor by policy, the method must not return the specific data fields. Rather, it should return a dictionary with no entry for the prohibited fields. E.g. {"urn_1" : {"PUBLIC_KEY" : public_key_1, "PRIVATE_KEY" : private_key_1}, "urn_2" : {"PUBLIC_KEY" : public_key_2}}
+If a lookup method call requests information in the 'match' criteria about
+objects whose disclosure is prohibited to the requester by policy, the call
+should result in an authorization error. If the 'filter' criteria requests
+fields whose disclosure is prohibited to the requestor by policy, the method
+must not return the specific data fields. Rather, it should return a
+dictionary with no entry for the prohibited fields. E.g.
+{"urn_1" : {"PUBLIC_KEY" : public_key_1, "PRIVATE_KEY" : private_key_1},
+"urn_2" : {"PUBLIC_KEY" : public_key_2}}
 
 
 == API Method Examples: ==
