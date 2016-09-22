@@ -66,7 +66,7 @@ The APIs described here share some common properties, which should be assumed fo
 
 These API’s are provided in pseudo-code (i.e. language independent) format, with inputs and outputs (optional and required) described by comments, e.g.
 
-.An example
+[source,python]
 --------------------------------------------------
 #!python
 # Perform method fed_func
@@ -124,7 +124,7 @@ Supplementary field names should be placed in a distinct namespace by a prefix u
 
 The API_VERSIONS field of the get_version should contain a dictionary specifying different URL's implementing different versions of the same service. The URL's provided should be absolute, containing publicly accessible addresses. This information may be used by the Federation Registry to provide SERVICE_PEERS information described below. An example API_VERSIONS field from a get_version call:
 
-[source: json]
+[source,json]
 --------------------------------------------------
     "API_VERSIONS": {
         "1" : "https://example.com/xmlrpc/sa/1",
@@ -136,7 +136,7 @@ The return from the get_version call will be used to construct and validate opti
 
 The get_version method at any service has the following signature:
 
-[source: python]
+[source,python]
 --------------------------------------------------
 #!python
 # Return information about version and options
@@ -156,7 +156,7 @@ The following page provides some example returns from different get_version call
 
 The following is an example of a return from a get_version for an SA. The responses are all dictionaries via XMLRPC into the native implementation. They are shown here in JSON-like syntax:
 
-[source: json]
+[source,json]
 --------------------------------------------------
 {
   "VERSION": "2",
@@ -175,7 +175,7 @@ The following is an example of a return from a get_version for an SA. The respon
 
 The following is an example of a return from a get_version for an MA, provided in JSON-like syntax:
 
-[source: json]
+[source,json]
 --------------------------------------------------
 {
     "VERSION": "2",
@@ -208,7 +208,7 @@ The following is an example of a return from a get_version for an MA, provided i
 
 The following is an example of a return from a get_version from a Federation Registry, provided in JSON-like syntax:
 
-[source: json]
+[source,json]
 --------------------------------------------------
 {
     "VERSION": "2",
@@ -243,7 +243,7 @@ Each Federation Registry and Authority is free to define and return its own spec
 
 Each Federation Registry and Authority manages the state of or access to objects. There are some standard methods that apply to standard operations on objects of specific types. All services support the following API's for the object types that are required or provided in get_version.
 
-[source: python]
+[source,python]
 --------------------------------------------------
 #!python
 # Creates a new instance of the given object with a ‘fields’ option
@@ -269,7 +269,7 @@ Each Federation Registry and Authority manages the state of or access to objects
 def create(type, credentials, options)
 --------------------------------------------------
 
-[source: python]
+[source,python]
 --------------------------------------------------
 #!python
 # Updates an object instance specified by URN with a ‘fields’ option
@@ -293,7 +293,7 @@ def create(type, credentials, options)
 def update(type, urn, credentials, options)
 --------------------------------------------------
 
-[source: python]
+[source,python]
 --------------------------------------------------
 #!python
 # Deletes an object instance specified by URN
@@ -311,7 +311,7 @@ def update(type, urn, credentials, options)
 def delete(type, urn, credentials, options)
 --------------------------------------------------
 
-[source: python]
+[source,python]
 --------------------------------------------------
 #!python
 # Lookup requested details for objects matching ‘match’ options.
