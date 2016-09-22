@@ -921,23 +921,28 @@ Different Federation Authorities will implement different subsets of the possibl
 
 The following diagram reflects the different objects maintained within the full range of Authority services, their interactions and mandatory fields.
 
+*_Fix Me: FedObjectModel.png_*
+
 [[Image(FedObjectModel.png, 50%,nolink)]]
 
 == Appendix B: API Data Types ==
 
 The following table describes the data types referenced in the document above, in terms of format and meaning.
 
-|| ''' Type ''' || ''' Description ''' || ''' Format ''' ||
-|| URN || Standard GENI identifier, guaranteed to be unique across all GENI services and authorities at a given time, but may be reused by obsolete/expired objects (e.g. slices) || '''Example:''' urn:publicid:IDN+mych+user+abrown ''' Details: ''' urn:publicid:IDN+AUTHORITY+TYPE+NAME where AUTHORITY is the unique fully qualified identifier of the authority creating the URN (e.g. ch.geni.net), TYPE is the type of entity (e.g. slice, user, tool, project) and name is the unique name of the entity (e.g. slice_name, user_name, tool_name, project_name). See  http://groups.geni.net/geni/wiki/GeniApiIdentifiers  for data type definitions. ||
-|| UID || Unique identifier within the scope of a single authority, not guaranteed to be unique across authorities || '''Example:''' 8e405a75-3ff7-4288-bfa5-111552fa53ce '''Details:''' Varies by implementation but the python UUID4 standard is a good example.  See RFC4122 standard http://www.ietf.org/rfc/rfc4122.txt ||
-|| STRING || Generic UTF-8 string ||  ||
-|| INTEGER || Generic integer argument || ||
-|| DATETIME || String representing a date/time in RFC3339 format  (http://tools.ietf.org/html/rfc3339).  || '''Examples:''' 2013-06-15T02:39:08+03:00,  2013-06-15T02:39:08-05:00, 2014-02-23T11:00:05Z '''Details''': DATETIME values in the Federation API will be strings in RFC3339-compliant format. We ''recommend'' that implementers use parsers that fully comply with this standard. However, due to the flexibility in the spec and different interpretations chosen by different common parsers, we ''require'' that such DATETIME values: 1) contain an uppercase T between the time and date portions, 2) contain a timezone suffix, either an uppercase Z (for UTC) or +/-HH:MM, and 3) do not contain fractional seconds.||
-|| EMAIL || Well-formed email address compliant with RFC2822 http://tools.ietf.org/html/rfc2822#section-3.4.1 || '''Example:''' jbrown@geni.net ||
-|| KEY || SSH or SSL public or private key (contents, not filename) || Key-specific format ||
-|| BOOLEAN || XMLRPC encoded boolean || '''Example:''' True ||
-|| CREDENTIALS || List of dictionaries, one per credential, tagged with credential type and version (as indicated in the GENI AM API specification) || '''Details:''' Credentials = [ { geni_type: <string, case insensitive>, geni_version: <string containing an integer>, geni_value : <credential as string>, <others> } ]. See http://groups.geni.net/geni/wiki/GAPI_AM_API_V3/CommonConcepts#credentials or http://groups.geni.net/geni/wiki/GeniApiCertificates for credential format and semantic specification.  ||
-|| CERTIFICATE || X509 v3 certificate (contents, not filename) || Standard X509 v3 PEM certificate format. A chain of such certificates may be concatenated.  See  http://en.wikipedia.org/wiki/X.509 and http://groups.geni.net/geni/wiki/GeniApiCertificates for more details ||
+[options="header"]
+|==========
+| Type | Description | Format
+| URN | Standard GENI identifier, guaranteed to be unique across all GENI services and authorities at a given time, but may be reused by obsolete/expired objects (e.g. slices) | '''Example:''' urn:publicid:IDN+mych+user+abrown ''' Details: ''' urn:publicid:IDN+AUTHORITY+TYPE+NAME where AUTHORITY is the unique fully qualified identifier of the authority creating the URN (e.g. ch.geni.net), TYPE is the type of entity (e.g. slice, user, tool, project) and name is the unique name of the entity (e.g. slice_name, user_name, tool_name, project_name). See  http://groups.geni.net/geni/wiki/GeniApiIdentifiers  for data type definitions.
+| UID | Unique identifier within the scope of a single authority, not guaranteed to be unique across authorities | '''Example:''' 8e405a75-3ff7-4288-bfa5-111552fa53ce '''Details:''' Varies by implementation but the python UUID4 standard is a good example.  See RFC4122 standard http://www.ietf.org/rfc/rfc4122.txt
+| STRING | Generic UTF-8 string |
+| INTEGER | Generic integer argument |
+| DATETIME | String representing a date/time in RFC3339 format  (http://tools.ietf.org/html/rfc3339).  | '''Examples:''' 2013-06-15T02:39:08+03:00,  2013-06-15T02:39:08-05:00, 2014-02-23T11:00:05Z '''Details''': DATETIME values in the Federation API will be strings in RFC3339-compliant format. We ''recommend'' that implementers use parsers that fully comply with this standard. However, due to the flexibility in the spec and different interpretations chosen by different common parsers, we ''require'' that such DATETIME values: 1) contain an uppercase T between the time and date portions, 2) contain a timezone suffix, either an uppercase Z (for UTC) or +/-HH:MM, and 3) do not contain fractional seconds
+| EMAIL | Well-formed email address compliant with RFC2822 http://tools.ietf.org/html/rfc2822#section-3.4.1 | '''Example:''' jbrown@geni.net
+| KEY | SSH or SSL public or private key (contents, not filename) | Key-specific format
+| BOOLEAN | XMLRPC encoded boolean | '''Example:''' True
+| CREDENTIALS | List of dictionaries, one per credential, tagged with credential type and version (as indicated in the GENI AM API specification) | '''Details:''' Credentials = [ { geni_type: <string, case insensitive>, geni_version: <string containing an integer>, geni_value : <credential as string>, <others> } ]. See http://groups.geni.net/geni/wiki/GAPI_AM_API_V3/CommonConcepts#credentials or http://groups.geni.net/geni/wiki/GeniApiCertificates for credential format and semantic specification.
+| CERTIFICATE | X509 v3 certificate (contents, not filename) | Standard X509 v3 PEM certificate format. A chain of such certificates may be concatenated.  See  http://en.wikipedia.org/wiki/X.509 and http://groups.geni.net/geni/wiki/GeniApiCertificates for more details
+|==========
 
 As noted above, this list is subject to change as the API develops over time.
 
@@ -945,34 +950,37 @@ As noted above, this list is subject to change as the API develops over time.
 
 Federation API V2 makes significant changes to the previous (V1) Federation API. Specifically, it generalizes many of the API calls thy introducing  a 'type' argument. This table summarizes the changes to V1 calls and their equivalent in V2.
 
-|| ''' Authority ''' || ''' V1 method ''' || ''' V2 alternative '' ||
-|| Federation Registry || || ||
-||   || lookup_aggregates || lookup(type="SERVICE") match: {"SERVICE_TYPE":"SLICE_AUTHORITY"}||
-||  || lookup_slice_authorities || lookup(type="SERVCE") match:{"SERVICE_TYPE":"SLICE_AUTHORITY"} ||
-||  || lookup_member_authorities || lookup(type="SERVICE") match:"{"SERVICE_TYPE":"MEMBER_AUTHORITY"} ||
-|| Slice Authority || || ||
-|| || create_slice || create(type="SLICE") ||
-|| || lookup_slices || lookup(type="SLICE") ||
-|| || update_slice || update(type="SLICE") ||
-|| || modify_slice_membership || modify_membership(type="SLICE") ||
-|| || lookup_slice_members || lookup_members(type="SLICE") ||
-|| || lookup_slices_for_member || lookup_for_member(type="SLICE")  ||
-|| || create_sliver_info || create(type="SLIVER_INFO") ||
-|| || delete_sliver_info || delete(type="SLIVER_INFO") ||
-|| || update_sliver_info || update(type="SLIVER_INFO") ||
-|| || lookup_sliver_info || lookup(type="SLIVER_INFO") ||
-|| || create_project || create(type="PROJECT") ||
-|| || lookup_projects || lookup(type="PROJECT") ||
-|| || update_project || update(type="PROJECT") ||
-|| || modify_project_membership || modify_membership(type="PROJECT") ||
-|| || lookup_project_members || lookup_members(type="PROJECT") ||
-|| || lookup_projects_for_member || lookup_for_member(type="PROJECT") ||
-|| Member Authority || || ||
-|| || lookup_public_member_info || lookup(type="MEMBER") with fields option containing list of public fields only ||
-|| || lookup_identifying_member_info || lookup(type="MEMBER") with fields option containing list of identifying fields only ||
-|| || lookup_private_member_info || lookup(type="MEMBER") with fields option containing list of private fields only ||
-|| || update_member_info || update(type="MEMBER") ||
-|| || create_key || create(type="KEY") ||
-|| || delete_key || delete(type="KEY") ||
-|| || update_key || update(type="KEY") ||
-|| || lookup_keys || lookup(type="KEY") ||
+[options="header"]
+|==========
+| Authority | V1 method | V2 alternative
+| Federation Registry | |
+|   | lookup_aggregates | lookup(type="SERVICE") match: {"SERVICE_TYPE":"SLICE_AUTHORITY"
+|  | lookup_slice_authorities | lookup(type="SERVCE") match:{"SERVICE_TYPE":"SLICE_AUTHORITY"}
+|  | lookup_member_authorities | lookup(type="SERVICE") match:"{"SERVICE_TYPE":"MEMBER_AUTHORITY"}
+| Slice Authority | |
+| | create_slice | create(type="SLICE")
+| | lookup_slices | lookup(type="SLICE")
+| | update_slice | update(type="SLICE")
+| | modify_slice_membership | modify_membership(type="SLICE")
+| | lookup_slice_members | lookup_members(type="SLICE")
+| | lookup_slices_for_member | lookup_for_member(type="SLICE")
+| | create_sliver_info | create(type="SLIVER_INFO")
+| | delete_sliver_info | delete(type="SLIVER_INFO")
+| | update_sliver_info | update(type="SLIVER_INFO")
+| | lookup_sliver_info | lookup(type="SLIVER_INFO")
+| | create_project | create(type="PROJECT")
+| | lookup_projects | lookup(type="PROJECT")
+| | update_project | update(type="PROJECT")
+| | modify_project_membership | modify_membership(type="PROJECT")
+| | lookup_project_members | lookup_members(type="PROJECT")
+| | lookup_projects_for_member | lookup_for_member(type="PROJECT")
+| Member Authority | |
+| | lookup_public_member_info | lookup(type="MEMBER") with fields option containing list of public fields only
+| | lookup_identifying_member_info | lookup(type="MEMBER") with fields option containing list of identifying fields only
+| | lookup_private_member_info | lookup(type="MEMBER") with fields option containing list of private fields only
+| | update_member_info | update(type="MEMBER")
+| | create_key | create(type="KEY")
+| | delete_key | delete(type="KEY")
+| | update_key | update(type="KEY")
+| | lookup_keys | lookup(type="KEY")
+|========
