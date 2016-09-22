@@ -425,22 +425,23 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <h2 id="_federation_service_api_s">Federation Service API’s</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>Marshall Brinn, GENI Program Office, USA<a id="BR"></a>
-Jonathon Duerig, University of Utah, USA<a id="BR"></a>
-Aaron Helsinger, GENI Program Office, USA<a id="BR"></a>
-Tom Mitchell, GENI Program Office, USA<a id="BR"></a>
-Rob Ricci, University of Utah, USA<a id="BR"></a>
-Tom Rothe, EICT, Germany<a id="BR"></a>
-Leigh Stoller, University of Utah, USA<a id="BR"></a>
-Wim Van de Meerssche, iMinds/Ghent University, Belgium<a id="BR"></a>
-Brecht Vermeulen, iMinds/Ghent University, Belgium<a id="BR"></a>
-Gary Wong, University of Utah, USA<a id="BR"></a></p>
+<p>Marshall Brinn, GENI Program Office, USA<br>
+Jonathon Duerig, University of Utah, USA<br>
+Aaron Helsinger, GENI Program Office, USA<br>
+Tom Mitchell, GENI Program Office, USA<br>
+Rob Ricci, University of Utah, USA<br>
+Tom Rothe, EICT, Germany<br>
+Leigh Stoller, University of Utah, USA<br>
+Wim Van de Meerssche, iMinds/Ghent University, Belgium<br>
+Brecht Vermeulen, iMinds/Ghent University, Belgium<br>
+Gary Wong, University of Utah, USA<br></p>
 </div>
 <div class="paragraph">
 <p>API Version 2</p>
 </div>
 <div class="paragraph">
-<p>Revised: November 13, 2013</p>
+<p>Revised: November 13, 2013<br>
+Converted to AsciiDoc: September, 2016</p>
 </div>
 </div>
 </div>
@@ -456,13 +457,13 @@ Gary Wong, University of Utah, USA<a id="BR"></a></p>
 <div class="ulist">
 <ul>
 <li>
-<p>' Aggregates ' : Collections of resources managed and presented in accordance with the AM API</p>
+<p><strong>Aggregates</strong> : Collections of resources managed and presented in accordance with the AM API</p>
 </li>
 <li>
-<p>' Members ' : Experimenters or other human consumers of aggregate resources</p>
+<p><strong>Members</strong> : Experimenters or other human consumers of aggregate resources</p>
 </li>
 <li>
-<p>' Authorities ' : Services that manage assertions about members and their permissions with respect to aggregate resources.</p>
+<p><strong>Authorities</strong> : Services that manage assertions about members and their permissions with respect to aggregate resources.</p>
 </li>
 </ul>
 </div>
@@ -472,10 +473,10 @@ Gary Wong, University of Utah, USA<a id="BR"></a></p>
 <div class="ulist">
 <ul>
 <li>
-<p>' Member Authority ' [MA]: Manages and asserts attributes about particular members</p>
+<p><em>Member Authority</em> [MA]: Manages and asserts attributes about particular members</p>
 </li>
 <li>
-<p>' Slice Authority ' [SA]: Manages slice objects and generates credentials for members with respect to slices.</p>
+<p><em>Slice Authority</em> [SA]: Manages slice objects and generates credentials for members with respect to slices.</p>
 </li>
 </ul>
 </div>
@@ -555,22 +556,60 @@ def fed_func (arg1, arg2, credentials, options)</pre>
 <p>Different Federation Authorities will provide different sets of methods bundled into services. Further, they will manage different kinds of objects and support different details for these objects.</p>
 </div>
 <div class="paragraph">
-<p>Each Federation Registry or Authority API provides a ‘get_version’ method, which provides information to the caller (or a tool composing calls for a tool user) about versions and options supported by that API. The call takes no argument and is unguarded (anyone can call it). The return from the get_version call will be a dictionary including the following entries (by key):
- * VERSION: A string with the version number of the Federation API (e.g. “2”, the version for this document). Note: this is the version of the API not the version of the implementation. This field is mandatory for all services.
- * URN : The URN of the service being contacted. This field is mandatory for SA and MA services, optional for Federation Registry service.
- * IMPLEMENTATION: A dictionary of information of the implantation of the service: {"code_version" : code_version, "code_url" : code_url, "code_release_date" : code_release_date, "site_update_date" : site_update_date"}. Of these, code_version is of type STRING, code_url is of type URL,  code_release_date and site_update_date are of format DATETIME. The format of the code_version string is implementation specific. This field is optional for services; in addition, all the sub-fields for the IMPLEMENTATION field are optional.
- * SERVICES: The list of names of services the given URL supports. This field is optional (with default being the default service for that authority, i.e. SERVICE for Federation Registry, SLICE for Slice Authority, MEMBER for MemberAuthority).
- * CREDENTIAL_TYPES: A list of recognized credential types (e.g. [geni_sfa, geni_abac]) and list of supported credential versions on protected API methods.  Format is analogous to that in the AM API: a list of {"type": cred_type, "version" : cred_version} dictionaries of all supported credential types and versions. ''[Required for Authorities only]''
- * ROLES : A list of recognized roles for slice/project membership (required only for those Slice Authorities supporting membership). The same set of roles refers to both slice and project membership at a given SA.
- * SERVICE_TYPES. A list of service types provided by the Federation Registry ''[Required for Federation Registry only]''
- * API_VERSIONS A dictionary of different peer implementation of different version of the same service. Modeled on the Aggregate Manager API, the format of this field is {version1 : url1, version2 : url2, …}. This field is required for all services. Note that the 'self' version (the version of the service being queried) is required to be included in this dictionary and should be consistent with the "VERSION" field above. The URL&#8217;s in this field
- * FIELDS: A dictionary of object field names (i.e. in additional to the required fields) and associated attributes including:
-     * “OBJECT” provides the object type to which the field belongs. The field is optional for fields of the default authority object (i.e. SLICE for Slice Authority, MEMBER for Member Authority, SERVICE for Federation Registry) but mandatory for all other fields.
-     * “TYPE” may be one of “URN”, “UID”, “STRING”, “DATETIME”, “EMAIL”, “KEY”,“BOOLEAN”, “CREDENTIAL”, “CERTIFICATE”. [NB. This set of types subject to change. See Appendix for more information on these data types.] This field is mandatory for any field listed.
-     * “CREATE” attributes may be specified as “REQUIRED”, “ALLOWED” or “NOT ALLOWED” (default = “NOT ALLOWED”). These indicate whether the given supplementary field is required, allowed or prohibited in create calls. This attribute is optional for listed fields.
-     * "MATCH" attributes may be specified as booleans TRUE or FALSE (default = TRUE). These indicate whether a given field may be specified in an match option of a lookup call. This attribute is optional for listed fields.
-     * “UPDATE” attributes may be specified as booleans TRUE or FALSE (default = FALSE). These indicate whether the given field may be specified in an update call. This attribute is optional for listed fields.
-     * “PROTECT” attributes may be labeled as “PUBLIC”, “PRIVATE” or “IDENTIFYING”. These are for the Member Authority only to differentiate between public, identifying and private data fields on members. The default, if not provided, is "PUBLIC", and thus this attribute is optional.</p>
+<p>Each Federation Registry or Authority API provides a ‘get_version’ method, which provides information to the caller (or a tool composing calls for a tool user) about versions and options supported by that API. The call takes no argument and is unguarded (anyone can call it). The return from the get_version call will be a dictionary including the following entries (by key):</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>VERSION: A string with the version number of the Federation API (e.g. "2", the version for this document). Note: this is the version of the API not the version of the implementation. This field is mandatory for all services.</p>
+</li>
+<li>
+<p>URN : The URN of the service being contacted. This field is mandatory for SA and MA services, optional for Federation Registry service.</p>
+</li>
+<li>
+<p>IMPLEMENTATION: A dictionary of information of the implantation of the service: {"code_version" : code_version, "code_url" : code_url, "code_release_date" : code_release_date, "site_update_date" : site_update_date"}. Of these, code_version is of type STRING, code_url is of type URL,  code_release_date and site_update_date are of format DATETIME. The format of the code_version string is implementation specific. This field is optional for services; in addition, all the sub-fields for the IMPLEMENTATION field are optional.</p>
+</li>
+<li>
+<p>SERVICES: The list of names of services the given URL supports. This field is optional (with default being the default service for that authority, i.e. SERVICE for Federation Registry, SLICE for Slice Authority, MEMBER for MemberAuthority).</p>
+</li>
+<li>
+<p>CREDENTIAL_TYPES: A list of recognized credential types (e.g. [geni_sfa, geni_abac]) and list of supported credential versions on protected API methods.  Format is analogous to that in the AM API: a list of {"type": cred_type, "version" : cred_version} dictionaries of all supported credential types and versions. ''[Required for Authorities only]''</p>
+</li>
+<li>
+<p>ROLES : A list of recognized roles for slice/project membership (required only for those Slice Authorities supporting membership). The same set of roles refers to both slice and project membership at a given SA.</p>
+</li>
+<li>
+<p>SERVICE_TYPES. A list of service types provided by the Federation Registry ''[Required for Federation Registry only]''</p>
+</li>
+<li>
+<p>API_VERSIONS A dictionary of different peer implementation of different version of the same service. Modeled on the Aggregate Manager API, the format of this field is {version1 : url1, version2 : url2, …}. This field is required for all services. Note that the 'self' version (the version of the service being queried) is required to be included in this dictionary and should be consistent with the "VERSION" field above. The URL&#8217;s in this field</p>
+</li>
+<li>
+<p>FIELDS: A dictionary of object field names (i.e. in additional to the required fields) and associated attributes including:</p>
+<div class="ulist">
+<ul>
+<li>
+<p>"OBJECT" provides the object type to which the field belongs. The field is optional for fields of the default authority object (i.e. SLICE for Slice Authority, MEMBER for Member Authority, SERVICE for Federation Registry) but mandatory for all other fields.</p>
+</li>
+<li>
+<p>"TYPE" may be one of "URN", "UID", "STRING", "DATETIME", "EMAIL", "KEY","BOOLEAN", "CREDENTIAL", "CERTIFICATE". [NB. This set of types subject to change. See Appendix for more information on these data types.] This field is mandatory for any field listed.</p>
+</li>
+<li>
+<p>"CREATE" attributes may be specified as "REQUIRED", "ALLOWED" or "NOT ALLOWED" (default = "NOT ALLOWED"). These indicate whether the given supplementary field is required, allowed or prohibited in create calls. This attribute is optional for listed fields.</p>
+</li>
+<li>
+<p>"MATCH" attributes may be specified as booleans TRUE or FALSE (default = TRUE). These indicate whether a given field may be specified in an match option of a lookup call. This attribute is optional for listed fields.</p>
+</li>
+<li>
+<p>"UPDATE" attributes may be specified as booleans TRUE or FALSE (default = FALSE). These indicate whether the given field may be specified in an update call. This attribute is optional for listed fields.</p>
+</li>
+<li>
+<p>"PROTECT" attributes may be labeled as "PUBLIC", "PRIVATE" or "IDENTIFYING". These are for the Member Authority only to differentiate between public, identifying and private data fields on members. The default, if not provided, is "PUBLIC", and thus this attribute is optional.</p>
+</li>
+</ul>
+</div>
+</li>
+</ul>
 </div>
 <div class="paragraph">
 <p>The FIELDS element of the get_version should contain all supplementary (non-mandatory) field objects supported by a given service. Additionally, it may contain mandatory field objects for which the default semantics (for "CREATE", "MATCH", "UPDATE", "PROTECT") should be overridden. Specifically, any values specified override the default values and any values unspecified are defined to be the defaults for that object/field in this document. The FIELDS element is thus optional for all services.</p>
@@ -578,32 +617,65 @@ def fed_func (arg1, arg2, credentials, options)</pre>
 <div class="paragraph">
 <p>The set of ROLES may vary across Slice Authorities based on local policy. However, the following roles should be defined at any Slice Authority:</p>
 </div>
-<div class="paragraph">
-<p>|| '''Role''' || '''Contex'''' || '''Description''' ||
-|| LEAD || PROJECT || May change project membership and create slices within a given project ||
-|| || SLICE || May change slice membership  and perform operations on a given slice||
-|| MEMBER || PROJECT || May create slices within given project ||
-|| || SLICE || May perform operations on given slice ||</p>
-</div>
+<table class="tableblock frame-all grid-all spread">
+<colgroup>
+<col style="width: 33.3333%;">
+<col style="width: 33.3333%;">
+<col style="width: 33.3334%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Role</th>
+<th class="tableblock halign-left valign-top">Contex</th>
+<th class="tableblock halign-left valign-top">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">LEAD</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">PROJECT</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">May change project membership and create slices within a given project</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">SLICE</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">May change slice membership  and perform operations on a given slice</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">MEMBER</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">PROJECT</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">May create slices within given project</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">SLICE</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">May perform operations on given slice</p></td>
+</tr>
+</tbody>
+</table>
 <div class="paragraph">
 <p>Supplementary field names should be placed in a distinct namespace by a prefix unique to that federation, and starting with an underscore (e.g. <em>GENI</em>,  <em>OFELIA</em> , <em>FED4FIRE</em> or <em>PROTOGENI</em> etc.).</p>
 </div>
 <div class="paragraph">
-<p>The API_VERSIONS field of the get_version should contain a dictionary specifying different URL&#8217;s implementing different versions of the same service. The URL&#8217;s provided should be absolute, containing publicly accessible addresses. This information may be used by the Federation Registry to provide SERVICE_PEERS information described below. An example API_VERSIONS field from a get_version call:
-{{{
-    "API_VERSIONS": {
-         "1" : "https://example.com/xmlrpc/sa/1",
-         "2" : "https://example.com/xmlrpc/sa/2"
-      }
-}}}</p>
+<p>The API_VERSIONS field of the get_version should contain a dictionary specifying different URL&#8217;s implementing different versions of the same service. The URL&#8217;s provided should be absolute, containing publicly accessible addresses. This information may be used by the Federation Registry to provide SERVICE_PEERS information described below. An example API_VERSIONS field from a get_version call:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-json" data-lang="json">    "API_VERSIONS": {
+        "1" : "https://example.com/xmlrpc/sa/1",
+        "2" : "https://example.com/xmlrpc/sa/2"
+    }</code></pre>
+</div>
 </div>
 <div class="paragraph">
 <p>The return from the get_version call will be used to construct and validate options to Federation Registry and Authority API calls, as described in subsequent sections.</p>
 </div>
 <div class="paragraph">
-<p>The get_version method at any service has the following signature:
-{{{
-#!python
+<p>The get_version method at any service has the following signature:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-python" data-lang="python">#!python
 # Return information about version and options
 #   (e.g. filter, query, credential types) accepted by this service
 #
@@ -611,8 +683,8 @@ def fed_func (arg1, arg2, credentials, options)</pre>
 #
 # Return:
 #     get_version structure information as described above
-def get_version()
-}}}</p>
+def get_version()</code></pre>
+</div>
 </div>
 <div class="paragraph">
 <p>The following page provides some example returns from different get_version calls.</p>
@@ -625,173 +697,76 @@ def get_version()
 <div class="paragraph">
 <p>The following is an example of a return from a get_version for an SA. The responses are all dictionaries via XMLRPC into the native implementation. They are shown here in JSON-like syntax:</p>
 </div>
-<div class="paragraph">
-<p>{</p>
-</div>
-<div class="paragraph">
-<p>“VERSION”: “2”,</p>
-</div>
-<div class="paragraph">
-<p>"URN" : urn:publicid:IDN+example.com+authority+sa",</p>
-</div>
-<div class="paragraph">
-<p>“SERVICES”: [“SLICE”, “PROJECT”, “SLICE_MEMBER”, “PROJECT_MEMBER”],</p>
-</div>
-<div class="paragraph">
-<p>"OBJECTS": [ "PROJECT" ],</p>
-</div>
-<div class="paragraph">
-<p>“CREDENTIAL_TYPES”: [{"type" : "geni_sfa", version" : 2}, {"type" : "geni_sfa", "version" : "3"}, {"type" : "geni_abac", "version" : "1"}]</p>
-</div>
-<div class="paragraph">
-<p>“ROLES” : [“LEAD”, “ADMIN”, “MEMBER”, “AUDITOR”, “OPERATOR” ],</p>
-</div>
-<div class="paragraph">
-<p>“FIELDS”: {</p>
-</div>
-<div class="literalblock">
+<div class="listingblock">
 <div class="content">
-<pre>"_GENI_PROJECT_UID": {"TYPE" : "UID", "UPDATE" : FALSE},</pre>
+<pre class="highlight"><code class="language-json" data-lang="json">{
+  "VERSION": "2",
+  "URN" : urn:publicid:IDN+example.com+authority+sa",
+  "SERVICES": ["SLICE", "PROJECT", "SLICE_MEMBER", "PROJECT_MEMBER"],
+  "OBJECTS": [ "PROJECT" ],
+  "CREDENTIAL_TYPES": [{"type" : "geni_sfa", version" : 2}, {"type" : "geni_sfa", "version" : "3"}, {"type" : "geni_abac", "version" : "1"}]
+  "ROLES" : ["LEAD", "ADMIN", "MEMBER", "AUDITOR", "OPERATOR" ],
+  "FIELDS": {
+    "_GENI_PROJECT_UID": {"TYPE" : "UID", "UPDATE" : FALSE},
+    "_GENI_SLICE_EMAIL": {"TYPE": "EMAIL", "CREATE": "REQUIRED", "UPDATE": TRUE},
+    "_GENI_PROJECT_EMAIL": {"TYPE": "EMAIL", "CREATE": "REQUIRED", "UPDATE": TRUE, "OBJECT": "PROJECT"}
+  }
+}</code></pre>
 </div>
-</div>
-<div class="literalblock">
-<div class="content">
-<pre>“_GENI_SLICE_EMAIL”: {“TYPE”: “EMAIL”, “CREATE”: “REQUIRED”, “UPDATE”: TRUE},</pre>
-</div>
-</div>
-<div class="literalblock">
-<div class="content">
-<pre>“_GENI_PROJECT_EMAIL”: {“TYPE”: “EMAIL”, “CREATE”: “REQUIRED”, “UPDATE”: TRUE, “OBJECT”: “PROJECT”}</pre>
-</div>
-</div>
-<div class="literalblock">
-<div class="content">
-<pre>}</pre>
-</div>
-</div>
-<div class="paragraph">
-<p>}</p>
 </div>
 <div class="paragraph">
 <p>The following is an example of a return from a get_version for an MA, provided in JSON-like syntax:</p>
 </div>
-<div class="paragraph">
-<p>{</p>
-</div>
-<div class="literalblock">
+<div class="listingblock">
 <div class="content">
-<pre>“VERSION”: “2”,</pre>
+<pre class="highlight"><code class="language-json" data-lang="json">{
+    "VERSION": "2",
+    "URN" : urn:publicid:IDN+example.com+authority+ma",
+    "CREDENTIAL_TYPES":  [{"type" : "geni_sfa", version" : 2},
+                          {"type" : "geni_sfa", "version" : "3"},
+                          {"type" : "geni_abac", "version" : "1"}]
+    "SERVICES": ["MEMBER", "KEY"],
+    "OBJECTS": [ "KEY" ],
+    "FIELDS": {
+        "MEMBER_DISPLAYNAME": {"TYPE": "STRING",
+                               "CREATE": "ALLOWED",
+                               "UPDATE", TRUE,
+                               "PROTECT": "IDENTIFYING"},
+        "MEMBER_AFFILIATION": {"TYPE": "STRING",
+                               "CREATE": "ALLOWED",
+                               "UPDATE": TRUE,
+                               "PROTECT": "IDENTIFYING"},
+        "MEMBER_SSL_PUBLIC_KEY": {"TYPE": "SSL_KEY"},
+        "MEMBER_SSL_PRIVATE_KEY": {"TYPE": "SSL_KEY",
+                                   "PROTECT": "PRIVATE"},
+        "MEMBER_SSH_PUBLIC_KEY": {"TYPE": "SSH_KEY"},
+        "MEMBER_SSH_PRIVATE_KEY": {"TYPE": "SSH_KEY",
+                                   "PROTECT": "PRIVATE"},
+        "MEMBER_ENABLED": {"TYPE": "BOOLEAN",
+                           "UPDATE": TRUE}
+    }
+}</code></pre>
 </div>
-</div>
-<div class="literalblock">
-<div class="content">
-<pre>"URN" : urn:publicid:IDN+example.com+authority+ma",</pre>
-</div>
-</div>
-<div class="literalblock">
-<div class="content">
-<pre>“CREDENTIAL_TYPES”:  [{"type" : "geni_sfa", version" : 2}, {"type" : "geni_sfa", "version" : "3"}, {"type" : "geni_abac", "version" : "1"}]</pre>
-</div>
-</div>
-<div class="literalblock">
-<div class="content">
-<pre>"SERVICES": ["MEMBER", "KEY"],</pre>
-</div>
-</div>
-<div class="literalblock">
-<div class="content">
-<pre>"OBJECTS": [ "KEY" ],</pre>
-</div>
-</div>
-<div class="literalblock">
-<div class="content">
-<pre>“FIELDS”: {</pre>
-</div>
-</div>
-<div class="literalblock">
-<div class="content">
-<pre>“MEMBER_DISPLAYNAME”: {“TYPE”: “STRING”, “CREATE”: “ALLOWED”, “UPDATE”,</pre>
-</div>
-</div>
-<div class="paragraph">
-<p>TRUE, “PROTECT”: “IDENTIFYING”},</p>
-</div>
-<div class="literalblock">
-<div class="content">
-<pre>“MEMBER_AFFILIATION”: {“TYPE”: “STRING”, “CREATE”: “ALLOWED”, “UPDATE”:</pre>
-</div>
-</div>
-<div class="paragraph">
-<p>TRUE, “PROTECT”: “IDENTIFTYING”},</p>
-</div>
-<div class="literalblock">
-<div class="content">
-<pre>“MEMBER_SSL_PUBLIC_KEY”: {“TYPE”: “SSL_KEY”},</pre>
-</div>
-</div>
-<div class="literalblock">
-<div class="content">
-<pre>“MEMBER_SSL_PRIVATE_KEY”: {“TYPE”: “SSL_KEY”, “PROTECT”: “PRIVATE”},</pre>
-</div>
-</div>
-<div class="literalblock">
-<div class="content">
-<pre>“MEMBER_SSH_PUBLIC_KEY”: {“TYPE”: “SSH_KEY”},</pre>
-</div>
-</div>
-<div class="literalblock">
-<div class="content">
-<pre>“MEMBER_SSH_PRIVATE_KEY”: {“TYPE”: “SSH_KEY”, “PROTECT”: “PRIVATE”},</pre>
-</div>
-</div>
-<div class="literalblock">
-<div class="content">
-<pre>  “MEMBER_ENABLED”: {“TYPE”: “BOOLEAN”, “UPDATE”: TRUE}
-}</pre>
-</div>
-</div>
-<div class="paragraph">
-<p>}</p>
 </div>
 <div class="paragraph">
 <p>The following is an example of a return from a get_version from a Federation Registry, provided in JSON-like syntax:</p>
 </div>
-<div class="paragraph">
-<p>{
-      “VERSION”: “2”,</p>
-</div>
-<div class="literalblock">
+<div class="listingblock">
 <div class="content">
-<pre>"URN" : urn:publicid:IDN+example.com+authority+fr",</pre>
+<pre class="highlight"><code class="language-json" data-lang="json">{
+    "VERSION": "2",
+    "URN" : urn:publicid:IDN+example.com+authority+fr",
+    "SERVICE_TYPES" : ["SLICE_AUTHORITY", "MEMBER_AUTHORITY", "AGGREGATE_MANAGER"],
+    "FIELDS": {
+        "SERVICE_PROVIDER": {"TYPE": "STRING"}}
+    }
+}</code></pre>
 </div>
-</div>
-<div class="literalblock">
-<div class="content">
-<pre>"SERVICE_TYPES" : ["SLICE_AUTHORITY", "MEMBER_AUTHORITY", "AGGREGATE_MANAGER"],</pre>
-</div>
-</div>
-<div class="literalblock">
-<div class="content">
-<pre>“FIELDS”: {</pre>
-</div>
-</div>
-<div class="literalblock">
-<div class="content">
-<pre>“SERVICE_PROVIDER”: {“TYPE”: “STRING”}}</pre>
-</div>
-</div>
-<div class="literalblock">
-<div class="content">
-<pre>}</pre>
-</div>
-</div>
-<div class="paragraph">
-<p>}</p>
 </div>
 </div>
 </div>
 <div class="sect1">
-<h2 id="_api_error_handing">API Error Handing</h2>
+<h2 id="_api_error_handling">API Error Handling</h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p>All method calls return a tuple [code, value, output]. What is described as ‘Return’ in the API’s described below is the ‘value’ of this tuple in case of a successful execution. ‘Code’ is the error code returned and ‘output’ is the returned text (e.g. descriptive error message).</p>
@@ -799,17 +774,62 @@ def get_version()
 <div class="paragraph">
 <p>Each Federation Registry and Authority is free to define and return its own specific error codes. However we suggest the following essential set of error codes to report on generic conditions:</p>
 </div>
-<div class="paragraph">
-<p>|| ''' CODE_NAME ''' || ''' CODE_VALUE ''' || ''' DESCRIPTION ''' ||
-|| NONE || 0 || No error encountered – the return value is a successful result. An empty list form a query should be interpreted as ‘nothing found matching criteria’. ||
-|| AUTHENTICATION_ERROR || 1 || The invoking tool or member did not provide appropriate credentials indicating that they are known to the Federation or that they possessed the private key of the entity they claimed to be ||
-|| AUTHORIZATION_ERROR || 2 || The invoking tool or member does not have the authority to invoke the given call with the given arguments ||
-|| ARGUMENT_ERROR || 3 || The arguments provided to the call were mal-formed or mutually inconsistent. ||
-|| DATABASE_ERROR || 4 || An error from the underlying database was returned. (More info should be provided in the ‘output’ return value] ||
-|| DUPLICATE_ERROR || 5 || An error indicating attempt to create an object that already exists ||
-|| NOT_IMPLEMENTED_ERROR || 100 || The given method is not implemented on the server. ||
-|| SERVER_ERROR || 101 || An error in the client/server connection ||</p>
-</div>
+<table class="tableblock frame-all grid-all spread">
+<colgroup>
+<col style="width: 33.3333%;">
+<col style="width: 33.3333%;">
+<col style="width: 33.3334%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">CODE_NAME</th>
+<th class="tableblock halign-left valign-top">CODE_VALUE</th>
+<th class="tableblock halign-left valign-top">DESCRIPTION</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NONE</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">No error encountered – the return value is a successful result. An empty list from a query should be interpreted as 'nothing found matching criteria'.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">AUTHENTICATION_ERROR</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">1</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The invoking tool or member did not provide appropriate credentials indicating that they are known to the Federation or that they possessed the private key of the entity they claimed to be</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">AUTHORIZATION_ERROR</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">2</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The invoking tool or member does not have the authority to invoke the given call with the given arguments</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">ARGUMENT_ERROR</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">3</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The arguments provided to the call were mal-formed or mutually inconsistent.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">DATABASE_ERROR</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">4</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">An error from the underlying database was returned. (More info should be provided in the ‘output’ return value]</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">DUPLICATE_ERROR</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">5</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">An error indicating attempt to create an object that already exists</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NOT_IMPLEMENTED_ERROR</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">100</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The given method is not implemented on the server.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">SERVER_ERROR</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">101</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">An error in the client/server connection</p></td>
+</tr>
+</tbody>
+</table>
 </div>
 </div>
 <div class="sect1">
@@ -818,14 +838,14 @@ def get_version()
 <div class="paragraph">
 <p>Each Federation Registry and Authority manages the state of or access to objects. There are some standard methods that apply to standard operations on objects of specific types. All services support the following API&#8217;s for the object types that are required or provided in get_version.</p>
 </div>
-<div class="paragraph">
-<p>{{{
-#!python
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-python" data-lang="python">#!python
 # Creates a new instance of the given object with a ‘fields’ option
 # specifying particular field values that are to be associated with the object.
 # These may only include those fields specified as ‘ALLOWED or ‘REQUIRED’
 # in the ‘Creation’ column of the object descriptions below
-# or in the “CREATE’ key in the supplemental fields in the
+# or in the "CREATE’ key in the supplemental fields in the
 # get_version specification for that object.
 # If successful, the call returns a dictionary of the fields
 # associated with the newly created object.
@@ -841,12 +861,12 @@ def get_version()
 #   Dictionary of object-type specific field/value pairs for created object
 #
 #
-def create(type, credentials, options)
-}}}</p>
+def create(type, credentials, options)</code></pre>
 </div>
-<div class="paragraph">
-<p>{{{
-#!python
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-python" data-lang="python">#!python
 # Updates an object instance specified by URN with a ‘fields’ option
 #  specifying the particular fields to update.
 # Only a single object can be updated from a single update call.
@@ -865,12 +885,12 @@ def create(type, credentials, options)
 #
 # Return: None
 #
-def update(type, urn, credentials, options)
-}}}</p>
+def update(type, urn, credentials, options)</code></pre>
 </div>
-<div class="paragraph">
-<p>{{{
-#!python
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-python" data-lang="python">#!python
 # Deletes an object instance specified by URN
 # Only a single object can be deleted from a single delete call.
 # Note: not all objects can be deleted. In general, it is a matter
@@ -883,12 +903,12 @@ def update(type, urn, credentials, options)
 #
 # Return: None
 #
-def delete(type, urn, credentials, options)
-}}}</p>
+def delete(type, urn, credentials, options)</code></pre>
 </div>
-<div class="paragraph">
-<p>{{{
-#!python
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-python" data-lang="python">#!python
 # Lookup requested details for objects matching ‘match’ options.
 # This call takes a set of ‘match’ criteria provided in the ‘options’ field,
 # and returns a dictionary of dictionaries of object attributes
@@ -911,26 +931,47 @@ def delete(type, urn, credentials, options)
 # Return: List of dictionaries (indexed by object URN) with field/value pairs
 #   for each returned object
 #
-def lookup (type, credentials, options)
-}}}</p>
+def lookup (type, credentials, options)</code></pre>
+</div>
 </div>
 <div class="paragraph">
 <p>Some additional details on the lookup call:</p>
 </div>
 <div class="paragraph">
-<p>The options argument to the lookup call is a dictionary. It contains an entry with key ‘match’ that contains a dictionary of name/value pairs. The names are of fields listed in the get_version for that object. The values are values for those fields to be matched. The semantics of the match is to be an “AND” (all fields must match).</p>
+<p>The options argument to the lookup call is a dictionary. It contains an entry
+with key ‘match’ that contains a dictionary of name/value pairs. The names are
+of fields listed in the get_version for that object. The values are values for
+those fields to be matched. The semantics of the match is to be an "AND" (all
+fields must match).</p>
 </div>
 <div class="paragraph">
-<p>The value in the dictionary of a ‘match’ option can be a list of scalars, indicating an “OR”. For example, a list of URNs provided to the SLICE_URN key would match any slice with any of the listed URNs.</p>
+<p>The value in the dictionary of a ‘match’ option can be a list of scalars,
+indicating an "OR". For example, a list of URNs provided to the SLICE_URN
+key would match any slice with any of the listed URNs.</p>
 </div>
 <div class="paragraph">
-<p>The options argument may include an additional dictionary keyed “filter” which is a list of fields associated with that object type (again, as specified in the get_version entry for that object). No “filter” provided means all fields are to be returned; a 'filter' provided with an empty list returns an empty set of fields (i.e. a dictionary of URN&#8217;s pointing to empty dictionaries).</p>
+<p>The options argument may include an additional dictionary keyed "filter"
+which is a list of fields associated with that object type (again, as
+specified in the get_version entry for that object). No "filter" provided
+means all fields are to be returned; a 'filter' provided with an empty list
+returns an empty set of fields (i.e. a dictionary of URN&#8217;s pointing to empty
+dictionaries).</p>
 </div>
 <div class="paragraph">
-<p>The return of the call will be a dictionary of dictionaries, one per matching object indexed by URN, of fields matching the filter criteria. If the query found no matches, an empty dictionary is returned (i.e. no error is reported, assuming no other error was encountered in processing).</p>
+<p>The return of the call will be a dictionary of dictionaries, one per
+matching object indexed by URN, of fields matching the filter criteria.
+If the query found no matches, an empty dictionary is returned (i.e. no
+error is reported, assuming no other error was encountered in processing).</p>
 </div>
 <div class="paragraph">
-<p>If a lookup method call requests information in the 'match' criteria about objects whose disclosure is prohibited to the requester by policy, the call should result in an authorization error. If the 'filter' criteria requests fields whose disclosure is prohibited to the requestor by policy, the method must not return the specific data fields. Rather, it should return a dictionary with no entry for the prohibited fields. E.g. {"urn_1" : {"PUBLIC_KEY" : public_key_1, "PRIVATE_KEY" : private_key_1}, "urn_2" : {"PUBLIC_KEY" : public_key_2}}</p>
+<p>If a lookup method call requests information in the 'match' criteria about
+objects whose disclosure is prohibited to the requester by policy, the call
+should result in an authorization error. If the 'filter' criteria requests
+fields whose disclosure is prohibited to the requestor by policy, the method
+must not return the specific data fields. Rather, it should return a
+dictionary with no entry for the prohibited fields. E.g.
+{"urn_1" : {"PUBLIC_KEY" : public_key_1, "PRIVATE_KEY" : private_key_1},
+"urn_2" : {"PUBLIC_KEY" : public_key_2}}</p>
 </div>
 </div>
 </div>
@@ -954,17 +995,17 @@ def lookup (type, credentials, options)
 <div class="listingblock">
 <div class="content">
 <pre>{
-      “urn:publicid:IDN+mych+user+abrown” :
-            {“MEMBER_EMAIL”: abrown@williams.edu,
-             “MEMBER_FIRSTNAME”: “Arlene”},
+      "urn:publicid:IDN+mych+user+abrown" :
+            {"MEMBER_EMAIL": abrown@williams.edu,
+             "MEMBER_FIRSTNAME": "Arlene"},
 
-      “urn:publicid:IDN+mych+user+mbrown” :
-            {“MEMBER_EMAIL”: mbrown@umass.edu,
-             “MEMBER_FIRSTNAME”: “Michael”},
+      "urn:publicid:IDN+mych+user+mbrown" :
+            {"MEMBER_EMAIL": mbrown@umass.edu,
+             "MEMBER_FIRSTNAME": "Michael"},
 
-      “urn:publicid:IDN+mych+user+sbrown” :
-            {“MEMBER_EMAIL”: sbrown@stanford.edu,
-             “MEMBER_FIRSTNAME”: “Sam”}
+      "urn:publicid:IDN+mych+user+sbrown" :
+            {"MEMBER_EMAIL": sbrown@stanford.edu,
+             "MEMBER_FIRSTNAME": "Sam"}
 }</pre>
 </div>
 </div>
@@ -976,12 +1017,12 @@ def lookup (type, credentials, options)
 </div>
 <div class="literalblock">
 <div class="content">
-<pre>“fields” : { “SLICE_DESCRIPTION”: “Updated Description”,</pre>
+<pre>"fields" : { "SLICE_DESCRIPTION": "Updated Description",</pre>
 </div>
 </div>
 <div class="literalblock">
 <div class="content">
-<pre>“SLICE_EXPIRATION”: “2013-07-29T13:15:30Z” }</pre>
+<pre>"SLICE_EXPIRATION": "2013-07-29T13:15:30Z" }</pre>
 </div>
 </div>
 <div class="paragraph">
@@ -992,26 +1033,26 @@ def lookup (type, credentials, options)
 </div>
 <div class="paragraph">
 <p>{
- “match”: {</p>
+ "match": {</p>
 </div>
 <div class="literalblock">
 <div class="content">
-<pre>“SLICE_URN”: [</pre>
-</div>
-</div>
-<div class="literalblock">
-<div class="content">
-<pre>“urn:publicid+IDN+this_sa:myproject+slice+slice1”,</pre>
+<pre>"SLICE_URN": [</pre>
 </div>
 </div>
 <div class="literalblock">
 <div class="content">
-<pre>“urn:publicid+IDN+this_sa:myproject+slice+slice2”,</pre>
+<pre>"urn:publicid+IDN+this_sa:myproject+slice+slice1",</pre>
 </div>
 </div>
 <div class="literalblock">
 <div class="content">
-<pre>“urn:publicid+IDN+this_sa:myproject+slice+slice3”</pre>
+<pre>"urn:publicid+IDN+this_sa:myproject+slice+slice2",</pre>
+</div>
+</div>
+<div class="literalblock">
+<div class="content">
+<pre>"urn:publicid+IDN+this_sa:myproject+slice+slice3"</pre>
 </div>
 </div>
 <div class="literalblock">
@@ -1021,7 +1062,7 @@ def lookup (type, credentials, options)
 </div>
 <div class="literalblock">
 <div class="content">
-<pre>“filter”: [“SLICE_NAME”]</pre>
+<pre>"filter": ["SLICE_NAME"]</pre>
 </div>
 </div>
 <div class="paragraph">
@@ -1045,22 +1086,22 @@ def lookup (type, credentials, options)
 </div>
 <div class="literalblock">
 <div class="content">
-<pre>“SLICE_NAME”: “TEST_SLICE”,</pre>
+<pre>"SLICE_NAME": "TEST_SLICE",</pre>
 </div>
 </div>
 <div class="literalblock">
 <div class="content">
-<pre>“SLICE_DESCRIPTION”: “My Test Slice”,</pre>
+<pre>"SLICE_DESCRIPTION": "My Test Slice",</pre>
 </div>
 </div>
 <div class="literalblock">
 <div class="content">
-<pre>“SLICE_EMAIL”: myemail@geni.net,</pre>
+<pre>"SLICE_EMAIL": myemail@geni.net,</pre>
 </div>
 </div>
 <div class="literalblock">
 <div class="content">
-<pre>“SLICE_PROJECT_URN”: “urn:publicid+IDN+this_sa+project+myproject”</pre>
+<pre>"SLICE_PROJECT_URN": "urn:publicid+IDN+this_sa+project+myproject"</pre>
 </div>
 </div>
 <div class="literalblock">
@@ -1079,52 +1120,52 @@ def lookup (type, credentials, options)
 </div>
 <div class="literalblock">
 <div class="content">
-<pre>“SLICE_URN”: “urn:publicid+IDN+this.sa+slice+TESTSLICE”,</pre>
+<pre>"SLICE_URN": "urn:publicid+IDN+this.sa+slice+TESTSLICE",</pre>
 </div>
 </div>
 <div class="literalblock">
 <div class="content">
-<pre>“SLICE_UID”: “…”,</pre>
+<pre>"SLICE_UID": "…",</pre>
 </div>
 </div>
 <div class="literalblock">
 <div class="content">
-<pre>“SLICE_NAME”: “TESTSLICE”,</pre>
+<pre>"SLICE_NAME": "TESTSLICE",</pre>
 </div>
 </div>
 <div class="literalblock">
 <div class="content">
-<pre>“SLICE_CREDENTIAL”: “.....”,</pre>
+<pre>"SLICE_CREDENTIAL": ".....",</pre>
 </div>
 </div>
 <div class="literalblock">
 <div class="content">
-<pre>“SLICE_DESCRIPTION”: “My Test Slice”,</pre>
+<pre>"SLICE_DESCRIPTION": "My Test Slice",</pre>
 </div>
 </div>
 <div class="literalblock">
 <div class="content">
-<pre>“SLICE_PROJECT_URN”: “urn:publicid+IDN+this_sa+project+myproject”,</pre>
+<pre>"SLICE_PROJECT_URN": "urn:publicid+IDN+this_sa+project+myproject",</pre>
 </div>
 </div>
 <div class="literalblock">
 <div class="content">
-<pre>“SLICE_EXPIRATION”: “2013-08-29T13:15:30Z”,</pre>
+<pre>"SLICE_EXPIRATION": "2013-08-29T13:15:30Z",</pre>
 </div>
 </div>
 <div class="literalblock">
 <div class="content">
-<pre>“SLICE_EXPIRED”: “FALSE”,</pre>
+<pre>"SLICE_EXPIRED": "FALSE",</pre>
 </div>
 </div>
 <div class="literalblock">
 <div class="content">
-<pre>“SLICE_CREATION”: “2013-07-29T13:15:30Z”,</pre>
+<pre>"SLICE_CREATION": "2013-07-29T13:15:30Z",</pre>
 </div>
 </div>
 <div class="literalblock">
 <div class="content">
-<pre>“SLICE_EMAIL”: myemail@geni.net</pre>
+<pre>"SLICE_EMAIL": myemail@geni.net</pre>
 </div>
 </div>
 <div class="paragraph">
@@ -1325,7 +1366,7 @@ def lookup_authorities_for_urns(urns)
  * ADMIN: The user has special 'admin' privileges and can perform operations not otherwise authorized.</p>
 </div>
 <div class="paragraph">
-<p>Note that renewal of slice expiration is handled in the update_slice call (with “SLICE_EXPIRATION” specified as the options key. The semantics of slice expiration is that slice expiration may only be extended, never reduced. Further restrictions (relative to project expiration or relative to slice creation, e.g.) are SA-specific.</p>
+<p>Note that renewal of slice expiration is handled in the update_slice call (with "SLICE_EXPIRATION" specified as the options key. The semantics of slice expiration is that slice expiration may only be extended, never reduced. Further restrictions (relative to project expiration or relative to slice creation, e.g.) are SA-specific.</p>
 </div>
 <div class="paragraph">
 <p>The following table contains required fields for slice objects and whether they are allowed in lookup ‘match’ criteria, required at creation or allowed at update:</p>
@@ -1382,7 +1423,7 @@ def lookup_authorities_for_urns(urns)
 #      in the credentials argument)
 #
 # Return:
-#   List of credential in “CREDENTIALS” format, i.e. a list of credentials with
+#   List of credential in "CREDENTIALS" format, i.e. a list of credentials with
 # type information suitable for passing to aggregates speaking AM API V3.
 def get_credentials(slice_urn, credentials, options)
 }}}</p>
@@ -1662,7 +1703,7 @@ A blank (null, not empty list) fields option indicates that the caller wants to 
 #        invocation (with certificate of the accountable member in the credentials argument)
 #
 # Return:
-#     List of credential in “CREDENTIALS” format, i.e. a list of credentials with
+#     List of credential in "CREDENTIALS" format, i.e. a list of credentials with
 #        type information suitable for passing to aggregates speaking AM API V3.
 def get_credentials(member_urn, credentials, options)
 }}}</p>
@@ -1787,7 +1828,7 @@ def get_credentials(member_urn, credentials, options)
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2016-09-16 10:27:11 MDT
+Last updated 2016-09-21 21:51:38 EDT
 </div>
 </div>
 </body>
