@@ -24,16 +24,16 @@ This document proposes a set of standard API’s that any GENI-compatible Federa
 
 The GENI Software Architecture rests on the interaction between different entities:
 
-* ' Aggregates ' : Collections of resources managed and presented in accordance with the AM API
+* *Aggregates* : Collections of resources managed and presented in accordance with the AM API
 
-* ' Members ' : Experimenters or other human consumers of aggregate resources
+* *Members* : Experimenters or other human consumers of aggregate resources
 
-* ' Authorities ' : Services that manage assertions about members and their permissions with respect to aggregate resources.
+* *Authorities* : Services that manage assertions about members and their permissions with respect to aggregate resources.
 
 There are two fundamental authority types in GENI:
 
- * ' Member Authority ' [MA]: Manages and asserts attributes about particular members
- * ' Slice Authority ' [SA]: Manages slice objects and generates credentials for members with respect to slices.
+ * _Member Authority_ [MA]: Manages and asserts attributes about particular members
+ * _Slice Authority_ [SA]: Manages slice objects and generates credentials for members with respect to slices.
 
 A ' Federation ' is a collection of Authorities and Aggregates that establish mutual trust and common policies to facilitate the sharing of resources among members. A Federation Registry is a software service representing a given Federation, providing lists of Slice Authorities, Member Authorities and aggregates associated with that federation, and providing a set of PKI certificates that any aggregate belonging to a given federation accepts as trust roots. The relationship of Federations to Federation Registries is 1:1.
 
@@ -91,21 +91,21 @@ Different Federation Authorities will provide different sets of methods bundled 
 
 Each Federation Registry or Authority API provides a ‘get_version’ method, which provides information to the caller (or a tool composing calls for a tool user) about versions and options supported by that API. The call takes no argument and is unguarded (anyone can call it). The return from the get_version call will be a dictionary including the following entries (by key):
 
- * VERSION: A string with the version number of the Federation API (e.g. "2", the version for this document). Note: this is the version of the API not the version of the implementation. This field is mandatory for all services.
- * URN : The URN of the service being contacted. This field is mandatory for SA and MA services, optional for Federation Registry service.
- * IMPLEMENTATION: A dictionary of information of the implantation of the service: {"code_version" : code_version, "code_url" : code_url, "code_release_date" : code_release_date, "site_update_date" : site_update_date"}. Of these, code_version is of type STRING, code_url is of type URL,  code_release_date and site_update_date are of format DATETIME. The format of the code_version string is implementation specific. This field is optional for services; in addition, all the sub-fields for the IMPLEMENTATION field are optional.
- * SERVICES: The list of names of services the given URL supports. This field is optional (with default being the default service for that authority, i.e. SERVICE for Federation Registry, SLICE for Slice Authority, MEMBER for MemberAuthority).
- * CREDENTIAL_TYPES: A list of recognized credential types (e.g. [geni_sfa, geni_abac]) and list of supported credential versions on protected API methods.  Format is analogous to that in the AM API: a list of {"type": cred_type, "version" : cred_version} dictionaries of all supported credential types and versions. ''[Required for Authorities only]''
- * ROLES : A list of recognized roles for slice/project membership (required only for those Slice Authorities supporting membership). The same set of roles refers to both slice and project membership at a given SA.
- * SERVICE_TYPES. A list of service types provided by the Federation Registry ''[Required for Federation Registry only]''
- * API_VERSIONS A dictionary of different peer implementation of different version of the same service. Modeled on the Aggregate Manager API, the format of this field is {version1 : url1, version2 : url2, …}. This field is required for all services. Note that the 'self' version (the version of the service being queried) is required to be included in this dictionary and should be consistent with the "VERSION" field above. The URL's in this field
- * FIELDS: A dictionary of object field names (i.e. in additional to the required fields) and associated attributes including:
-     * "OBJECT" provides the object type to which the field belongs. The field is optional for fields of the default authority object (i.e. SLICE for Slice Authority, MEMBER for Member Authority, SERVICE for Federation Registry) but mandatory for all other fields.
-     * "TYPE" may be one of "URN", "UID", "STRING", "DATETIME", "EMAIL", "KEY","BOOLEAN", "CREDENTIAL", "CERTIFICATE". [NB. This set of types subject to change. See Appendix for more information on these data types.] This field is mandatory for any field listed.
-     * "CREATE" attributes may be specified as "REQUIRED", "ALLOWED" or "NOT ALLOWED" (default = "NOT ALLOWED"). These indicate whether the given supplementary field is required, allowed or prohibited in create calls. This attribute is optional for listed fields.
-     * "MATCH" attributes may be specified as booleans TRUE or FALSE (default = TRUE). These indicate whether a given field may be specified in an match option of a lookup call. This attribute is optional for listed fields.
-     * "UPDATE" attributes may be specified as booleans TRUE or FALSE (default = FALSE). These indicate whether the given field may be specified in an update call. This attribute is optional for listed fields.
-     * "PROTECT" attributes may be labeled as "PUBLIC", "PRIVATE" or "IDENTIFYING". These are for the Member Authority only to differentiate between public, identifying and private data fields on members. The default, if not provided, is "PUBLIC", and thus this attribute is optional.
+* VERSION: A string with the version number of the Federation API (e.g. "2", the version for this document). Note: this is the version of the API not the version of the implementation. This field is mandatory for all services.
+* URN : The URN of the service being contacted. This field is mandatory for SA and MA services, optional for Federation Registry service.
+* IMPLEMENTATION: A dictionary of information of the implantation of the service: {"code_version" : code_version, "code_url" : code_url, "code_release_date" : code_release_date, "site_update_date" : site_update_date"}. Of these, code_version is of type STRING, code_url is of type URL,  code_release_date and site_update_date are of format DATETIME. The format of the code_version string is implementation specific. This field is optional for services; in addition, all the sub-fields for the IMPLEMENTATION field are optional.
+* SERVICES: The list of names of services the given URL supports. This field is optional (with default being the default service for that authority, i.e. SERVICE for Federation Registry, SLICE for Slice Authority, MEMBER for MemberAuthority).
+* CREDENTIAL_TYPES: A list of recognized credential types (e.g. [geni_sfa, geni_abac]) and list of supported credential versions on protected API methods.  Format is analogous to that in the AM API: a list of {"type": cred_type, "version" : cred_version} dictionaries of all supported credential types and versions. ''[Required for Authorities only]''
+* ROLES : A list of recognized roles for slice/project membership (required only for those Slice Authorities supporting membership). The same set of roles refers to both slice and project membership at a given SA.
+* SERVICE_TYPES. A list of service types provided by the Federation Registry ''[Required for Federation Registry only]''
+* API_VERSIONS A dictionary of different peer implementation of different version of the same service. Modeled on the Aggregate Manager API, the format of this field is {version1 : url1, version2 : url2, …}. This field is required for all services. Note that the 'self' version (the version of the service being queried) is required to be included in this dictionary and should be consistent with the "VERSION" field above. The URL's in this field
+* FIELDS: A dictionary of object field names (i.e. in additional to the required fields) and associated attributes including:
+ ** "OBJECT" provides the object type to which the field belongs. The field is optional for fields of the default authority object (i.e. SLICE for Slice Authority, MEMBER for Member Authority, SERVICE for Federation Registry) but mandatory for all other fields.
+ ** "TYPE" may be one of "URN", "UID", "STRING", "DATETIME", "EMAIL", "KEY","BOOLEAN", "CREDENTIAL", "CERTIFICATE". [NB. This set of types subject to change. See Appendix for more information on these data types.] This field is mandatory for any field listed.
+ ** "CREATE" attributes may be specified as "REQUIRED", "ALLOWED" or "NOT ALLOWED" (default = "NOT ALLOWED"). These indicate whether the given supplementary field is required, allowed or prohibited in create calls. This attribute is optional for listed fields.
+ ** "MATCH" attributes may be specified as booleans TRUE or FALSE (default = TRUE). These indicate whether a given field may be specified in an match option of a lookup call. This attribute is optional for listed fields.
+ ** "UPDATE" attributes may be specified as booleans TRUE or FALSE (default = FALSE). These indicate whether the given field may be specified in an update call. This attribute is optional for listed fields.
+ ** "PROTECT" attributes may be labeled as "PUBLIC", "PRIVATE" or "IDENTIFYING". These are for the Member Authority only to differentiate between public, identifying and private data fields on members. The default, if not provided, is "PUBLIC", and thus this attribute is optional.
 
 The FIELDS element of the get_version should contain all supplementary (non-mandatory) field objects supported by a given service. Additionally, it may contain mandatory field objects for which the default semantics (for "CREATE", "MATCH", "UPDATE", "PROTECT") should be overridden. Specifically, any values specified override the default values and any values unspecified are defined to be the defaults for that object/field in this document. The FIELDS element is thus optional for all services.
 
