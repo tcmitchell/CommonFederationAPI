@@ -160,15 +160,17 @@ The following is an example of a return from a get_version for an SA. The respon
 --------------------------------------------------
 {
   "VERSION": "2",
-  "URN" : urn:publicid:IDN+example.com+authority+sa",
+  "URN" : "urn:publicid:IDN+example.com+authority+sa",
   "SERVICES": ["SLICE", "PROJECT", "SLICE_MEMBER", "PROJECT_MEMBER"],
   "OBJECTS": [ "PROJECT" ],
-  "CREDENTIAL_TYPES": [{"type" : "geni_sfa", version" : 2}, {"type" : "geni_sfa", "version" : "3"}, {"type" : "geni_abac", "version" : "1"}]
+  "CREDENTIAL_TYPES": [{"type" : "geni_sfa", "version" : 2},
+                       {"type" : "geni_sfa", "version" : "3"},
+                       {"type" : "geni_abac", "version" : "1"}],
   "ROLES" : ["LEAD", "ADMIN", "MEMBER", "AUDITOR", "OPERATOR" ],
   "FIELDS": {
-    "_GENI_PROJECT_UID": {"TYPE" : "UID", "UPDATE" : FALSE},
-    "_GENI_SLICE_EMAIL": {"TYPE": "EMAIL", "CREATE": "REQUIRED", "UPDATE": TRUE},
-    "_GENI_PROJECT_EMAIL": {"TYPE": "EMAIL", "CREATE": "REQUIRED", "UPDATE": TRUE, "OBJECT": "PROJECT"}
+    "_GENI_PROJECT_UID": {"TYPE" : "UID", "UPDATE" : false},
+    "_GENI_SLICE_EMAIL": {"TYPE": "EMAIL", "CREATE": "REQUIRED", "UPDATE": true},
+    "_GENI_PROJECT_EMAIL": {"TYPE": "EMAIL", "CREATE": "REQUIRED", "UPDATE": true, "OBJECT": "PROJECT"}
   }
 }
 --------------------------------------------------
@@ -179,20 +181,20 @@ The following is an example of a return from a get_version for an MA, provided i
 --------------------------------------------------
 {
     "VERSION": "2",
-    "URN" : urn:publicid:IDN+example.com+authority+ma",
-    "CREDENTIAL_TYPES":  [{"type" : "geni_sfa", version" : 2},
+    "URN" : "urn:publicid:IDN+example.com+authority+ma",
+    "CREDENTIAL_TYPES":  [{"type" : "geni_sfa", "version" : 2},
                           {"type" : "geni_sfa", "version" : "3"},
-                          {"type" : "geni_abac", "version" : "1"}]
+                          {"type" : "geni_abac", "version" : "1"}],
     "SERVICES": ["MEMBER", "KEY"],
     "OBJECTS": [ "KEY" ],
     "FIELDS": {
         "MEMBER_DISPLAYNAME": {"TYPE": "STRING",
                                "CREATE": "ALLOWED",
-                               "UPDATE", TRUE,
+                               "UPDATE": true,
                                "PROTECT": "IDENTIFYING"},
         "MEMBER_AFFILIATION": {"TYPE": "STRING",
                                "CREATE": "ALLOWED",
-                               "UPDATE": TRUE,
+                               "UPDATE": true,
                                "PROTECT": "IDENTIFYING"},
         "MEMBER_SSL_PUBLIC_KEY": {"TYPE": "SSL_KEY"},
         "MEMBER_SSL_PRIVATE_KEY": {"TYPE": "SSL_KEY",
@@ -201,7 +203,7 @@ The following is an example of a return from a get_version for an MA, provided i
         "MEMBER_SSH_PRIVATE_KEY": {"TYPE": "SSH_KEY",
                                    "PROTECT": "PRIVATE"},
         "MEMBER_ENABLED": {"TYPE": "BOOLEAN",
-                           "UPDATE": TRUE}
+                           "UPDATE": true}
     }
 }
 --------------------------------------------------
@@ -212,7 +214,7 @@ The following is an example of a return from a get_version from a Federation Reg
 --------------------------------------------------
 {
     "VERSION": "2",
-    "URN" : urn:publicid:IDN+example.com+authority+fr",
+    "URN" : "urn:publicid:IDN+example.com+authority+fr",
     "SERVICE_TYPES" : ["SLICE_AUTHORITY", "MEMBER_AUTHORITY", "AGGREGATE_MANAGER"],
     "FIELDS": {
         "SERVICE_PROVIDER": {"TYPE": "STRING"}}
