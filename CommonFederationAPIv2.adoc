@@ -915,15 +915,24 @@ Note that access to key information is subject to authorization policy. The publ
 
 == Appendix: Federation Object Models ==
 
-As described, each Federation service method takes a set of options that provide further details on the request. Many of these options reflect the fields of the underlying object models. For example, the Slice Authority manages slice objects and allows for options for querying for and by slice object fields.
+As described, each Federation service method takes a set of options
+that provide further details on the request. Many of these options
+reflect the fields of the underlying object models. For example, the
+Slice Authority manages slice objects and allows for options for
+querying for and by slice object fields.
 
-Different Federation Authorities will implement different subsets of the possible set of Federation services. Those that do implement a given service should implement the API’s described above. The fields of the objects maintained through these API’s are flexible: some fields are required but different Authorities may have their own additional data, to be returned by the get_version method.
+Different Federation Authorities will implement different subsets of
+the possible set of Federation services. Those that do implement a
+given service should implement the API’s described above. The fields
+of the objects maintained through these API’s are flexible: some
+fields are required but different Authorities may have their own
+additional data, to be returned by the get_version method.
 
-The following diagram reflects the different objects maintained within the full range of Authority services, their interactions and mandatory fields.
+The following diagram reflects the different objects maintained within
+the full range of Authority services, their interactions and mandatory
+fields.
 
-*_Fix Me: FedObjectModel.png_*
-
-[[Image(FedObjectModel.png, 50%,nolink)]]
+image::FedObjectModel.png["Federation Object Model",title="Federation Object Model",width=825]
 
 == Appendix B: API Data Types ==
 
