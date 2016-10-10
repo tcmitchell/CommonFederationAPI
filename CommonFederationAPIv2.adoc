@@ -644,15 +644,18 @@ Note that renewal of slice expiration is handled in the update_slice call (with 
 
 The following table contains required fields for slice objects and whether they are allowed in lookup 'match' criteria, required at creation or allowed at update:
 
-|| ''' Name ''' || ''' Type ''' || ''' Description ''' || ''' Match ''' || ''' Creation ''' || ''' Update ''' ||
-|| SLICE_URN || URN || URN of given slice || Yes || No || No ||
-|| SLICE_UID ||UID || UID (unique within authority) of slice || Yes || No || No ||
-|| SLICE_CREATION || DATETIME || Creation time of slice || No || No || No ||
-|| SLICE_EXPIRATION || DATETIME || Expiration time of slice || No || Allowed || Yes ||
-|| SLICE_EXPIRED || BOOLEAN || Whether slice has expired || Yes || No || No ||
-|| SLICE_NAME || STRING || Short name of Slice|| No || Required || No ||
-|| SLICE_DESCRIPTION || STRING || Description of Slice || No || Allowed || Yes ||
-|| SLICE_PROJECT_URN || URN || URN of project to which slice is associated (if SA supports project) || Yes || Required (if SA supports project) || No ||
+[options="header"]
+|==========
+| Name | Type | Description | Match | Creation | Update
+| SLICE_URN | URN | URN of given slice | Yes | No | No
+| SLICE_UID |UID | UID (unique within authority) of slice | Yes | No | No
+| SLICE_CREATION | DATETIME | Creation time of slice | No | No | No
+| SLICE_EXPIRATION | DATETIME | Expiration time of slice | No | Allowed | Yes
+| SLICE_EXPIRED | BOOLEAN | Whether slice has expired | Yes | No | No
+| SLICE_NAME | STRING | Short name of Slice| No | Required | No
+| SLICE_DESCRIPTION | STRING | Description of Slice | No | Allowed | Yes
+| SLICE_PROJECT_URN | URN | URN of project to which slice is associated (if SA supports project) | Yes | Required (if SA supports project) | No
+|==========
 
 To clarify the semantics of the SLICE_PROJECT_URN field: it is a required field for those SAs that support the PROJECT service (and in this context may be matched and is required at creation time, but not updatable). In SAs that do not support projects, the field is not meaningful and should not be supported.
 
@@ -660,11 +663,14 @@ NB: SLICE_NAME must adhere to the restrictions for slice names in the Aggregate 
 
 The Slice Service supports these standard API methods for type="SLICE":
 
-|| ''' Method ''' || ''' Description ''' ||
-|| create || Creates a  new slice with provided details  ||
-|| update || Updates given slice ||
-|| ~~delete~~ || Note: No SA should support slice deletion since there is no authoritative way to know that there aren't live slivers associated with that slice.  ||
-|| lookup || lookup slices matching given match criteria subject to authorization restrictions. ||
+[options="header"]
+|==========
+| Method | Description
+| create | Creates a  new slice with provided details
+| update | Updates given slice
+| [line-through]#delete# | Note: No SA should support slice deletion since there is no authoritative way to know that there aren't live slivers associated with that slice.
+| lookup | lookup slices matching given match criteria subject to authorization restrictions.
+|==========
 
 Additionally, the Slice service provides the following methods:
 
@@ -779,23 +785,29 @@ It is expected that the sliver_info create, update and delete calls will be rest
 
 The following table contains the required fields for sliver info objects and whether they are allowed in lookup 'match' criteria, required at creation or allowed at update:
 
-|| '''Name''' || '''Type''' || '''Description''' || '''Match''' || '''Creation''' || '''Update''' ||
-|| SLIVER_INFO_SLICE_URN || URN || URN of slice for registered sliver || Yes || Required || No ||
-|| SLIVER_INFO_URN || URN || URN of registered sliver || Yes || Required || No ||
-|| SLIVER_INFO_AGGREGATE_URN || URN || URN of aggregate of registered sliver || Yes || Required || No ||
-|| SLIVER_INFO_CREATOR_URN || URN || URN of member/tool that created the registered sliver || Yes || Required || No ||
-|| SLIVER_INFO_EXPIRATION || DATETIME || Time of sliver expiration || No || Required || Yes ||
-|| SLIVER_INFO_CREATION || DATETIME || Time of sliver creation || No || Allowed || No ||
+[options="header"]
+|==========
+| Name | Type | Description | Match | Creation | Update
+| SLIVER_INFO_SLICE_URN | URN | URN of slice for registered sliver | Yes | Required | No
+| SLIVER_INFO_URN | URN | URN of registered sliver | Yes | Required | No
+| SLIVER_INFO_AGGREGATE_URN | URN | URN of aggregate of registered sliver | Yes | Required | No
+| SLIVER_INFO_CREATOR_URN | URN | URN of member/tool that created the registered sliver | Yes | Required | No
+| SLIVER_INFO_EXPIRATION | DATETIME | Time of sliver expiration | No | Required | Yes
+| SLIVER_INFO_CREATION | DATETIME | Time of sliver creation | No | Allowed | No
+|==========
 
 Note that the SLIVER_INFO_URN is the unique key for this data table (there may be multiple slices per aggregate or multiple aggregates per slice, but the sliver is absolutely unique over all slices and aggregates.
 
 The Sliver Info Service supports these standard API methods for type="SLIVER_INFO":
 
-|| ''' Method ''' || ''' Description ''' ||
-|| create || Registers  new sliver info with provided details  ||
-|| update || Updates given sliver info ||
-|| delete || Deletes given sliver info ||
-|| lookup || lookup sliver info matching given match criteria subject to authorization restrictions. ||
+[options="header"]
+|==========
+| Method | Description
+| create | Registers  new sliver info with provided details
+| update | Updates given sliver info
+| delete | Deletes given sliver info
+| lookup | lookup sliver info matching given match criteria subject to authorization restrictions.
+|==========
 
 
 == Project Service Methods ==
@@ -804,22 +816,28 @@ Projects are groupings of slices and members for a particular administrative pur
 
 The following table contains required fields for project objects and whether they are allowed in lookup 'match' criteria, required at creation or allowed at update:
 
-|| ''' Name ''' || ''' Type ''' || ''' Description ''' || ''' Match ''' || ''' Creation ''' || ''' Update ''' ||
-|| PROJECT_URN || URN || URN of given project || Yes || No || No ||
-|| PROJECT_UID ||UID || UID (unique within authority) of project || Yes || No || No ||
-|| PROJECT_CREATION || DATETIME || Creation time of project || No || No || No ||
-|| PROJECT_EXPIRATION || DATETIME || Expiration time of project || No || Required || Yes ||
-|| PROJECT_EXPIRED || BOOLEAN || Whether project has expired || Yes || No || No ||
-|| PROJECT_NAME || STRING || Short name of Project || Yes || Required || No ||
-|| PROJECT_DESCRIPTION || STRING || Description of Project || No || Allowed || Yes ||
+[options="header"]
+|==========
+| Name | Type | Description | Match | Creation | Update
+| PROJECT_URN | URN | URN of given project | Yes | No | No
+| PROJECT_UID |UID | UID (unique within authority) of project | Yes | No | No
+| PROJECT_CREATION | DATETIME | Creation time of project | No | No | No
+| PROJECT_EXPIRATION | DATETIME | Expiration time of project | No | Required | Yes
+| PROJECT_EXPIRED | BOOLEAN | Whether project has expired | Yes | No | No
+| PROJECT_NAME | STRING | Short name of Project | Yes | Required | No
+| PROJECT_DESCRIPTION | STRING | Description of Project | No | Allowed | Yes
+|==========
 
 The Project Service supports these standard API methods for type="PROJECT":
 
-|| ''' Method ''' || ''' Description ''' ||
-|| create || Creates a new project with provided details  ||
-|| update || Updates given project ||
-|| delete || Deletes given project. Note: should fail if there are any active slices associated with project. ||
-|| lookup || lookup projects matching given match criteria subject to authorization restrictions. ||
+[options="header"]
+|==========
+| Method | Description
+| create | Creates a new project with provided details
+| update | Updates given project
+| delete | Deletes given project. Note: should fail if there are any active slices associated with project.
+| lookup | lookup projects matching given match criteria subject to authorization restrictions.
+|==========
 
 
 == Project Member Service Methods ==
@@ -828,10 +846,13 @@ Projects may have members associated with them in particular roles and thus supp
 
 For method signatures, see the listing under the [#SliceMemberServiceMethods Slice Member Service].
 
-|| ''' Method ''' || ''' Description ''' ||
-|| modify_membership || Adds/removes/changes roles of members with respect to given project   ||
-|| lookup_members || Returns list of {PROJECT_MEMBER, PROJECT_ROLE} dictionaries| for members projects matching given criteria ||
-|| lookup_for_member || Returns list of {PROJECT_URN, PROJECT_ROLE} dictionaries for projects to which a given member belongs ||
+[options="header"]
+|==========
+| Method | Description
+| modify_membership | Adds/removes/changes roles of members with respect to given project
+| lookup_members | Returns list of {PROJECT_MEMBER, PROJECT_ROLE} dictionaries| for members projects matching given criteria
+| lookup_for_member | Returns list of {PROJECT_URN, PROJECT_ROLE} dictionaries for projects to which a given member belongs
+|==========
 
 
 == Member Authority API ==
@@ -851,9 +872,12 @@ All MA calls are protected; passing and validating a client-side cert is require
 
 Like the Slice Authority, the Member Authority provides a set of services each consisting of a set of methods. Some services are required for any MA implementation, others are optional, as indicated by this table:
 
-|| '''Service''' || '''Description''' || '''Required''' || '''Object'''
-|| MEMBER || Services to  lookup and update information about members || YES || MEMBER ||
-|| KEY || Services to support storing, deleting and retrieving keys (e.g. SSH)  for members || NO || KEY ||
+[options="header"]
+|==========
+| Service | Description | Required | Object
+| MEMBER | Services to  lookup and update information about members | YES | MEMBER
+| KEY | Services to support storing, deleting and retrieving keys (e.g. SSH)  for members | NO | KEY
+|==========
 
 == Member Service Methods ==
 
@@ -866,19 +890,25 @@ The information managed by the MA API is divided into three categories, for purp
 The following table contains required fields for member objects and whether they are allowed in lookup 'match' criteria and their protection (public, private, identifying):
 
 
-|| ''' Name ''' || ''' Type ''' || ''' Description ''' || ''' Match ''' || ''' Protection ''' ||
-|| MEMBER_URN || URN || URN of given member || Yes || Public ||
-|| MEMBER_UID ||UID || UID (unique within authority) of member || Yes || Public ||
-|| MEMBER_FIRSTNAME || STRING || First name of member || Yes || Identifying ||
-|| MEMBER_LASTNAME || STRING || Last name of member || Yes || Identifying ||
-|| MEMBER_USERNAME || STRING || Username of user || Yes || Public ||
-|| MEMBER_EMAIL || STRING || Email of user || Yes || Identifying ||
+[options="header"]
+|==========
+| Name | Type | Description | Match | Protection
+| MEMBER_URN | URN | URN of given member | Yes | Public
+| MEMBER_UID |UID | UID (unique within authority) of member | Yes | Public
+| MEMBER_FIRSTNAME | STRING | First name of member | Yes | Identifying
+| MEMBER_LASTNAME | STRING | Last name of member | Yes | Identifying
+| MEMBER_USERNAME | STRING | Username of user | Yes | Public
+| MEMBER_EMAIL | STRING | Email of user | Yes | Identifying
+|==========
 
 The MEMBER Service supports these standard API methods for type="MEMBER":
 
-|| ''' Method ''' || ''' Description ''' ||
-|| update ||  update info associated with given member by URN ||
-|| lookup || lookup info associated with members matching match criteria. ||
+[options="header"]
+|==========
+| Method | Description
+| update |  update info associated with given member by URN
+| lookup | lookup info associated with members matching match criteria.
+|==========
 
 Note: the ''lookup' call provides public information for all members matching the 'match' criteria. It will also provide identifying (e.g. email or name) or private (e.g. SSL private key) information for members for whom the caller is authorized.
 When a field requested is unauthorized, the key will not be provide in the returned dictionary for that member.
@@ -909,22 +939,28 @@ The Key Service provides methods to allow for storing, deleting and retrieving S
 
 The following table contains the required fields for key objects and whether they are allowed in lookup 'match' criteria, required at creation or allowed at update:
 
-|| '''Name''' || '''Type''' || '''Description''' || '''Match''' || '''Creation''' || '''Update''' ||
-|| KEY_MEMBER || URN || URN of member associated with key pair || Yes || Required || No ||
-|| KEY_ID || STRING || Unique identifier for member/key pair: typically a fingerprint or hash of public key joined with member information || Yes || No || No ||
-|| KEY_TYPE || STRING || Type of key (e.g. PEM, openssh, rsa-ssh) || Yes || Required || No ||
-|| KEY_PUBLIC || KEY || Public key value || Yes || Required || No ||
-|| KEY_PRIVATE || KEY || Private key value || Yes || Allowed || No ||
-|| KEY_DESCRIPTION || STRING || Human readable description of key pair || Yes || Allowed || Yes ||
+[options="header"]
+|==========
+| Name | Type | Description | Match | Creation | Update
+| KEY_MEMBER | URN | URN of member associated with key pair | Yes | Required | No
+| KEY_ID | STRING | Unique identifier for member/key pair: typically a fingerprint or hash of public key joined with member information | Yes | No | No
+| KEY_TYPE | STRING | Type of key (e.g. PEM, openssh, rsa-ssh) | Yes | Required | No
+| KEY_PUBLIC | KEY | Public key value | Yes | Required | No
+| KEY_PRIVATE | KEY | Private key value | Yes | Allowed | No
+| KEY_DESCRIPTION | STRING | Human readable description of key pair | Yes | Allowed | Yes
+|==========
 
 
 The Key Service supports these standard API methods for type="KEY":
 
-|| ''' Method ''' || ''' Description ''' ||
-|| create || Creates a new record for a key associated with a member. The 'KEY_ID' returned from this call is the unique identifier for this key for this member and can be used as the 'urn' variable in the other key management API calls below. ||
-|| update || urn is the key_id ||
-|| delete || urn is the key_id ||
-|| lookup || lookup keys matching given match criteria subject to authorization restrictions. ||
+[options="header"]
+|==========
+| Method | Description
+| create | Creates a new record for a key associated with a member. The 'KEY_ID' returned from this call is the unique identifier for this key for this member and can be used as the 'urn' variable in the other key management API calls below.
+| update | urn is the key_id
+| delete | urn is the key_id
+| lookup | lookup keys matching given match criteria subject to authorization restrictions.
+|==========
 
 Note that access to key information is subject to authorization policy. The public keys are likely to be readily available but access to the private keys will be tightly restricted (often only to the user or authorized proxy). Requests to lookup key information for prohibited filter criteria results in omitting these fields. For example, if one asks for KEY_PUBLIC and KEY_PRIVATE for a list of member_urn's, the result may return both KEY_PUBLIC and KEY_PRIVATE for certain (permitted) users, and only KEY_PUBLIC for other (restricted) users.
 
