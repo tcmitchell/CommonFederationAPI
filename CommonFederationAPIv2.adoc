@@ -371,14 +371,21 @@ should result in an authorization error. If the 'filter' criteria requests
 fields whose disclosure is prohibited to the requestor by policy, the method
 must not return the specific data fields. Rather, it should return a
 dictionary with no entry for the prohibited fields. E.g.
-{"urn_1" : {"PUBLIC_KEY" : public_key_1, "PRIVATE_KEY" : private_key_1},
-"urn_2" : {"PUBLIC_KEY" : public_key_2}}
 
+[source,json]
+--------------------------------------------------
+{
+    "urn_1" : {"PUBLIC_KEY" : "<public_key_1>",
+               "PRIVATE_KEY" : "<private_key_1>"},
+    "urn_2" : {"PUBLIC_KEY" : "<public_key_2>"}
+}
+--------------------------------------------------
 
 == API Method Examples: ==
 
 A Member Authority (MA) manages information about member objects. The MA method lookup(type="MEMBER") could take an options argument such as
 
+[source,json]
 --------------------------------------------------
 {
     "match": {"MEMBER_LASTNAME": "BROWN"},
@@ -388,18 +395,19 @@ A Member Authority (MA) manages information about member objects. The MA method 
 
 Such a call would find any member with last name Brown and return a dictionary keyed by the member URN containing a dictionary with their email, and first name.
 
+[source,json]
 --------------------------------------------------
 {
       "urn:publicid:IDN+mych+user+abrown" :
-            {"MEMBER_EMAIL": abrown@williams.edu,
+            {"MEMBER_EMAIL": "abrown@williams.edu",
              "MEMBER_FIRSTNAME": "Arlene"},
 
       "urn:publicid:IDN+mych+user+mbrown" :
-            {"MEMBER_EMAIL": mbrown@umass.edu,
+            {"MEMBER_EMAIL": "mbrown@umass.edu",
              "MEMBER_FIRSTNAME": "Michael"},
 
       "urn:publicid:IDN+mych+user+sbrown" :
-            {"MEMBER_EMAIL": sbrown@stanford.edu,
+            {"MEMBER_EMAIL": "sbrown@stanford.edu",
              "MEMBER_FIRSTNAME": "Sam"}
 }
 --------------------------------------------------
@@ -409,6 +417,7 @@ The SA method update(type="SLICE") could take the following options
 argument to change the slice description and extend the slice
 expiration:
 
+[source,json]
 --------------------------------------------------
 {
     "fields" : { "SLICE_DESCRIPTION": "Updated Description",
@@ -419,6 +428,7 @@ expiration:
 An example of lookup(type="SLICE)" at an SA that wanted to retrieve
 the slice names for a list of slice URNs could specify options:
 
+[source,json]
 --------------------------------------------------
 {
     "match": {
@@ -436,12 +446,12 @@ the slice names for a list of slice URNs could specify options:
 An example of create(type="SLICE") call would specify required
 options e.g.:
 
+[source,json]
 --------------------------------------------------
 {
-      'fields' : {
+      "fields" : {
             "SLICE_NAME": "TEST_SLICE",
             "SLICE_DESCRIPTION": "My Test Slice",
-            "SLICE_EMAIL": myemail@geni.net,
             "SLICE_PROJECT_URN": "urn:publicid+IDN+this_sa+project+myproject"
        }
 }
@@ -449,18 +459,18 @@ options e.g.:
 
 and receive a return dictionary looking like:
 
+[source,json]
 --------------------------------------------------
 {
        "SLICE_URN": "urn:publicid+IDN+this.sa+slice+TESTSLICE",
        "SLICE_UID": "...",
        "SLICE_NAME": "TESTSLICE",
-       "SLICE_CREDENTIAL": ".....",
+       "SLICE_CREDENTIAL": "...",
        "SLICE_DESCRIPTION": "My Test Slice",
        "SLICE_PROJECT_URN": "urn:publicid+IDN+this_sa+project+myproject",
        "SLICE_EXPIRATION": "2013-08-29T13:15:30Z",
        "SLICE_EXPIRED": "FALSE",
-       "SLICE_CREATION": "2013-07-29T13:15:30Z",
-       "SLICE_EMAIL": myemail@geni.net
+       "SLICE_CREATION": "2013-07-29T13:15:30Z"
 }
 --------------------------------------------------
 
@@ -496,60 +506,71 @@ The Federation Registry implements the SERVICE service and supports the SERVICE 
 
 Services have a particular type that indicates the kind of service it represents. The full list of supported services should be provided by a TYPES key in the Federation Registry get_version call, for example:
 
+[source,json]
 --------------------------------------------------
 {
-    ...
+
     "SERVICE_TYPES" : ["SLICE_AUTHORITY", "MEMBER_AUTHORITY",
-                       "AGGREGATE_MANAGER", ...]
-    ...
+                       "AGGREGATE_MANAGER", "..."]
+
 }
 --------------------------------------------------
 
 This table contains a set of ''example'' services types (of which only SLICE_AUTHORITY, MEMBER_AUTHORITY and AGGREGATE_MANAGER are required for any given federation):
 
-|| ''' Service ''' || ''' Description ''' ||
-|| SLICE_AUTHORITY || An instance of the Slice Authority Federation service described in this document ||
-|| MEMBER_AUTHORITY || An instance of the Member Authority Federation service described in this document ||
-|| AGGREGATE_MANAGER || An instance of an Aggregate Manager satisfying the Aggregate Manager API ||
-|| STITCHING_COMPUTATION_SERVICE || A topology service for supporting cross-aggregate stitching ||
-|| CREDENTIAL_STORE || A service holding credentials for the federation, typically for supporting federation authentication services ||
-|| LOGGING_SERVICE || A service to support federation-level event logging ||
+[options="header"]
+|==========
+| Service | Description
+| SLICE_AUTHORITY | An instance of the Slice Authority Federation service described in this document
+| MEMBER_AUTHORITY | An instance of the Member Authority Federation service described in this document
+| AGGREGATE_MANAGER | An instance of an Aggregate Manager satisfying the Aggregate Manager API
+| STITCHING_COMPUTATION_SERVICE | A topology service for supporting cross-aggregate stitching
+| CREDENTIAL_STORE | A service holding credentials for the federation, typically for supporting federation authentication services
+| LOGGING_SERVICE | A service to support federation-level event logging
+|==========
 
 The following table describes the standard fields for services (aggregates and authorities) provided by Federation Registry API calls. (The 'Required' column indicates whether the field must be present for a valid service, 'match' indicates whether the field can be used in a lookup match criterion):
 
-
-|| ''' Name ''' || ''' Type ''' || ''' Description ''' || ''' Required ''' || ''' Match ''' ||
-|| SERVICE_URN || URN || URN of given service || Yes || Yes ||
-|| SERVICE_URL ||URL || URL by which to contact the service || Yes || Yes ||
-|| SERVICE_TYPE || STRING || Name of service type (from Federation Registry get_version.TYPES) || Yes || Yes ||
-|| SERVICE_CERT || Certificate || Public certificate of service || No || No ||
-|| SERVICE_NAME || String || Short name of service || Yes || No ||
-|| SERVICE_DESCRIPTION || String || Descriptive name of service || No || No ||
-|| SERVICE_PEERS || List of Dictionaries || URLs and version info for other running version of same service (see below) || No || No ||
+[options="header"]
+|==========
+| Name | Type | Description | Required | Match
+| SERVICE_URN | URN | URN of given service | Yes | Yes
+| SERVICE_URL |URL | URL by which to contact the service | Yes | Yes
+| SERVICE_TYPE | STRING | Name of service type (from Federation Registry get_version.TYPES) | Yes | Yes
+| SERVICE_CERT | Certificate | Public certificate of service | No | No
+| SERVICE_NAME | String | Short name of service | Yes | No
+| SERVICE_DESCRIPTION | String | Descriptive name of service | No | No
+| SERVICE_PEERS | List of Dictionaries | URLs and version info for other running version of same service (see below) | No | No
+|==========
 
 The SERVICE_PEERS field is similar to that in the AM API: a list of {version", 'url'} dictionaries for other supported peer services of different versions.
 It is provided to allow a user/tool to determine which URL to contact without needing to poll the get_version call across a set of services.
 The current service URL (provided in the SERVICE_URL field) should always be included in the SERVICE_PEERS.
 The information provided by SERVICE peers should be consistent with that provided by the API_VERSIONS field from the get_version call to these specific services.
 An example would be as follows:
-{{{
-[
-{'version' : '1', 'url' : 'https://example.com/xmlrpc/v1'},
-{'version' : '2', 'url' : 'https://example.com/xmlrpc/v2'},
-]
 
-}}}
+[source,json]
+--------------------------------------------------
+[
+    {"version" : "1", "url" : "https://example.com/xmlrpc/v1"},
+    {"version" : "2", "url" : "https://example.com/xmlrpc/v2"},
+]
+--------------------------------------------------
 
 The Federation Registry API supports these standard API methods for type="SERVICE":
 
-|| ''' Method ''' || ''' Description ''' ||
-|| lookup || lookup services matching given match criteria. ||
+[options="header"]
+|==========
+| Method | Description
+| lookup | lookup services matching given match criteria.
+|==========
 
 Note that even though the Federation Registry API does not require authentication and thus no client certificates, the API uses the common API signatures for all 'lookup' methods and thus takes a list of credentials. This list, however, should be empty and ignored by the implementation.
 
 Additionally, the Federation Registry API supports the following methods:
 
-{{{
+[source,python]
+--------------------------------------------------
 #!python
 # Return list of trust roots (certificates) associated with this Federation.
 #
@@ -565,9 +586,10 @@ Additionally, the Federation Registry API supports the following methods:
 # Return:
 #   List of certificates representing trust roots of this Federation.
 def get_trust_roots()
-}}}
+--------------------------------------------------
 
-{{{
+[source,python]
+--------------------------------------------------
 #!python
 # Lookup the authorities for a given URNs
 #
@@ -581,14 +603,16 @@ def get_trust_roots()
 # Return:
 #   List of dictionaries {urn : url} mapping URLs of Authorities to given URN's
 def lookup_authorities_for_urns(urns)
-}}}
+--------------------------------------------------
 
 The ''lookup_authorities_for_urns'' method maps object URN's to authority URN's. Note that the transformation from the URN's of objects (e.g. slice, project, member) to the URN's of their authority is a simple one, for example:
 
-|| '''Type''' || '''Object URN''' || '''Authority URN''' ||
-|| Slice || urn:publicid:IDN+sa_name+slice+slice_name || urn:publicid:IDN+sa_name+authority+sa ||
-|| Member || urn:publicid:IDN+ma_name+user+user_name || urn:publicid:IDN+ma_name+authority+ma ||
-
+[options="header"]
+|==========
+| Type | Object URN | Authority URN
+| Slice | urn:publicid:IDN+sa_name+slice+slice_name | urn:publicid:IDN+sa_name+authority+sa
+| Member | urn:publicid:IDN+ma_name+user+user_name | urn:publicid:IDN+ma_name+authority+ma
+|==========
 
 == Slice Authority API ==
 
@@ -598,13 +622,15 @@ All SA calls are protected; passing and validating a client-side cert is require
 
 The following is a list of potential SA services.
 
-
-|| ''' Service ''' || ''' Description ''' || ''' Required ''' || ''' Object ''' ||
-|| SLICE || Managing generation, renewal of slice credentials and slice lookup services || YES || SLICE ||
-|| SLICE_MEMBER ||Defining and managing roles of members with respect to slices || NO || ||
-|| SLIVER_INFO || Providing information about what Aggregates have reported having slivers for a given slice. Non-authoritative/advisory || NO || SLIVER_INFO ||
-|| PROJECT || Defining projects (groupings of slices) and project lookup services || NO || PROJECT ||
-|| PROJECT_MEMBER || Defining and managing roles of members with respect to projects || NO || ||
+[options="header"]
+|==========
+| Service | Description | Required | Object
+| SLICE | Managing generation, renewal of slice credentials and slice lookup services | YES | SLICE
+| SLICE_MEMBER |Defining and managing roles of members with respect to slices | NO |
+| SLIVER_INFO | Providing information about what Aggregates have reported having slivers for a given slice. Non-authoritative/advisory | NO | SLIVER_INFO
+| PROJECT | Defining projects (groupings of slices) and project lookup services | NO | PROJECT
+| PROJECT_MEMBER | Defining and managing roles of members with respect to projects | NO |
+|==========
 
 == Slice Service Methods ==
 
