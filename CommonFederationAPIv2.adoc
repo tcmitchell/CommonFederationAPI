@@ -1,5 +1,5 @@
 
-== Federation Service API’s ==
+== Federation Service API's ==
 Marshall Brinn, GENI Program Office, USA +
 Jonathon Duerig, University of Utah, USA +
 Aaron Helsinger, GENI Program Office, USA +
@@ -20,7 +20,7 @@ Converted to AsciiDoc: September, 2016
 == Introduction ==
 
 
-This document proposes a set of standard API’s that any GENI-compatible Federation should or may provide. The document describes what is required and what is optional in the calls and responses to these APIs.
+This document proposes a set of standard API's that any GENI-compatible Federation should or may provide. The document describes what is required and what is optional in the calls and responses to these APIs.
 
 The GENI Software Architecture rests on the interaction between different entities:
 
@@ -37,11 +37,11 @@ There are two fundamental authority types in GENI:
 
 A ' Federation ' is a collection of Authorities and Aggregates that establish mutual trust and common policies to facilitate the sharing of resources among members. A Federation Registry is a software service representing a given Federation, providing lists of Slice Authorities, Member Authorities and aggregates associated with that federation, and providing a set of PKI certificates that any aggregate belonging to a given federation accepts as trust roots. The relationship of Federations to Federation Registries is 1:1.
 
-The Authorities of any given Federation are free to implement their own Authorization (AuthZ) scheme. The API’s allow for passing credentials to the calls, but an Authority may choose to allow or disallow calls using logic and policies that are internal to that Federation. There is no universal (cross-Federation) requirement for any particular policy regarding Authority AuthZ.
+The Authorities of any given Federation are free to implement their own Authorization (AuthZ) scheme. The API's allow for passing credentials to the calls, but an Authority may choose to allow or disallow calls using logic and policies that are internal to that Federation. There is no universal (cross-Federation) requirement for any particular policy regarding Authority AuthZ.
 
 Authorities are fundamentally independent of one another. The objects defined at one Authority are not necessarily entitled to any services provided by another Authority. Each aggregate may choose to trust or not trust any particular Authority. Likewise, any Authority may chose to trust or not trust any other Authority.  A Federation Registry may choose to advertise or not advertise any particular aggregate, regardless of whether that aggregate trusts the Authorities advertised by that Federation Registry. Similarly, a given Slice Authority or Member Authority may be advertised by a single Federation Registries or by multiple Federation Registries. Federation Registry API calls are unprotected. There is no notion of trust between Federation Registries or between Federation Registries and Authorities or Aggregates.
 
-This document describes the APIs of the Federation Registry as well as the MA and SA. It is expected that a well-behaved GENI-compatible tool will allow for interacting with any Federation Registry and Authority that implement the standard API’s described in this document.
+This document describes the APIs of the Federation Registry as well as the MA and SA. It is expected that a well-behaved GENI-compatible tool will allow for interacting with any Federation Registry and Authority that implement the standard API's described in this document.
 
 
 
@@ -58,13 +58,13 @@ The APIs described here share some common properties, which should be assumed fo
 
 * The wire-protocol is XML/RPC. It is thus language independent on both client and server side of the API calls.
 * Most calls are protected, running over SSL and thus requiring the caller to use its certificate and private key. Certain calls are unprotected and can be accessed with no requirement for a validated client-side certificate . Such calls will noted in the API documentation below.
-* Each call takes an ‘options’ argument, a dictionary allowing for passing specific non-standard/optional arguments
-* Each protected method takes a ‘credentials’ argument, a list of type/credential tuples that help the Federation Registry or Authority invoke whatever AuthZ logic it may choose. As noted above, the Federation Registry or Authority may choose to use or disregard these credentials. Unprotected methods do not take a ‘credentials’ argument.
+* Each call takes an 'options' argument, a dictionary allowing for passing specific non-standard/optional arguments
+* Each protected method takes a 'credentials' argument, a list of type/credential tuples that help the Federation Registry or Authority invoke whatever AuthZ logic it may choose. As noted above, the Federation Registry or Authority may choose to use or disregard these credentials. Unprotected methods do not take a 'credentials' argument.
 * Each Federation Registry or Authority provides a get_version method, which describes the version number of the API provided, credential types supported, supplementary object fields and other data for interpreting API call returns.
 * A Federation Registry or Authority is free to implement additional methods beyond those specified in this document.
-* The URN is the fundamental identifier in all Federation API’s. URN’s are globally unique at any given time, though not necessarily unique over time. Disambiguation for entities with the same URN over time may be provided by an optional UUID argument for certain API methods. The format of URN's is documented at http://groups.geni.net/geni/wiki/GeniApiIdentifiers.
+* The URN is the fundamental identifier in all Federation API's. URN's are globally unique at any given time, though not necessarily unique over time. Disambiguation for entities with the same URN over time may be provided by an optional UUID argument for certain API methods. The format of URN's is documented at http://groups.geni.net/geni/wiki/GeniApiIdentifiers.
 
-These API’s are provided in pseudo-code (i.e. language independent) format, with inputs and outputs (optional and required) described by comments, e.g.
+These API's are provided in pseudo-code (i.e. language independent) format, with inputs and outputs (optional and required) described by comments, e.g.
 
 [source,python]
 --------------------------------------------------
@@ -76,11 +76,11 @@ These API’s are provided in pseudo-code (i.e. language independent) format, wi
 #  credentials : list of {type : credential} tuples representing credentials
 #     provided by caller to support AuthZ on method call.
 #      [NB: This argument will be omitted in descriptions below. ]
-#  options : … [ Recognized options: ….]
+#  options : ... [ Recognized options: ....]
 #
 # Return:
-#  E.g. a list of dictionaries with these fields mandatory (…)
-#                                         and these fields optional (…)
+#  E.g. a list of dictionaries with these fields mandatory (...)
+#                                         and these fields optional (...)
 def fed_func (arg1, arg2, credentials, options)
 --------------------------------------------------
 
@@ -89,7 +89,7 @@ def fed_func (arg1, arg2, credentials, options)
 
 Different Federation Authorities will provide different sets of methods bundled into services. Further, they will manage different kinds of objects and support different details for these objects.
 
-Each Federation Registry or Authority API provides a ‘get_version’ method, which provides information to the caller (or a tool composing calls for a tool user) about versions and options supported by that API. The call takes no argument and is unguarded (anyone can call it). The return from the get_version call will be a dictionary including the following entries (by key):
+Each Federation Registry or Authority API provides a 'get_version' method, which provides information to the caller (or a tool composing calls for a tool user) about versions and options supported by that API. The call takes no argument and is unguarded (anyone can call it). The return from the get_version call will be a dictionary including the following entries (by key):
 
 * VERSION: A string with the version number of the Federation API (e.g. "2", the version for this document). Note: this is the version of the API not the version of the implementation. This field is mandatory for all services.
 * URN : The URN of the service being contacted. This field is mandatory for SA and MA services, optional for Federation Registry service.
@@ -98,7 +98,7 @@ Each Federation Registry or Authority API provides a ‘get_version’ method, w
 * CREDENTIAL_TYPES: A list of recognized credential types (e.g. [geni_sfa, geni_abac]) and list of supported credential versions on protected API methods.  Format is analogous to that in the AM API: a list of {"type": cred_type, "version" : cred_version} dictionaries of all supported credential types and versions. ''[Required for Authorities only]''
 * ROLES : A list of recognized roles for slice/project membership (required only for those Slice Authorities supporting membership). The same set of roles refers to both slice and project membership at a given SA.
 * SERVICE_TYPES. A list of service types provided by the Federation Registry ''[Required for Federation Registry only]''
-* API_VERSIONS A dictionary of different peer implementation of different version of the same service. Modeled on the Aggregate Manager API, the format of this field is {version1 : url1, version2 : url2, …}. This field is required for all services. Note that the 'self' version (the version of the service being queried) is required to be included in this dictionary and should be consistent with the "VERSION" field above. The URL's in this field
+* API_VERSIONS A dictionary of different peer implementation of different version of the same service. Modeled on the Aggregate Manager API, the format of this field is {version1 : url1, version2 : url2, ...}. This field is required for all services. Note that the 'self' version (the version of the service being queried) is required to be included in this dictionary and should be consistent with the "VERSION" field above. The URL's in this field
 * FIELDS: A dictionary of object field names (i.e. in additional to the required fields) and associated attributes including:
  ** "OBJECT" provides the object type to which the field belongs. The field is optional for fields of the default authority object (i.e. SLICE for Slice Authority, MEMBER for Member Authority, SERVICE for Federation Registry) but mandatory for all other fields.
  ** "TYPE" may be one of "URN", "UID", "STRING", "DATETIME", "EMAIL", "KEY","BOOLEAN", "CREDENTIAL", "CERTIFICATE". [NB. This set of types subject to change. See Appendix for more information on these data types.] This field is mandatory for any field listed.
@@ -224,7 +224,7 @@ The following is an example of a return from a get_version from a Federation Reg
 
 == API Error Handling ==
 
-All method calls return a tuple [code, value, output]. What is described as ‘Return’ in the API’s described below is the ‘value’ of this tuple in case of a successful execution. ‘Code’ is the error code returned and ‘output’ is the returned text (e.g. descriptive error message).
+All method calls return a tuple [code, value, output]. What is described as 'Return' in the API's described below is the 'value' of this tuple in case of a successful execution. 'Code' is the error code returned and 'output' is the returned text (e.g. descriptive error message).
 
 Each Federation Registry and Authority is free to define and return its own specific error codes. However we suggest the following essential set of error codes to report on generic conditions:
 
@@ -235,7 +235,7 @@ Each Federation Registry and Authority is free to define and return its own spec
 | AUTHENTICATION_ERROR | 1 | The invoking tool or member did not provide appropriate credentials indicating that they are known to the Federation or that they possessed the private key of the entity they claimed to be
 | AUTHORIZATION_ERROR | 2 | The invoking tool or member does not have the authority to invoke the given call with the given arguments
 | ARGUMENT_ERROR | 3 | The arguments provided to the call were mal-formed or mutually inconsistent.
-| DATABASE_ERROR | 4 | An error from the underlying database was returned. (More info should be provided in the ‘output’ return value]
+| DATABASE_ERROR | 4 | An error from the underlying database was returned. (More info should be provided in the 'output' return value]
 | DUPLICATE_ERROR | 5 | An error indicating attempt to create an object that already exists
 | NOT_IMPLEMENTED_ERROR | 100 | The given method is not implemented on the server.
 | SERVER_ERROR | 101 | An error in the client/server connection
@@ -248,11 +248,11 @@ Each Federation Registry and Authority manages the state of or access to objects
 [source,python]
 --------------------------------------------------
 #!python
-# Creates a new instance of the given object with a ‘fields’ option
+# Creates a new instance of the given object with a 'fields' option
 # specifying particular field values that are to be associated with the object.
-# These may only include those fields specified as ‘ALLOWED or ‘REQUIRED’
-# in the ‘Creation’ column of the object descriptions below
-# or in the "CREATE’ key in the supplemental fields in the
+# These may only include those fields specified as 'ALLOWED or 'REQUIRED'
+# in the 'Creation' column of the object descriptions below
+# or in the "CREATE' key in the supplemental fields in the
 # get_version specification for that object.
 # If successful, the call returns a dictionary of the fields
 # associated with the newly created object.
@@ -274,20 +274,20 @@ def create(type, credentials, options)
 [source,python]
 --------------------------------------------------
 #!python
-# Updates an object instance specified by URN with a ‘fields’ option
+# Updates an object instance specified by URN with a 'fields' option
 #  specifying the particular fields to update.
 # Only a single object can be updated from a single update call.
-# The fields may include those specified as ‘Yes’ in the ‘Update’ column
-# of the object descriptions below, or ’TRUE’ in the ‘UPDATE’ key in the
+# The fields may include those specified as 'Yes' in the 'Update' column
+# of the object descriptions below, or 'TRUE' in the 'UPDATE' key in the
 # supplemental fields provided by the get_version call.
 # Note: There may be more than one entity of a given URN at an authority,
-# but only one ‘live’ one (any other is archived and cannot be updated).
+# but only one 'live' one (any other is archived and cannot be updated).
 #
 # Arguments:
 #   type: type of object to be updated
 #   urn: URN of object to update
 #     (Note: this may be a non-URN-formatted unique identifier e.g. in the case of keys)
-#   options: Contains ‘fields’ key referring dictionary of
+#   options: Contains 'fields' key referring dictionary of
 #        name/value pairs to update
 #
 # Return: None
@@ -316,11 +316,11 @@ def delete(type, urn, credentials, options)
 [source,python]
 --------------------------------------------------
 #!python
-# Lookup requested details for objects matching ‘match’ options.
-# This call takes a set of ‘match’ criteria provided in the ‘options’ field,
+# Lookup requested details for objects matching 'match' options.
+# This call takes a set of 'match' criteria provided in the 'options' field,
 # and returns a dictionary of dictionaries of object attributes
 # keyed by object URN matching these criteria.
-# If a ‘filter’ option is provided, only those attributes listed in the ‘filter’
+# If a 'filter' option is provided, only those attributes listed in the 'filter'
 # options are returned.
 # The requirements on match criteria supported by a given service
 # are service-specific; however it is recommended that policies
@@ -344,12 +344,12 @@ def lookup (type, credentials, options)
 Some additional details on the lookup call:
 
 The options argument to the lookup call is a dictionary. It contains an entry
-with key ‘match’ that contains a dictionary of name/value pairs. The names are
+with key 'match' that contains a dictionary of name/value pairs. The names are
 of fields listed in the get_version for that object. The values are values for
 those fields to be matched. The semantics of the match is to be an "AND" (all
 fields must match).
 
-The value in the dictionary of a ‘match’ option can be a list of scalars,
+The value in the dictionary of a 'match' option can be a list of scalars,
 indicating an "OR". For example, a list of URNs provided to the SLICE_URN
 key would match any slice with any of the listed URNs.
 
@@ -404,89 +404,77 @@ Such a call would find any member with last name Brown and return a dictionary k
 }
 --------------------------------------------------
 
-A Slice Authority (SA) manages information about slice objects. The SA method update(type="SLICE") could take the following options argument to change the slice description and extend the slice expiration:
+A Slice Authority (SA) manages information about slice objects.
+The SA method update(type="SLICE") could take the following options
+argument to change the slice description and extend the slice
+expiration:
 
+--------------------------------------------------
 {
-
-      "fields" : { "SLICE_DESCRIPTION": "Updated Description",
-
+    "fields" : { "SLICE_DESCRIPTION": "Updated Description",
                  "SLICE_EXPIRATION": "2013-07-29T13:15:30Z" }
-
 }
+--------------------------------------------------
 
-An example of lookup(type="SLICE)" at an SA that wanted to retrieve the slice names for a list of slice URNs could specify options:
+An example of lookup(type="SLICE)" at an SA that wanted to retrieve
+the slice names for a list of slice URNs could specify options:
 
+--------------------------------------------------
 {
- "match": {
-
+    "match": {
       "SLICE_URN": [
-
              "urn:publicid+IDN+this_sa:myproject+slice+slice1",
-
              "urn:publicid+IDN+this_sa:myproject+slice+slice2",
-
              "urn:publicid+IDN+this_sa:myproject+slice+slice3"
-
        ]},
-
- "filter": ["SLICE_NAME"]
-
+    "filter": ["SLICE_NAME"]
 }
-
+--------------------------------------------------
 
 == API Method Examples (cont.): ==
 
-An example of create(type="SLICE") call would specify required options e.g.:
+An example of create(type="SLICE") call would specify required
+options e.g.:
 
+--------------------------------------------------
 {
-
-      ‘fields’ : {
-
+      'fields' : {
             "SLICE_NAME": "TEST_SLICE",
-
             "SLICE_DESCRIPTION": "My Test Slice",
-
             "SLICE_EMAIL": myemail@geni.net,
-
             "SLICE_PROJECT_URN": "urn:publicid+IDN+this_sa+project+myproject"
-
        }
-
 }
+--------------------------------------------------
 
 and receive a return dictionary looking like:
 
+--------------------------------------------------
 {
-
        "SLICE_URN": "urn:publicid+IDN+this.sa+slice+TESTSLICE",
-
-       "SLICE_UID": "…",
-
+       "SLICE_UID": "...",
        "SLICE_NAME": "TESTSLICE",
-
        "SLICE_CREDENTIAL": ".....",
-
        "SLICE_DESCRIPTION": "My Test Slice",
-
        "SLICE_PROJECT_URN": "urn:publicid+IDN+this_sa+project+myproject",
-
        "SLICE_EXPIRATION": "2013-08-29T13:15:30Z",
-
        "SLICE_EXPIRED": "FALSE",
-
        "SLICE_CREATION": "2013-07-29T13:15:30Z",
-
        "SLICE_EMAIL": myemail@geni.net
-
 }
+--------------------------------------------------
 
 == API Authentication ==
 
-This document suggests that the Authentication required for the Federation APIs is implicit in the SSL protocol: the invoker of the call must have its cert and private key to have a valid SSL connection. Moreover, the cert must be signed by a member of the trust chain recognized by the Federation.
+This document suggests that the Authentication required for the
+Federation APIs is implicit in the SSL protocol: the invoker of the
+call must have its cert and private key to have a valid SSL
+connection. Moreover, the cert must be signed by a member of
+the trust chain recognized by the Federation.
 
 == Support for Speaks-for API Invocations ==
 
-Best practices dictate that individuals should speak as themselves: that is, the entity on the other side of an SSL connection is the one referred to by the certificate on the connection. Obviously, people typically use tools or software interfaces to create these connections. When a tool is acting directly on a user’s desktop using the user’s key and cert with the user’s explicit permission, it may be acceptable to consider the tool as speaking as the user. But for many tools, the tool is acting on behalf of the user in invoking Federation or AM API calls. In this case, it is important for the tool to not speak as the user but to speak for the user, and to have the service to whom the tool is speaking handle the authorization and accountability of this request accordingly.
+Best practices dictate that individuals should speak as themselves: that is, the entity on the other side of an SSL connection is the one referred to by the certificate on the connection. Obviously, people typically use tools or software interfaces to create these connections. When a tool is acting directly on a user's desktop using the user's key and cert with the user's explicit permission, it may be acceptable to consider the tool as speaking as the user. But for many tools, the tool is acting on behalf of the user in invoking Federation or AM API calls. In this case, it is important for the tool to not speak as the user but to speak for the user, and to have the service to whom the tool is speaking handle the authorization and accountability of this request accordingly.
 
 Accordingly, a Federation Registry and associated Authorities should support speaks-for API transactions. These API transactions use the same signatures as the calls described in this document, with these enhancements:
 
@@ -494,7 +482,7 @@ Accordingly, a Federation Registry and associated Authorities should support spe
 
 - A speaks-for credential in the list of credentials: a statement signed by the user indicating that the tool has the right to speak for the user, possibly limited to a particular scope (e.g. slice, project, API call, time window).
 
-The service call is then required to determine if the call is being made in a speaks-for context or not (that is, the ‘speaking_for’ option provided). If so, the call must determine if the tool is allowed to speak for the user by checking for the presence of a valid speaks-for credential and the spoken-for user’s cert. If so, the call should validate if the user is authorized to take the proposed API action. If so, the action is taken and accounted to the user, with identity of the speaking_for tool logged. If the call is ‘speaks-for’ but any of these additional criteria are not met, the call should fail with an authorization error. If the call is not a ‘speaks-for’, then the normal authorization is performed based on the identity (certificate) provided with the SSL connection.
+The service call is then required to determine if the call is being made in a speaks-for context or not (that is, the 'speaking_for' option provided). If so, the call must determine if the tool is allowed to speak for the user by checking for the presence of a valid speaks-for credential and the spoken-for user's cert. If so, the call should validate if the user is authorized to take the proposed API action. If so, the action is taken and accounted to the user, with identity of the speaking_for tool logged. If the call is 'speaks-for' but any of these additional criteria are not met, the call should fail with an authorization error. If the call is not a 'speaks-for', then the normal authorization is performed based on the identity (certificate) provided with the SSL connection.
 
 Aggregates are also encouraged to support speaks-for authentication and authorization, but this is an aggregate-internal policy and implementation decision, and outside the scope of this document.
 
@@ -508,14 +496,14 @@ The Federation Registry implements the SERVICE service and supports the SERVICE 
 
 Services have a particular type that indicates the kind of service it represents. The full list of supported services should be provided by a TYPES key in the Federation Registry get_version call, for example:
 
-{{{
-    {
-       …
-       "SERVICE_TYPES" : ["SLICE_AUTHORITY", "MEMBER_AUTHORITY",
-                      "AGGREGATE_MANAGER", ...]
-       …
-    }
-}}}
+--------------------------------------------------
+{
+    ...
+    "SERVICE_TYPES" : ["SLICE_AUTHORITY", "MEMBER_AUTHORITY",
+                       "AGGREGATE_MANAGER", ...]
+    ...
+}
+--------------------------------------------------
 
 This table contains a set of ''example'' services types (of which only SLICE_AUTHORITY, MEMBER_AUTHORITY and AGGREGATE_MANAGER are required for any given federation):
 
@@ -604,7 +592,7 @@ The ''lookup_authorities_for_urns'' method maps object URN's to authority URN's.
 
 == Slice Authority API ==
 
-The Slice Authority API provides services to manage slices and their associated permissions. To support its AuthZ policies, a particular SA may choose to manage objects and relationships such as projects and slice/project membership. The SA API is thus divided into a set of services, each of which consists of a set of methods. Of these, only the SLICE service is required, the others are optional. If an SA implements a given service, it should implement the entire service as specified. All available SA service methods are available from the same SA URL. The get_version method should indicate, in the ‘SERVICES’ tag, which services the given SA supports.
+The Slice Authority API provides services to manage slices and their associated permissions. To support its AuthZ policies, a particular SA may choose to manage objects and relationships such as projects and slice/project membership. The SA API is thus divided into a set of services, each of which consists of a set of methods. Of these, only the SLICE service is required, the others are optional. If an SA implements a given service, it should implement the entire service as specified. All available SA service methods are available from the same SA URL. The get_version method should indicate, in the 'SERVICES' tag, which services the given SA supports.
 
 All SA calls are protected; passing and validating a client-side cert is required.
 
@@ -628,7 +616,7 @@ The credentials passed to SA Slice Service methods are SA-specific. But a common
 
 Note that renewal of slice expiration is handled in the update_slice call (with "SLICE_EXPIRATION" specified as the options key. The semantics of slice expiration is that slice expiration may only be extended, never reduced. Further restrictions (relative to project expiration or relative to slice creation, e.g.) are SA-specific.
 
-The following table contains required fields for slice objects and whether they are allowed in lookup ‘match’ criteria, required at creation or allowed at update:
+The following table contains required fields for slice objects and whether they are allowed in lookup 'match' criteria, required at creation or allowed at update:
 
 || ''' Name ''' || ''' Type ''' || ''' Description ''' || ''' Match ''' || ''' Creation ''' || ''' Update ''' ||
 || SLICE_URN || URN || URN of given slice || Yes || No || No ||
@@ -658,7 +646,7 @@ Additionally, the Slice service provides the following methods:
 #!python
 # Provide list of credentials for the caller relative to the given slice.
 # If the invocation is in a speaks-for context, the credentials will be for the
-# ‘spoken-for’ member, not the invoking tool.
+# 'spoken-for' member, not the invoking tool.
 #
 # For example, this call may return a standard SFA Slice Credential and some
 # ABAC credentials indicating the role of the member with respect to the slice.
@@ -669,8 +657,8 @@ Additionally, the Slice service provides the following methods:
 #    "bind", "control" "info".
 #
 # Arguments:
-#   slice_urn: URN of slice for which to get member’s credentials
-#   options: Potentially contains ‘speaking_for’ key indicating a speaks-for
+#   slice_urn: URN of slice for which to get member's credentials
+#   options: Potentially contains 'speaking_for' key indicating a speaks-for
 #      invocation (with certificate of the accountable member
 #      in the credentials argument)
 #
@@ -701,7 +689,7 @@ The following methods are written generically (with type arguments) to support t
 #   Options:
 #       members_to_add: List of member_urn/role tuples for members to add to
 #              slice/project of form
-#                 {‘SLICE_MEMBER’ : member_urn, ‘SLICE_ROLE’ : role}
+#                 {'SLICE_MEMBER' : member_urn, 'SLICE_ROLE' : role}
 #                    (or 'PROJECT_MEMBER/PROJECT_ROLE
 #                    for Project Member Service)
 #       members_to_remove: List of member_urn of members to
@@ -709,7 +697,7 @@ The following methods are written generically (with type arguments) to support t
 #       members_to_change: List of member_urn/role tuples for
 #                 members whose role
 #                should change as specified for given slice/project of form
-#                {‘SLICE_MEMBER’ : member_urn, ‘SLICE_ROLE’ : role}
+#                {'SLICE_MEMBER' : member_urn, 'SLICE_ROLE' : role}
 #                (or 'PROJECT_MEMBER/PROJECT_ROLE for Project Member Service)
 #
 # Return:
@@ -729,11 +717,11 @@ def modify_membership(type, urn, credentials, options)
 #
 # Return:
 #    List of dictionaries of member_urn/role pairs
-#       [{‘SLICE_MEMBER’: member_urn,
-#        ‘SLICE_ROLE’: role }...]
+#       [{'SLICE_MEMBER': member_urn,
+#        'SLICE_ROLE': role }...]
 #         (or PROJECT_MEMBER/PROJECT_ROLE
 #          for Project Member Service)
-#          where ‘role’ is a string of the role name.
+#          where 'role' is a string of the role name.
 def lookup_members(type, urn, credentials, options)
 }}}
 
@@ -749,7 +737,7 @@ def lookup_members(type, urn, credentials, options)
 #
 # Return:
 #    List of dictionary of urn/role pairs
-#        [(‘SLICE_URN’ : slice_urn, ‘SLICE_ROLE’ : role} ...]
+#        [('SLICE_URN' : slice_urn, 'SLICE_ROLE' : role} ...]
 #        (or PROJECT_MEMBER/PROJECT_ROLE
 #           for Project Member Service)
 #        for each object to which a member belongs,
@@ -788,7 +776,7 @@ The Sliver Info Service supports these standard API methods for type="SLIVER_INF
 
 Projects are groupings of slices and members for a particular administrative purpose. Some SA's will chose to create and manage projects and apply policies about the invocation of SA methods (e.g. the creation of slice credentials based on roles or memberships in projects). A slice can belong to no more than one project; a project may have many slice members.
 
-The following table contains required fields for project objects and whether they are allowed in lookup ‘match’ criteria, required at creation or allowed at update:
+The following table contains required fields for project objects and whether they are allowed in lookup 'match' criteria, required at creation or allowed at update:
 
 || ''' Name ''' || ''' Type ''' || ''' Description ''' || ''' Match ''' || ''' Creation ''' || ''' Update ''' ||
 || PROJECT_URN || URN || URN of given project || Yes || No || No ||
@@ -831,9 +819,9 @@ All MA calls are protected; passing and validating a client-side cert is require
  While each MA is free to implement its own authorization policy, reasonable security policy should allow calls to succeed only if the following criteria are met:
 
  * The user/tool cert is signed by someone in the Federation's trust chain
- * If the cert is held by a tool, then the call must contain a user cert and a ‘speaks-for’ credential and the tool is trusted by the Federation to perform speaks-for.
+ * If the cert is held by a tool, then the call must contain a user cert and a 'speaks-for' credential and the tool is trusted by the Federation to perform speaks-for.
  * The requestor is asking for their own identifying info or has privileges with respect to the people about whom they are asking for that identifying info.
- * Access to private info (SSL or SSH keys) should be restricted only to the user’s own keys for ordinary users.
+ * Access to private info (SSL or SSH keys) should be restricted only to the user's own keys for ordinary users.
 
 Like the Slice Authority, the Member Authority provides a set of services each consisting of a set of methods. Some services are required for any MA implementation, others are optional, as indicated by this table:
 
@@ -849,7 +837,7 @@ The information managed by the MA API is divided into three categories, for purp
  * Private: Private information (e.g. private SSL or SSH keys) that should be given only to the member or a tool speaking for the member with a valid speaks-for credential
  * Identifying: Information that could identify the given member (e.g. name, email, affiliation)
 
-The following table contains required fields for member objects and whether they are allowed in lookup ‘match’ criteria and their protection (public, private, identifying):
+The following table contains required fields for member objects and whether they are allowed in lookup 'match' criteria and their protection (public, private, identifying):
 
 
 || ''' Name ''' || ''' Type ''' || ''' Description ''' || ''' Match ''' || ''' Protection ''' ||
@@ -880,7 +868,7 @@ The following are additional methods provided by the MEMBER service:
 #  an AM API call for aggregate authorization.
 # Arguments:
 #    member_urn: URN of member for which to retrieve credentials
-#    options: Potentially contains ‘speaking_for’ key indicating a speaks-for
+#    options: Potentially contains 'speaking_for' key indicating a speaks-for
 #        invocation (with certificate of the accountable member in the credentials argument)
 #
 # Return:
@@ -925,8 +913,8 @@ querying for and by slice object fields.
 
 Different Federation Authorities will implement different subsets of
 the possible set of Federation services. Those that do implement a
-given service should implement the API’s described above. The fields
-of the objects maintained through these API’s are flexible: some
+given service should implement the API's described above. The fields
+of the objects maintained through these API's are flexible: some
 fields are required but different Authorities may have their own
 additional data, to be returned by the get_version method.
 
