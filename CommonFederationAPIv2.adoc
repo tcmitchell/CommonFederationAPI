@@ -674,7 +674,8 @@ The Slice Service supports these standard API methods for type="SLICE":
 
 Additionally, the Slice service provides the following methods:
 
-{{{
+[source,python]
+--------------------------------------------------
 #!python
 # Provide list of credentials for the caller relative to the given slice.
 # If the invocation is in a speaks-for context, the credentials will be for the
@@ -698,7 +699,8 @@ Additionally, the Slice service provides the following methods:
 #   List of credential in "CREDENTIALS" format, i.e. a list of credentials with
 # type information suitable for passing to aggregates speaking AM API V3.
 def get_credentials(slice_urn, credentials, options)
-}}}
+--------------------------------------------------
+
 
 == Slice Member Service Methods ==
 
@@ -708,7 +710,8 @@ The set of recognized role types (e.g. `LEAD`, `ADMIN`, `MEMBER`, `OPERATOR`, `A
 
 The following methods are written generically (with type arguments) to support the Slice Member Service as well as the [#ProjectMemberServiceMethods Project Member Service (below)].
 
-{{{
+[source,python]
+--------------------------------------------------
 #!python
 # Modify object membership, adding, removing and changing roles of members
 #    with respect to given object
@@ -735,9 +738,10 @@ The following methods are written generically (with type arguments) to support t
 # Return:
 #   None
 def modify_membership(type, urn, credentials, options)
-}}}
+--------------------------------------------------
 
-{{{
+[source,python]
+--------------------------------------------------
 #!python
 # Lookup members of given object and their roles within that object
 #
@@ -755,9 +759,10 @@ def modify_membership(type, urn, credentials, options)
 #          for Project Member Service)
 #          where 'role' is a string of the role name.
 def lookup_members(type, urn, credentials, options)
-}}}
+--------------------------------------------------
 
-{{{
+[source,python]
+--------------------------------------------------
 #!python
 # Lookup objects of given type for which the given member belongs
 #
@@ -775,7 +780,7 @@ def lookup_members(type, urn, credentials, options)
 #        for each object to which a member belongs,
 #        where role is a string of the role name
 def lookup_for_member(type, member_urn, credentials, options)
-}}}
+--------------------------------------------------
 
 == Sliver Info Service Methods ==
 
@@ -917,7 +922,8 @@ A blank (null, not empty list) fields option indicates that the caller wants to 
 
 The following are additional methods provided by the MEMBER service:
 
-{{{
+[source,python]
+--------------------------------------------------
 #!python
 # Provide list of credentials (signed statements) for given member
 # This is member-specific information suitable for passing as credentials in
@@ -931,7 +937,7 @@ The following are additional methods provided by the MEMBER service:
 #     List of credential in "CREDENTIALS" format, i.e. a list of credentials with
 #        type information suitable for passing to aggregates speaking AM API V3.
 def get_credentials(member_urn, credentials, options)
-}}}
+--------------------------------------------------
 
 == Key Service Methods ==
 
