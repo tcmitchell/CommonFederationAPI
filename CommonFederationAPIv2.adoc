@@ -35,21 +35,13 @@ There are two fundamental authority types in GENI:
  * _Member Authority_ [MA]: Manages and asserts attributes about particular members
  * _Slice Authority_ [SA]: Manages slice objects and generates credentials for members with respect to slices.
 
-A ' Federation ' is a collection of Authorities and Aggregates that establish mutual trust and common policies to facilitate the sharing of resources among members. A Federation Registry is a software service representing a given Federation, providing lists of Slice Authorities, Member Authorities and aggregates associated with that federation, and providing a set of PKI certificates that any aggregate belonging to a given federation accepts as trust roots. The relationship of Federations to Federation Registries is 1:1.
+A 'Federation' is a collection of Authorities and Aggregates that establish mutual trust and common policies to facilitate the sharing of resources among members. A Federation Registry is a software service representing a given Federation, providing lists of Slice Authorities, Member Authorities and aggregates associated with that federation, and providing a set of PKI certificates that any aggregate belonging to a given federation accepts as trust roots. The relationship of Federations to Federation Registries is 1:1.
 
 The Authorities of any given Federation are free to implement their own Authorization (AuthZ) scheme. The API's allow for passing credentials to the calls, but an Authority may choose to allow or disallow calls using logic and policies that are internal to that Federation. There is no universal (cross-Federation) requirement for any particular policy regarding Authority AuthZ.
 
 Authorities are fundamentally independent of one another. The objects defined at one Authority are not necessarily entitled to any services provided by another Authority. Each aggregate may choose to trust or not trust any particular Authority. Likewise, any Authority may chose to trust or not trust any other Authority.  A Federation Registry may choose to advertise or not advertise any particular aggregate, regardless of whether that aggregate trusts the Authorities advertised by that Federation Registry. Similarly, a given Slice Authority or Member Authority may be advertised by a single Federation Registries or by multiple Federation Registries. Federation Registry API calls are unprotected. There is no notion of trust between Federation Registries or between Federation Registries and Authorities or Aggregates.
 
 This document describes the APIs of the Federation Registry as well as the MA and SA. It is expected that a well-behaved GENI-compatible tool will allow for interacting with any Federation Registry and Authority that implement the standard API's described in this document.
-
-
-
-
-
-
-
-
 
 
 == API General Properties ==
