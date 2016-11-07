@@ -92,9 +92,9 @@ Each Federation Registry or Authority API provides a 'get_version' method, which
 * URN : The URN of the service being contacted. This field is mandatory for SA and MA services, optional for Federation Registry service.
 * IMPLEMENTATION: A dictionary of information of the implantation of the service: {"code_version" : code_version, "code_url" : code_url, "code_release_date" : code_release_date, "site_update_date" : site_update_date"}. Of these, code_version is of type STRING, code_url is of type URL,  code_release_date and site_update_date are of format DATETIME. The format of the code_version string is implementation specific. This field is optional for services; in addition, all the sub-fields for the IMPLEMENTATION field are optional.
 * SERVICES: The list of names of services the given URL supports. This field is optional (with default being the default service for that authority, i.e. SERVICE for Federation Registry, SLICE for Slice Authority, MEMBER for MemberAuthority).
-* CREDENTIAL_TYPES: A list of recognized credential types (e.g. [geni_sfa, geni_abac]) and list of supported credential versions on protected API methods.  Format is analogous to that in the AM API: a list of {"type": cred_type, "version" : cred_version} dictionaries of all supported credential types and versions. ''[Required for Authorities only]''
+* CREDENTIAL_TYPES: A list of recognized credential types (e.g. [geni_sfa, geni_abac]) and list of supported credential versions on protected API methods.  Format is analogous to that in the AM API: a list of {"type": cred_type, "version" : cred_version} dictionaries of all supported credential types and versions. _[Required for Authorities only]_
 * ROLES : A list of recognized roles for slice/project membership (required only for those Slice Authorities supporting membership). The same set of roles refers to both slice and project membership at a given SA.
-* SERVICE_TYPES. A list of service types provided by the Federation Registry ''[Required for Federation Registry only]''
+* SERVICE_TYPES. A list of service types provided by the Federation Registry _[Required for Federation Registry only]_
 * API_VERSIONS A dictionary of different peer implementation of different version of the same service. Modeled on the Aggregate Manager API, the format of this field is {version1 : url1, version2 : url2, ...}. This field is required for all services. Note that the 'self' version (the version of the service being queried) is required to be included in this dictionary and should be consistent with the "VERSION" field above. The URL's in this field
 * FIELDS: A dictionary of object field names (i.e. in additional to the required fields) and associated attributes including:
  ** "OBJECT" provides the object type to which the field belongs. The field is optional for fields of the default authority object (i.e. SLICE for Slice Authority, MEMBER for Member Authority, SERVICE for Federation Registry) but mandatory for all other fields.
@@ -513,7 +513,7 @@ Services have a particular type that indicates the kind of service it represents
 }
 --------------------------------------------------
 
-This table contains a set of ''example'' services types (of which only SLICE_AUTHORITY, MEMBER_AUTHORITY and AGGREGATE_MANAGER are required for any given federation):
+This table contains a set of _example_ services types (of which only SLICE_AUTHORITY, MEMBER_AUTHORITY and AGGREGATE_MANAGER are required for any given federation):
 
 [options="header"]
 |==========
@@ -602,7 +602,7 @@ def get_trust_roots()
 def lookup_authorities_for_urns(urns)
 --------------------------------------------------
 
-The ''lookup_authorities_for_urns'' method maps object URN's to authority URN's. Note that the transformation from the URN's of objects (e.g. slice, project, member) to the URN's of their authority is a simple one, for example:
+The _lookup_authorities_for_urns_ method maps object URN's to authority URN's. Note that the transformation from the URN's of objects (e.g. slice, project, member) to the URN's of their authority is a simple one, for example:
 
 [options="header"]
 |==========
@@ -922,7 +922,7 @@ The MEMBER Service supports these standard API methods for type="MEMBER":
 | lookup | lookup info associated with members matching match criteria.
 |==========
 
-Note: the ''lookup' call provides public information for all members matching the 'match' criteria. It will also provide identifying (e.g. email or name) or private (e.g. SSL private key) information for members for whom the caller is authorized.
+Note: the 'lookup' call provides public information for all members matching the 'match' criteria. It will also provide identifying (e.g. email or name) or private (e.g. SSL private key) information for members for whom the caller is authorized.
 When a field requested is unauthorized, the key will not be provide in the returned dictionary for that member.
 When the field requested has a key but a blank/null value, the access is authorized but the value for that field is, in fact, blank.
 A blank (null, not empty list) fields option indicates that the caller wants to see all fields to which the caller  is authorized. If a list of fields is specified in the fields option, only those authorized fields from among the specified set is provided for each matched member.
@@ -1006,15 +1006,15 @@ The following table describes the data types referenced in the document above, i
 [options="header"]
 |==========
 | Type | Description | Format
-| URN | Standard GENI identifier, guaranteed to be unique across all GENI services and authorities at a given time, but may be reused by obsolete/expired objects (e.g. slices) | '''Example:''' urn:publicid:IDN+mych+user+abrown ''' Details: ''' urn:publicid:IDN+AUTHORITY+TYPE+NAME where AUTHORITY is the unique fully qualified identifier of the authority creating the URN (e.g. ch.geni.net), TYPE is the type of entity (e.g. slice, user, tool, project) and name is the unique name of the entity (e.g. slice_name, user_name, tool_name, project_name). See  https://github.com/GENI-NSF/geni-docs/blob/master/GeniApiIdentifiers.adoc[GENI API identifiers] for data type definitions.
-| UID | Unique identifier within the scope of a single authority, not guaranteed to be unique across authorities | '''Example:''' 8e405a75-3ff7-4288-bfa5-111552fa53ce '''Details:''' Varies by implementation but the python UUID4 standard is a good example.  See http://www.ietf.org/rfc/rfc4122.txt[RFC4122].
+| URN | Standard GENI identifier, guaranteed to be unique across all GENI services and authorities at a given time, but may be reused by obsolete/expired objects (e.g. slices) | *Example:* urn:publicid:IDN+mych+user+abrown *Details:* urn:publicid:IDN+AUTHORITY+TYPE+NAME where AUTHORITY is the unique fully qualified identifier of the authority creating the URN (e.g. ch.geni.net), TYPE is the type of entity (e.g. slice, user, tool, project) and name is the unique name of the entity (e.g. slice_name, user_name, tool_name, project_name). See  https://github.com/GENI-NSF/geni-docs/blob/master/GeniApiIdentifiers.adoc[GENI API identifiers] for data type definitions.
+| UID | Unique identifier within the scope of a single authority, not guaranteed to be unique across authorities | *Example:* 8e405a75-3ff7-4288-bfa5-111552fa53ce *Details:* Varies by implementation but the python UUID4 standard is a good example.  See http://www.ietf.org/rfc/rfc4122.txt[RFC4122].
 | STRING | Generic UTF-8 string |
 | INTEGER | Generic integer argument |
-| DATETIME | String representing a date/time in RFC3339 format  (http://tools.ietf.org/html/rfc3339).  | '''Examples:''' 2013-06-15T02:39:08+03:00,  2013-06-15T02:39:08-05:00, 2014-02-23T11:00:05Z '''Details''': DATETIME values in the Federation API will be strings in RFC3339-compliant format. We ''recommend'' that implementers use parsers that fully comply with this standard. However, due to the flexibility in the spec and different interpretations chosen by different common parsers, we ''require'' that such DATETIME values: 1) contain an uppercase T between the time and date portions, 2) contain a timezone suffix, either an uppercase Z (for UTC) or +/-HH:MM, and 3) do not contain fractional seconds
-| EMAIL | Well-formed email address compliant with RFC2822 http://tools.ietf.org/html/rfc2822#section-3.4.1 | '''Example:''' jbrown@geni.net
+| DATETIME | String representing a date/time in RFC3339 format  (http://tools.ietf.org/html/rfc3339).  | *Examples:* 2013-06-15T02:39:08+03:00,  2013-06-15T02:39:08-05:00, 2014-02-23T11:00:05Z *Details*: DATETIME values in the Federation API will be strings in RFC3339-compliant format. We _recommend_ that implementers use parsers that fully comply with this standard. However, due to the flexibility in the spec and different interpretations chosen by different common parsers, we _require_ that such DATETIME values: 1) contain an uppercase T between the time and date portions, 2) contain a timezone suffix, either an uppercase Z (for UTC) or +/-HH:MM, and 3) do not contain fractional seconds
+| EMAIL | Well-formed email address compliant with RFC2822 http://tools.ietf.org/html/rfc2822#section-3.4.1 | *Example:* jbrown@geni.net
 | KEY | SSH or SSL public or private key (contents, not filename) | Key-specific format
-| BOOLEAN | XMLRPC encoded boolean | '''Example:''' True
-| CREDENTIALS | List of dictionaries, one per credential, tagged with credential type and version (as indicated in the GENI AM API specification) | '''Details:''' Credentials = [ { geni_type: <string, case insensitive>, geni_version: <string containing an integer>, geni_value : <credential as string>, <others> } ]. See http://groups.geni.net/geni/wiki/GAPI_AM_API_V3/CommonConcepts#credentials or https://github.com/GENI-NSF/geni-docs/blob/master/GeniApiCredentials.adoc[GENI API credentials] for credential format and semantic specification.
+| BOOLEAN | XMLRPC encoded boolean | *Example:* True
+| CREDENTIALS | List of dictionaries, one per credential, tagged with credential type and version (as indicated in the GENI AM API specification) | *Details:* Credentials = [ { geni_type: <string, case insensitive>, geni_version: <string containing an integer>, geni_value : <credential as string>, <others> } ]. See http://groups.geni.net/geni/wiki/GAPI_AM_API_V3/CommonConcepts#credentials or https://github.com/GENI-NSF/geni-docs/blob/master/GeniApiCredentials.adoc[GENI API credentials] for credential format and semantic specification.
 | CERTIFICATE | X509 v3 certificate (contents, not filename) | Standard X509 v3 PEM certificate format. A chain of such certificates may be concatenated.  See  http://en.wikipedia.org/wiki/X.509 and https://github.com/GENI-NSF/geni-docs/blob/master/GeniApiCertificates.adoc[GENI API certificates] for more details
 |==========
 
