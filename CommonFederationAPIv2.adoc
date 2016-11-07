@@ -997,7 +997,7 @@ The following diagram reflects the different objects maintained within
 the full range of Authority services, their interactions and mandatory
 fields.
 
-image::doc/FedObjectModel.png["Federation Object Model",title="Federation Object Model",width=825]
+image::docs/FedObjectModel.png["Federation Object Model",title="Federation Object Model",width=825]
 
 == Appendix B: API Data Types ==
 
