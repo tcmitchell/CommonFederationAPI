@@ -54,7 +54,12 @@ The APIs described here share some common properties, which should be assumed fo
 * Each protected method takes a 'credentials' argument, a list of type/credential tuples that help the Federation Registry or Authority invoke whatever AuthZ logic it may choose. As noted above, the Federation Registry or Authority may choose to use or disregard these credentials. Unprotected methods do not take a 'credentials' argument.
 * Each Federation Registry or Authority provides a get_version method, which describes the version number of the API provided, credential types supported, supplementary object fields and other data for interpreting API call returns.
 * A Federation Registry or Authority is free to implement additional methods beyond those specified in this document.
-* The URN is the fundamental identifier in all Federation API's. URN's are globally unique at any given time, though not necessarily unique over time. Disambiguation for entities with the same URN over time may be provided by an optional UUID argument for certain API methods. The format of URN's is documented at http://groups.geni.net/geni/wiki/GeniApiIdentifiers.
+* The URN is the fundamental identifier in all Federation API's. URN's
+  are globally unique at any given time, though not necessarily unique
+  over time. Disambiguation for entities with the same URN over time may
+  be provided by an optional UUID argument for certain API methods. The
+  format of URN's is documented in
+  https://github.com/GENI-NSF/geni-docs/blob/master/GeniApiIdentifiers.adoc[GENI API identifiers].
 
 These API's are provided in pseudo-code (i.e. language independent) format, with inputs and outputs (optional and required) described by comments, e.g.
 
@@ -693,6 +698,7 @@ Additionally, the Slice service provides the following methods:
 def get_credentials(slice_urn, credentials, options)
 --------------------------------------------------
 
+anchor:SliceMemberServiceMethods[]
 
 == Slice Member Service Methods ==
 
@@ -700,7 +706,9 @@ Slices may have a set of members associated with them in particular roles. Certa
 
 The set of recognized role types (e.g. `LEAD`, `ADMIN`, `MEMBER`, `OPERATOR`, `AUDITOR`) are to be listed in the get_version for a given Slice Authority.
 
-The following methods are written generically (with type arguments) to support the Slice Member Service as well as the [#ProjectMemberServiceMethods Project Member Service (below)].
+The following methods are written generically (with type arguments) to
+support the Slice Member Service as well as the
+<<ProjectMemberServiceMethods,Project Member Service (below)>>.
 
 [source,python]
 --------------------------------------------------
@@ -836,12 +844,19 @@ The Project Service supports these standard API methods for type="PROJECT":
 | lookup | lookup projects matching given match criteria subject to authorization restrictions.
 |==========
 
+anchor:ProjectMemberServiceMethods[]
 
 == Project Member Service Methods ==
 
-Projects may have members associated with them in particular roles and thus supports the same methods for member management as described above for the [#SliceMemberServiceMethods Slice Member Service]. The differences are that the type provided is "`PROJECT`", the urn provided is a project URN and the membership information returned is tagged with "`PROJECT_URN`" and '`PROJECT_ROLE`' as appropriate.
+Projects may have members associated with them in particular roles
+and thus supports the same methods for member management as described
+above for the <<SliceMemberServiceMethods,Slice Member Service>>.
+The differences are that the type provided is "`PROJECT`", the urn
+provided is a project URN and the membership information returned
+is tagged with "`PROJECT_URN`" and '`PROJECT_ROLE`' as appropriate.
 
-For method signatures, see the listing under the [#SliceMemberServiceMethods Slice Member Service].
+For method signatures, see the listing under the
+<<SliceMemberServiceMethods,Slice Member Service>>.
 
 [options="header"]
 |==========
@@ -991,16 +1006,16 @@ The following table describes the data types referenced in the document above, i
 [options="header"]
 |==========
 | Type | Description | Format
-| URN | Standard GENI identifier, guaranteed to be unique across all GENI services and authorities at a given time, but may be reused by obsolete/expired objects (e.g. slices) | '''Example:''' urn:publicid:IDN+mych+user+abrown ''' Details: ''' urn:publicid:IDN+AUTHORITY+TYPE+NAME where AUTHORITY is the unique fully qualified identifier of the authority creating the URN (e.g. ch.geni.net), TYPE is the type of entity (e.g. slice, user, tool, project) and name is the unique name of the entity (e.g. slice_name, user_name, tool_name, project_name). See  http://groups.geni.net/geni/wiki/GeniApiIdentifiers  for data type definitions.
-| UID | Unique identifier within the scope of a single authority, not guaranteed to be unique across authorities | '''Example:''' 8e405a75-3ff7-4288-bfa5-111552fa53ce '''Details:''' Varies by implementation but the python UUID4 standard is a good example.  See RFC4122 standard http://www.ietf.org/rfc/rfc4122.txt
+| URN | Standard GENI identifier, guaranteed to be unique across all GENI services and authorities at a given time, but may be reused by obsolete/expired objects (e.g. slices) | '''Example:''' urn:publicid:IDN+mych+user+abrown ''' Details: ''' urn:publicid:IDN+AUTHORITY+TYPE+NAME where AUTHORITY is the unique fully qualified identifier of the authority creating the URN (e.g. ch.geni.net), TYPE is the type of entity (e.g. slice, user, tool, project) and name is the unique name of the entity (e.g. slice_name, user_name, tool_name, project_name). See  https://github.com/GENI-NSF/geni-docs/blob/master/GeniApiIdentifiers.adoc[GENI API identifiers] for data type definitions.
+| UID | Unique identifier within the scope of a single authority, not guaranteed to be unique across authorities | '''Example:''' 8e405a75-3ff7-4288-bfa5-111552fa53ce '''Details:''' Varies by implementation but the python UUID4 standard is a good example.  See http://www.ietf.org/rfc/rfc4122.txt[RFC4122].
 | STRING | Generic UTF-8 string |
 | INTEGER | Generic integer argument |
 | DATETIME | String representing a date/time in RFC3339 format  (http://tools.ietf.org/html/rfc3339).  | '''Examples:''' 2013-06-15T02:39:08+03:00,  2013-06-15T02:39:08-05:00, 2014-02-23T11:00:05Z '''Details''': DATETIME values in the Federation API will be strings in RFC3339-compliant format. We ''recommend'' that implementers use parsers that fully comply with this standard. However, due to the flexibility in the spec and different interpretations chosen by different common parsers, we ''require'' that such DATETIME values: 1) contain an uppercase T between the time and date portions, 2) contain a timezone suffix, either an uppercase Z (for UTC) or +/-HH:MM, and 3) do not contain fractional seconds
 | EMAIL | Well-formed email address compliant with RFC2822 http://tools.ietf.org/html/rfc2822#section-3.4.1 | '''Example:''' jbrown@geni.net
 | KEY | SSH or SSL public or private key (contents, not filename) | Key-specific format
 | BOOLEAN | XMLRPC encoded boolean | '''Example:''' True
-| CREDENTIALS | List of dictionaries, one per credential, tagged with credential type and version (as indicated in the GENI AM API specification) | '''Details:''' Credentials = [ { geni_type: <string, case insensitive>, geni_version: <string containing an integer>, geni_value : <credential as string>, <others> } ]. See http://groups.geni.net/geni/wiki/GAPI_AM_API_V3/CommonConcepts#credentials or http://groups.geni.net/geni/wiki/GeniApiCertificates for credential format and semantic specification.
-| CERTIFICATE | X509 v3 certificate (contents, not filename) | Standard X509 v3 PEM certificate format. A chain of such certificates may be concatenated.  See  http://en.wikipedia.org/wiki/X.509 and http://groups.geni.net/geni/wiki/GeniApiCertificates for more details
+| CREDENTIALS | List of dictionaries, one per credential, tagged with credential type and version (as indicated in the GENI AM API specification) | '''Details:''' Credentials = [ { geni_type: <string, case insensitive>, geni_version: <string containing an integer>, geni_value : <credential as string>, <others> } ]. See http://groups.geni.net/geni/wiki/GAPI_AM_API_V3/CommonConcepts#credentials or https://github.com/GENI-NSF/geni-docs/blob/master/GeniApiCredentials.adoc[GENI API credentials] for credential format and semantic specification.
+| CERTIFICATE | X509 v3 certificate (contents, not filename) | Standard X509 v3 PEM certificate format. A chain of such certificates may be concatenated.  See  http://en.wikipedia.org/wiki/X.509 and https://github.com/GENI-NSF/geni-docs/blob/master/GeniApiCertificates.adoc[GENI API certificates] for more details
 |==========
 
 As noted above, this list is subject to change as the API develops over time.
